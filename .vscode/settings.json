@@ -6,5 +6,9 @@
   "files.autoSave": "onFocusChange", // optional but recommended
   "editor.codeActionsOnSave": {
     "source.organizeImports": "explicit"
-  }
+  },
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "css.lint.unknownAtRules": "ignore"
 }
