@@ -10,7 +10,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Pretendard', 'sans-serif'],
+        pretendard: ['Pretendard', 'sans-serif'],
       },
       fontSize: {
         '4xl': ['2.5rem', '3rem'],
