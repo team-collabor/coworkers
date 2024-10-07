@@ -1,3 +1,52 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "next/core-web-vitals",
+    "next/typescript",
+    "airbnb",
+    "airbnb/hooks",
+    "airbnb-typescript",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-type-checked",
+    "plugin:prettier/recommended",
+    "plugin:react/jsx-runtime"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json",
+    "ecmaFeatures": {
+      "jsx": true,
+      "ecmaVersion": "latest"
+    },
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint", "react", "import", "jsx-a11y"],
+  "rules": {
+    "semi": ["error", "always"], // 문장의 끝에 세미콜론을 항상 추가합니다.
+    "quotes": ["error", "single"], // 문자열에 작은따옴표(')를 사용합니다.
+    "no-console": "warn", // console.log 사용 시 경고를 표시합니다.
+    "no-plusplus": "off", // 단항 연산자 ++ 및 --의 사용을 허용합니다.
+    "no-restricted-syntax": "off", // 특정 문법 사용을 금지하지 않도록 설정합니다.
+    "consistent-return": "off", // 함수에서 항상 일관된 반환 값을 요구하지 않습니다.
+    "no-underscore-dangle": "off", // 식별자 이름 앞뒤의 밑줄(_)을 허용합니다.
+    "@typescript-eslint/explicit-module-boundary-types": "off", // 모듈 경계의 함수 반환 타입을 명시적으로 지정하지 않아도 됨
+    "@typescript-eslint/no-explicit-any": "off", // 'any' 타입 사용을 허용합니다.
+    "react/jsx-props-no-spreading": "off", // JSX에서 props 스프레딩을 허용합니다.
+    "react/react-in-jsx-scope": "off", // Next.js에서는 필요하지 않으므로 비활성화합니다.
+    "react/prop-types": "off", // TypeScript를 사용하므로 prop-types 검사를 비활성화합니다.
+    "import/prefer-default-export": "off", // 하나의 export만 있을 경우 default export를 강제하지 않습니다.
+    "class-methods-use-this": "off", // 클래스 메서드 내에서 'this'를 반드시 사용하지 않아도 됩니다.
+    "react/state-in-constructor": "off", // 클래스 컴포넌트의 상태(state)를 생성자에서 초기화하지 않아도 됩니다.
+    "react/static-property-placement": "off", // 클래스의 정적 속성 위치를 강제하지 않습니다.
+    "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }], // JSX는 .tsx 파일 내에서만 사용하도록 설정합니다.
+    "jsx-a11y/anchor-is-valid": "off", // <a> 태그의 href 유효성 검사를 비활성화합니다.
+    "react/require-default-props": "off",
+    "import/extensions": "off", // 파일 확장자 명시 강제를 비활성화합니다.
+    "react/display-name": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/no-static-element-interactions": "off"
+  }
 }
