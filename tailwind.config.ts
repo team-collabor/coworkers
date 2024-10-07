@@ -77,6 +77,11 @@ const config: Config = {
           brand: '#10B981',
         },
       },
+      screens: {
+        tab: { max: '74.9375rem' },
+        mob: { max: '46.4375rem' },
+        pc: { min: '75rem' },
+      },
     },
   },
   plugins: [],
