@@ -144,7 +144,7 @@ const config: Config = {
         disabled: '#94a3b8',
       },
       borderColor: {
-        primary: '#f8fafc',
+        primary: '#f8fafc80',
       },
       screens: {
         tab: { max: '74.9375rem' },
