@@ -12,69 +12,139 @@ const config: Config = {
         pretendard: ['Pretendard', 'sans-serif'],
       },
       fontSize: {
-        '4xl': ['2.5rem', '3rem'],
-        '3xl': ['2rem', '2.375rem'],
-        '2xl': ['1.5rem', '1.75rem'],
-        xl: ['1.25rem', '1.5rem'],
-        '2lg': ['1.125rem', '1.3125rem'],
-        lg: ['1rem', '1.1875rem'],
-        md: ['0.875rem', '1.0625rem'],
-        sm: ['0.8125rem', '1rem'],
-        xs: ['0.75rem', '0.875rem'],
-      },
-      fontWeight: {
-        bold: '700',
-        semibold: '600',
-        medium: '500',
-        regular: '400',
+        // 40px / 48px => 2.5rem / 3rem, Medium
+        '4xl': ['2.5rem', { lineHeight: '3rem', fontWeight: '500' }],
+        // 32px / 38px => 2rem / 2.375rem, Bold
+        '3xl-bold': ['2rem', { lineHeight: '2.375rem', fontWeight: '700' }],
+        // 32px / 38px => 2rem / 2.375rem, Semibold
+        '3xl-semibold': ['2rem', { lineHeight: '2.375rem', fontWeight: '600' }],
+        // 24px / 28px => 1.5rem / 1.75rem, Bold
+        '2xl-bold': ['1.5rem', { lineHeight: '1.75rem', fontWeight: '700' }],
+        // 24px / 28px => 1.5rem / 1.75rem, Semibold
+        '2xl-semibold': [
+          '1.5rem',
+          { lineHeight: '1.75rem', fontWeight: '600' },
+        ],
+        // 24px / 28px => 1.5rem / 1.75rem, Medium
+        '2xl-medium': ['1.5rem', { lineHeight: '1.75rem', fontWeight: '500' }],
+        // 24px / 28px => 1.5rem / 1.75rem, Regular
+        '2xl-regular': ['1.5rem', { lineHeight: '1.75rem', fontWeight: '400' }],
+        // 20px / 24px => 1.25rem / 1.5rem, Bold
+        'xl-bold': ['1.25rem', { lineHeight: '1.5rem', fontWeight: '700' }],
+        // 20px / 24px => 1.25rem / 1.5rem, Semibold
+        'xl-semibold': ['1.25rem', { lineHeight: '1.5rem', fontWeight: '600' }],
+        // 20px / 24px => 1.25rem / 1.5rem, Medium
+        'xl-medium': ['1.25rem', { lineHeight: '1.5rem', fontWeight: '500' }],
+        // 20px / 24px => 1.25rem / 1.5rem, Regular
+        'xl-regular': ['1.25rem', { lineHeight: '1.5rem', fontWeight: '400' }],
+        // 18px / 21px => 1.125rem / 1.3125rem, Bold
+        '2lg-bold': [
+          '1.125rem',
+          { lineHeight: '1.3125rem', fontWeight: '700' },
+        ],
+        // 18px / 21px => 1.125rem / 1.3125rem, Semibold
+        '2lg-semibold': [
+          '1.125rem',
+          { lineHeight: '1.3125rem', fontWeight: '600' },
+        ],
+        // 18px / 21px => 1.125rem / 1.3125rem, Medium
+        '2lg-medium': [
+          '1.125rem',
+          { lineHeight: '1.3125rem', fontWeight: '500' },
+        ],
+        // 18px / 21px => 1.125rem / 1.3125rem, Regular
+        '2lg-regular': [
+          '1.125rem',
+          { lineHeight: '1.3125rem', fontWeight: '400' },
+        ],
+        // 16px / 19px => 1rem / 1.1875rem, Bold
+        'lg-bold': ['1rem', { lineHeight: '1.1875rem', fontWeight: '700' }],
+        // 16px / 19px => 1rem / 1.1875rem, Semibold
+        'lg-semibold': ['1rem', { lineHeight: '1.1875rem', fontWeight: '600' }],
+        // 16px / 19px => 1rem / 1.1875rem, Medium
+        'lg-medium': ['1rem', { lineHeight: '1.1875rem', fontWeight: '500' }],
+        // 16px / 19px => 1rem / 1.1875rem, Regular
+        'lg-regular': ['1rem', { lineHeight: '1.1875rem', fontWeight: '400' }],
+        // 14px / 17px => 0.875rem / 1.0625rem, Bold
+        'md-bold': ['0.875rem', { lineHeight: '1.0625rem', fontWeight: '700' }],
+        // 14px / 17px => 0.875rem / 1.0625rem, Semibold
+        'md-semibold': [
+          '0.875rem',
+          { lineHeight: '1.0625rem', fontWeight: '600' },
+        ],
+        // 14px / 17px => 0.875rem / 1.0625rem, Medium
+        'md-medium': [
+          '0.875rem',
+          { lineHeight: '1.0625rem', fontWeight: '500' },
+        ],
+        // 14px / 17px => 0.875rem / 1.0625rem, Regular
+        'md-regular': [
+          '0.875rem',
+          { lineHeight: '1.0625rem', fontWeight: '400' },
+        ],
+        // 13px / 16px => 0.8125rem / 1rem, Semibold
+        'sm-semibold': ['0.8125rem', { lineHeight: '1rem', fontWeight: '600' }],
+        // 13px / 16px => 0.8125rem / 1rem, Medium
+        'sm-medium': ['0.8125rem', { lineHeight: '1rem', fontWeight: '500' }],
+        // 12px / 14px => 0.75rem / 0.875rem, Semibold
+        'xs-semibold': [
+          '0.75rem',
+          { lineHeight: '0.875rem', fontWeight: '600' },
+        ],
+        // 12px / 14px => 0.75rem / 0.875rem, Medium
+        'xs-medium': ['0.75rem', { lineHeight: '0.875rem', fontWeight: '500' }],
+        // 12px / 14px => 0.75rem / 0.875rem, Regular
+        'xs-regular': [
+          '0.75rem',
+          { lineHeight: '0.875rem', fontWeight: '400' },
+        ],
       },
       colors: {
         brand: {
-          primary: '#10B981',
-          secondary: '#34D399',
-          tertiary: '#A3E635',
-          gradient: 'linear-gradient(to right, #10B981, #A3E635)',
+          primary: '#10b981',
+          secondary: '#34d399',
+          tertiary: '#a3e635',
         },
         point: {
-          purple: '#A855F7',
-          blue: '#3B82F6',
-          cyan: '#06B6D4',
-          pink: '#EC4899',
-          rose: '#F43F5E',
-          orange: '#F97316',
-          yellow: '#EAB308',
-        },
-        background: {
-          primary: '#0F172A',
-          secondary: '#1E293B',
-          tertiary: '#334155',
-          inverse: '#FFFFFF',
+          purple: 'a855f7',
+          blue: '#3b82f6',
+          cyan: '#06b6d4',
+          pink: '#ec4899',
+          rose: '#f43f5e',
+          orange: '#f97316',
+          yellow: '#eab308',
         },
         interaction: {
-          inactive: '#94A3B8',
+          inactive: '#94a3b8',
           hover: '#059669',
           pressed: '#047857',
-          focus: '#10B981',
-        },
-        border: {
-          primary: '#F8FAFC',
-        },
-        text: {
-          primary: '#F8FAFC',
-          secondary: '#CBD5E1',
-          tertiary: '#E2E8F0',
-          default: '#64748B',
-          inverse: '#FFFFFF',
-          disabled: '#94A3B8',
+          focus: '#10b981',
         },
         status: {
-          danger: '#DC2626',
+          danger: '#dc2626',
         },
         icon: {
-          primary: '#64748B',
-          inverse: '#F8FAFC',
-          brand: '#10B981',
+          primary: '#64748b',
+          inverse: '#f8fafc',
+          brand: '#10b981',
         },
+      },
+      backgroundColor: {
+        primary: '#0f172a',
+        secondary: '#1e293b',
+        tertiary: '#334155',
+        inverse: '#ffffff',
+      },
+      textColor: {
+        primary: '#f8fafc',
+        secondary: '#cbd5e1',
+        tertiary: '#e2e8f0',
+        default: '#64748b',
+        inverse: '#ffffff',
+        disabled: '#94a3b8',
+      },
+      borderColor: {
+        primary: '#f8fafc',
       },
       screens: {
         tab: { max: '74.9375rem' },
