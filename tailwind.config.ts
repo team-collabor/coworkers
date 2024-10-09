@@ -10,6 +10,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         pretendard: ['Pretendard', 'sans-serif'],
+        verdana: ['Verdana', 'sans-serif'],
       },
       fontSize: {
         // 40px / 48px => 2.5rem / 3rem, Medium
@@ -134,6 +135,7 @@ const config: Config = {
         secondary: '#1e293b',
         tertiary: '#334155',
         inverse: '#ffffff',
+        select: '#18212f',
       },
       textColor: {
         primary: '#f8fafc',
@@ -144,7 +146,7 @@ const config: Config = {
         disabled: '#94a3b8',
       },
       borderColor: {
-        primary: '#f8fafc',
+        primary: '#f8fafc1a',
       },
       screens: {
         tab: { max: '74.9375rem' },
