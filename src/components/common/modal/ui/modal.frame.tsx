@@ -1,9 +1,9 @@
 import clsx from 'clsx';
-import Image from 'next/image';
 import type { ReactNode } from 'react';
 import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
+import { UnoptimizedImage } from '../../unoptimized-image';
 import { useModalContext } from '../model/modal.context';
 
 function ModalFrame({
@@ -31,13 +31,13 @@ function ModalFrame({
       <div className="relative size-full bg-black opacity-60" />
       <div
         className={`
-          bg-secondary absolute bottom-0 
-          left-1/2 z-10 w-full -translate-x-1/2 rounded-t-xl 
+          absolute bottom-0 left-1/2 
+          z-10 w-full -translate-x-1/2 rounded-t-xl bg-secondary 
           p-4 pb-8 sm:bottom-auto sm:top-1/2 sm:max-w-max sm:-translate-y-1/2 
           sm:rounded-xl
         `}
       >
-        <Image
+        <UnoptimizedImage
           className={clsx('absolute right-4 z-20 cursor-pointer', {
             hidden: !useClose,
           })}

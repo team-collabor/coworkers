@@ -2,12 +2,8 @@ import type { ReactNode } from 'react';
 
 function ModalSummary({ children }: { children: ReactNode }) {
   return (
-    <div
-      className={`
-      text-md-medium text-default 
-      whitespace-pre-line text-center
-    `}
-    >
+    // eslint-disable-next-line max-len
+    <div className="whitespace-pre-line text-center text-md-medium text-default">
       {children}
     </div>
   );
