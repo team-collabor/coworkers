@@ -77,17 +77,18 @@ export default function Dropdown({
         {isVisible && (
           <div
             className={`
-              border-primary bg-secondary absolute flex 
-              w-[8.4375rem] flex-col rounded-xl border border-solid 
-              border-opacity-10 p-2 
+              absolute flex max-h-[12.5rem] w-[8.4375rem] 
+              flex-col overflow-y-auto rounded-xl border border-solid 
+              border-primary border-opacity-10 
+              bg-secondary p-2 
               ${dropdownStyle}
             `}
           >
             {React.Children.map(children, (child) => (
               <div
                 className={`
-                 hover:bg-tertiary flex items-center
-                  justify-center rounded-xl
+                 flex items-center justify-center
+                  rounded-xl hover:bg-tertiary
                     ${childrenStyle}
                 `}
               >
