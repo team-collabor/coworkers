@@ -6,6 +6,6 @@ function Logo() {
       <Image src="/icons/Logo.svg" alt="" width={158} height={32} priority />
     </div>
   );
-};
+}
 
 export default Logo;

@@ -1,11 +1,9 @@
-import Image from 'next/image';
-
-import ProfileModal from '@/widgets/modals/ui/profile.modal';
+// import ProfileModal from '@/widgets/modals/ui/profile.modal';
 
 function Profile() {
   return (
     <div className="ml-auto flex h-full items-center">
-      <ProfileModal
+      {/* <ProfileModal
         openComponent={
           <div className="ml-auto flex min-w-max items-center md:gap-x-2">
             <Image src="/icons/User_large.svg" alt="" width={24} height={24} />
@@ -19,7 +17,7 @@ function Profile() {
             </span>
           </div>
         }
-      />
+      /> */}
     </div>
   );
 }

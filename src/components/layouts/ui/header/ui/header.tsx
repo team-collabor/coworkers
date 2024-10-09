@@ -27,6 +27,6 @@ function Header({ sidebar }: { sidebar?: ReactNode }) {
       <div className="h-header" />
     </>
   );
-};
+}
 
 export default Header;

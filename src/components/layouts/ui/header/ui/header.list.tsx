@@ -24,6 +24,6 @@ function List() {
       </Sidebar.Toggle>
     </button>
   );
-};
+}
 
 export default List;
