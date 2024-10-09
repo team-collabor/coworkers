@@ -27,7 +27,7 @@
   "rules": {
     "semi": ["error", "always"], // 문장의 끝에 세미콜론을 항상 추가합니다.
     "quotes": ["error", "single"], // 문자열에 작은따옴표(')를 사용합니다.
-    "no-console": "warn", // console.log 사용 시 경고를 표시합니다.
+    "no-console": "error", // console.log 사용 시 error를 표시합니다.
     "no-plusplus": "off", // 단항 연산자 ++ 및 --의 사용을 허용합니다.
     "no-restricted-syntax": "off", // 특정 문법 사용을 금지하지 않도록 설정합니다.
     "consistent-return": "off", // 함수에서 항상 일관된 반환 값을 요구하지 않습니다.
