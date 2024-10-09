@@ -13,6 +13,6 @@ function SidebarToggle({ children }: { children?: ReactNode }) {
       {children}
     </button>
   );
-};
+}
 
 export default SidebarToggle;

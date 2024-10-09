@@ -1,9 +1,9 @@
-import Image from 'next/image';
+import { UnoptimizedImage } from '@/components/common/unoptimized-image';
 
 function Logo() {
   return (
     <div>
-      <Image src="/icons/Logo.svg" alt="" width={158} height={32} priority />
+      <UnoptimizedImage src="/icons/Logo.svg" alt="" />
     </div>
   );
 }

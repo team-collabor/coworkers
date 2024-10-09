@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import { UnoptimizedImage } from '@/components/common/unoptimized-image';
 import { useEffect, useRef, useState } from 'react';
 
 function Navbar() {
@@ -69,7 +69,7 @@ function Navbar() {
             aria-label="경영관리팀"
           >
             <span>경영관리팀</span>
-            <Image src="/icons/arrow.svg" alt="" width={16} height={16} />
+            <UnoptimizedImage src="/icons/arrow.svg" alt="" />
           </button>
         </li>
         <li>

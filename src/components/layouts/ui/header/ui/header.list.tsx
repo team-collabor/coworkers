@@ -1,6 +1,6 @@
 import clsx from 'clsx';
-import Image from 'next/image';
 
+import { UnoptimizedImage } from '@/components/common/unoptimized-image';
 import { Sidebar } from '../../sidebar';
 import { useSidebarStore } from '../../sidebar/model/sidebar.store';
 
@@ -14,7 +14,7 @@ function List() {
       })}
     >
       <Sidebar.Toggle>
-        <Image
+        <UnoptimizedImage
           className="hover:scale-105"
           src="/icons/Gnb_menu.svg"
           alt=""

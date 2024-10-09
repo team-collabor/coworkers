@@ -8,10 +8,10 @@ import Profile from './header.profile';
 function Header({ sidebar }: { sidebar?: ReactNode }) {
   return (
     <>
-      <header className="bg-primary text-primary fixed inset-x-0">
+      <header className="fixed inset-x-0 bg-primary text-primary">
         <div
           className={`
-          flex h-header max-w-screen-xl items-center gap-x-8 px-6 
+          h-header flex max-w-screen-xl items-center gap-x-8 px-6 
           transition-[gap] duration-300 ease-in-out xl:mx-auto xl:gap-x-10
           `}
         >
