@@ -9,7 +9,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   buttonWidth: 'full' | 'fit';
   buttonBackgroundColor: 'green' | 'white' | 'red' | 'none';
   buttonBorderColor: 'green' | 'gray' | 'none';
-  buttonPadding: 'lg' | 'md' | 'sm';
+  buttonPadding: 'lg' | 'md' | 'sm' | 'xs';
   type?: 'button' | 'submit';
   className?: string;
 };
@@ -65,7 +65,8 @@ function Button({
           // buttonPadding
           'px-5 py-3.5': buttonPadding === 'lg',
           'px-4 py-2.5': buttonPadding === 'md',
-          'px-1.5 py-2': buttonPadding === 'sm',
+          'px-3 py-[0.375rem]': buttonPadding === 'sm',
+          'px-1.5 py-2': buttonPadding === 'xs',
         },
         className
       )}
