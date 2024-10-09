@@ -10,6 +10,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   buttonBackgroundColor: 'green' | 'white' | 'red' | 'none';
   buttonBorderColor: 'green' | 'gray' | 'none';
   buttonPadding: 'lg' | 'md' | 'sm';
+  type?: 'button' | 'submit';
   className?: string;
 };
 
@@ -23,11 +24,12 @@ function Button({
   textSize,
   buttonPadding,
   className,
+  type = 'button',
   ...props
 }: ButtonProps) {
   return (
-    // eslint-disable-next-line react/button-has-type
     <button
+      type={type === 'button' ? 'button' : 'submit'}
       className={clsx(
         'flex items-center justify-center break-keep border-[1px] border-solid',
         {
