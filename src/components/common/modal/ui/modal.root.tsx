@@ -1,7 +1,7 @@
 import { type ReactNode, useMemo } from 'react';
 
-import { ModalContext } from '../model/modal.context';
-import { useModalStore } from '../model/modal.store';
+import { ModalContext } from '../model/Modal.context';
+import { useModalStore } from '../model/Modal.store';
 
 export function ModalRoot({
   children,

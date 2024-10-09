@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { useModalContext } from '../model/modal.context';
+import { useModalContext } from '../model/Modal.context';
 
 function ModalClose({ children }: { children?: ReactNode }) {
   const { delModal } = useModalContext();
