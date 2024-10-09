@@ -49,6 +49,7 @@ const config: Config = {
           secondary: '#1E293B',
           tertiary: '#334155',
           inverse: '#FFFFFF',
+          'brand-gradient': 'linear-gradient(to right, #10b981, #a3e635)',
         },
         interaction: {
           inactive: '#94A3B8',
@@ -80,6 +81,15 @@ const config: Config = {
         tab: { max: '74.9375rem' },
         mob: { max: '46.4375rem' },
         pc: { min: '75rem' },
+        xl: '78rem',
+        sm: '26.5625rem',
+        xs: '20rem',
+      },
+      height: {
+        header: '3.75rem',
+      },
+      inset: {
+        header: '3.75rem',
       },
     },
   },
