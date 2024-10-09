@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 
 import { useSidebarStore } from '../model/sidebar.store';
 
-const SidebarToggle = ({ children }: { children?: ReactNode }) => {
+function SidebarToggle({ children }: { children?: ReactNode }) {
   const { toggle } = useSidebarStore();
   return (
     <button

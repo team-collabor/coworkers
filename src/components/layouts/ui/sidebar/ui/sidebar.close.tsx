@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 import { useSidebarStore } from '../model/sidebar.store';
 
-const SidebarClose = () => {
+function SidebarClose() {
   const { close } = useSidebarStore();
   return (
     <button
