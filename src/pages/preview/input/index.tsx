@@ -1,8 +1,9 @@
 import Input from '@/components/common/Input';
+import Select from '@/components/common/Select';
 
 export default function InputPreviewPage() {
   return (
-    <form className="mt-20 flex w-80 flex-col gap-5">
+    <form className="mt-20 flex w-80 flex-col gap-6">
       <Input
         id="email"
         type="email"
@@ -57,6 +58,20 @@ export default function InputPreviewPage() {
           </button>
         }
       />
+      <Select
+        id="select"
+        label="반복 선택"
+        errorMessage="반복 선택을 해주세요"
+        selectClassName="bg-select"
+      >
+        <option value="1">반복 안함</option>
+        <option value="2">매일</option>
+        <option value="3">매주</option>
+        <option value="4">매월</option>
+        <option value="4">
+          매월매월매월매월매월매월매월매월매월매월매월매월매월매월매월매월매월매월
+        </option>
+      </Select>
     </form>
   );
 }

@@ -5,7 +5,7 @@ export default function PreviewPage() {
     <>
       <div>Preview</div>
       <div className="mb-10">page</div>
-      <Link href="/preview/input" className="text-2xl-bold text-primary">
+      <Link href="/preview/input" className="mt-5 text-2xl-bold text-primary">
         Input
       </Link>
     </>
