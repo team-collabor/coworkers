@@ -1,10 +1,16 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  HTMLAttributes,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 interface DropdownProps {
   children: React.ReactNode;
   trigger: React.ReactNode;
-  dropdownStyle?: string;
-  childrenStyle?: string;
+  dropdownStyle?: HTMLAttributes<HTMLLabelElement>['className'];
+  childrenStyle?: HTMLAttributes<HTMLLabelElement>['className'];
 }
 /**
  * Dropdown 공통 컴포넌트
