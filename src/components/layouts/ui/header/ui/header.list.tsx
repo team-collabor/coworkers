@@ -1,11 +1,11 @@
 import clsx from 'clsx';
 
-import { UnoptimizedImage } from '@/components/common/unoptimized-image';
+import { UnoptimizedImage } from '@/components/common/UnoptimizedImage';
 import { Sidebar } from '../../sidebar';
-import { useSidebarStore } from '../../sidebar/model/sidebar.store';
+import { SidebarStore } from '../../sidebar/model/Sidebar.store';
 
 function List() {
-  const { isClosed } = useSidebarStore();
+  const { isClosed } = SidebarStore();
   return (
     <button
       type="button"

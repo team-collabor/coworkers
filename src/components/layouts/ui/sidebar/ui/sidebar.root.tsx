@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 
-import { useSidebarStore } from '../model/sidebar.store';
-import SidebarClose from './sidebar.close';
+import { SidebarStore } from '../model/Sidebar.store';
+import SidebarClose from './Sidebar.close';
 
 function SidebarRoot() {
-  const { isClosed } = useSidebarStore();
+  const { isClosed } = SidebarStore();
   return (
     <div
       className={clsx(

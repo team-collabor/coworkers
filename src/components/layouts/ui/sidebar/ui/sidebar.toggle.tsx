@@ -1,9 +1,8 @@
 import type { ReactNode } from 'react';
-
-import { useSidebarStore } from '../model/sidebar.store';
+import { SidebarStore } from '../model/Sidebar.store';
 
 function SidebarToggle({ children }: { children?: ReactNode }) {
-  const { toggle } = useSidebarStore();
+  const { toggle } = SidebarStore();
   return (
     <button
       className="flex items-center justify-center"

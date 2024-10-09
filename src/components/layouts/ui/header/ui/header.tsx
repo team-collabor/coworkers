@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react';
 
-import List from './header.list';
-import Logo from './header.logo';
-import Navbar from './header.navbar';
-import Profile from './header.profile';
+import List from './Header.list';
+import Logo from './Header.logo';
+import Navbar from './Header.navbar';
+import Profile from './Header.profile';
 
 function Header({ sidebar }: { sidebar?: ReactNode }) {
   return (

@@ -9,9 +9,9 @@ export type SidebarStoreActions = {
   close: () => void;
 };
 
-export type SidebarStore = SidebarStoreState & SidebarStoreActions;
+export type TSidebarStore = SidebarStoreState & SidebarStoreActions;
 
-export const useSidebarStore = create<SidebarStore>()((set) => ({
+export const SidebarStore = create<TSidebarStore>()((set) => ({
   isClosed: true,
   toggle: () => set((state) => ({ isClosed: !state.isClosed })),
   close: () => set(() => ({ isClosed: true })),

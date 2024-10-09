@@ -1,9 +1,8 @@
-
-import { UnoptimizedImage } from '@/components/common/unoptimized-image';
-import { useSidebarStore } from '../model/sidebar.store';
+import { UnoptimizedImage } from '@/components/common/UnoptimizedImage';
+import { SidebarStore } from '../model/Sidebar.store';
 
 function SidebarClose() {
-  const { close } = useSidebarStore();
+  const { close } = SidebarStore();
   return (
     <button
       type="button"

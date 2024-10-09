@@ -1,4 +1,4 @@
-import { UnoptimizedImage } from '@/components/common/unoptimized-image';
+import { UnoptimizedImage } from '@/components/common/UnoptimizedImage';
 import { useEffect, useRef, useState } from 'react';
 
 function Navbar() {
@@ -43,6 +43,7 @@ function Navbar() {
         }
       }
     };
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const onMouseUp = (_: MouseEvent): void => {
       setNavEvent((prevState) => ({ ...prevState, isDrag: false }));
     };

@@ -1,4 +1,4 @@
-import { UnoptimizedImage } from '@/components/common/unoptimized-image';
+import { UnoptimizedImage } from '@/components/common/UnoptimizedImage';
 
 function Logo() {
   return (
