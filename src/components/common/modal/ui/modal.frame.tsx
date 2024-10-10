@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
-// import { UnoptimizedImage } from '../../UnoptimizedImage';
+import { UnoptimizedImage } from '../../UnoptimizedImage';
 import { useModalContext } from '../model/Modal.context';
 
 function ModalFrame({
@@ -37,7 +37,7 @@ function ModalFrame({
           sm:rounded-xl
         `}
       >
-        {/* <UnoptimizedImage
+        <UnoptimizedImage
           className={clsx('absolute right-4 z-20 cursor-pointer', {
             hidden: !useClose,
           })}
@@ -53,7 +53,7 @@ function ModalFrame({
           `}
         >
           {children}
-        </div> */}
+        </div>
       </div>
     </div>,
     document.body
