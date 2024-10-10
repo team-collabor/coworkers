@@ -9,9 +9,9 @@ export type ModalStoreActions = {
   del: (modalId: string) => void;
 };
 
-export type ModalStore = ModalStoreState & ModalStoreActions;
+export type TModalStore = ModalStoreState & ModalStoreActions;
 
-export const useModalStore = create<ModalStore>()((set) => ({
+export const ModalStore = create<TModalStore>()((set) => ({
   modals: [],
   add: (id) =>
     set((state) => ({

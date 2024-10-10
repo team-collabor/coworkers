@@ -1,7 +1,7 @@
 import { type ReactNode, useMemo } from 'react';
 
 import { ModalContext } from '../model/Modal.context';
-import { useModalStore } from '../model/Modal.store';
+import { ModalStore } from '../model/Modal.store';
 
 export function ModalRoot({
   children,
@@ -10,7 +10,7 @@ export function ModalRoot({
   children?: ReactNode;
   id: string;
 }) {
-  const { modals, add, del } = useModalStore();
+  const { modals, add, del } = ModalStore();
   const isClosed = !modals.includes(id) || false;
   const contextValue = useMemo(
     () => ({
