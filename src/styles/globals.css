@@ -8,7 +8,6 @@ body {
   @apply bg-primary font-pretendard text-primary;
 }
 
-
 /* WebKit 기반 브라우저용 */
 ::-webkit-scrollbar {
   @apply w-2; /* 스크롤바의 너비 */
@@ -21,6 +20,7 @@ body {
 ::-webkit-scrollbar-thumb {
   /* 스크롤 핸들의 색상 */ /* 둥근 모서리 */ /* 핸들 주위의 패딩 */
   @apply border-collapse rounded-xl border-solid border-interaction-inactive bg-interaction-inactive;
+}
 
 select {
   -moz-appearance: none;
@@ -30,5 +30,4 @@ select {
   background-repeat: no-repeat;
   background-position: right 10px center; /* 화살표 위치 조정 */
   background-size: 36px; /* 화살표 크기 조정 */
-
 }
