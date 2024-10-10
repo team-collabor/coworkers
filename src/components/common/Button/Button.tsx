@@ -1,36 +1,36 @@
 import clsx from 'clsx';
 import { ButtonHTMLAttributes } from 'react';
 
-enum ButtonStyle {
+export enum ButtonStyle {
   Box = 'box',
   Floating = 'floating',
 }
-enum TextColor {
+export enum TextColor {
   White = 'white',
   Green = 'green',
   Gray = 'gray',
 }
-enum TextSize {
+export enum TextSize {
   Large = 'lg',
   Medium = 'md',
   Small = 'sm',
 }
-enum ButtonWidth {
+export enum ButtonWidth {
   Full = 'full',
   Fit = 'fit',
 }
-enum ButtonBackgroundColor {
+export enum ButtonBackgroundColor {
   Green = 'green',
   White = 'white',
   Red = 'red',
   None = 'none',
 }
-enum ButtonBorderColor {
+export enum ButtonBorderColor {
   Green = 'green',
   Gray = 'gray',
   None = 'none',
 }
-enum ButtonPadding {
+export enum ButtonPadding {
   Large = 'lg',
   Medium = 'md',
   Small = 'sm',
