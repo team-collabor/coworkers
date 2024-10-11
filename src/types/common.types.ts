@@ -11,9 +11,10 @@ export type CommonTypes = {
   name: string;
   nickname: string;
   email: string;
-  image: string | null;
-  accessToken: string | null;
-  refreshToken: string | null;
+  image: string;
+  password: string;
+  accessToken: string;
+  refreshToken: string;
   onClick: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
   e: React.MouseEvent<HTMLElement, MouseEvent>;
 };
