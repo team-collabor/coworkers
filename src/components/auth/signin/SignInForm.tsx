@@ -8,10 +8,11 @@ import Button, {
   TextSize,
 } from '@/components/common/Button/Button';
 import Input from '@/components/common/Input';
+import Link from 'next/link';
 
 function SignInForm() {
   return (
-    <form className="flex w-80 flex-col gap-7 font-pretendard">
+    <form className="flex w-full flex-col gap-7 font-pretendard">
       <Input
         type="email"
         id="email-input"
@@ -36,6 +37,12 @@ function SignInForm() {
       >
         로그인
       </Button>
+      <div className="flex justify-center gap-2 text-lg-medium text-primary">
+        <p>아직 계정이 없으신가요?</p>
+        <Link className="text-interaction-focus underline" href="/signup">
+          가입하기
+        </Link>
+      </div>
     </form>
   );
 }

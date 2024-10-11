@@ -3,8 +3,8 @@ import SignInForm from './SignInForm';
 function SignInSection() {
   return (
     <section
-      className="mt-[8.75rem] flex flex-col items-center
-								tab:mt-[6.25rem] mob:mt-[1.5rem]"
+      className="mt-[8.75rem] flex w-full max-w-[28.75rem] flex-col
+								items-center tab:mt-[6.25rem] mob:mt-[1.5rem] "
     >
       <div
         className="mb-20 font-pretendard text-4xl 
