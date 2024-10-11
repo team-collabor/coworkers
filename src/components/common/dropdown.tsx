@@ -81,7 +81,7 @@ export default function Dropdown({
   }, [closeDropdown, toggleDropdown]);
 
   return (
-    <div>
+    <div className="h-[24px] w-[24px]">
       <div ref={triggerRef}>{trigger}</div>
       {isVisible && (
         <div
