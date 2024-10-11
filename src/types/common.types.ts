@@ -11,7 +11,7 @@ export type CommonTypes = {
   name: string;
   nickname: string;
   email: string;
-  image: string;
+  image: string | null;
   password: string;
   accessToken: string;
   refreshToken: string;

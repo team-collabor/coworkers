@@ -8,7 +8,7 @@ import Button, {
   TextSize,
 } from '@/components/common/Button/Button';
 import Input from '@/components/common/Input';
-import useSignUp from '@/hooks/auth/useSignUp';
+import { useSignUp } from '@/queries/auth.queries';
 import { SignUpRequest } from '@/types/dto/requests/auth.request.types';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
