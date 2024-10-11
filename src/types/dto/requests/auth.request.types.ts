@@ -4,3 +4,8 @@ export type SignUpRequest = {
   password: string;
   passwordConfirmation: string;
 };
+
+export type SignInRequest = {
+  email: string;
+  password: string;
+};
