@@ -8,13 +8,10 @@ import Button, {
   TextSize,
 } from '@/components/common/Button/Button';
 import Input from '@/components/common/Input';
+import useTeamMutation from '@/queries/group';
+import { Team } from '@/types/team';
 import Image from 'next/image';
 import React, { useRef, useState } from 'react';
-
-type Team = {
-  name: string;
-  imageUrl: string;
-};
 
 function AddTeam() {
   const [team, setTeam] = useState<Team>({
@@ -29,6 +26,8 @@ function AddTeam() {
   });
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const teamMutation = useTeamMutation();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -70,17 +69,17 @@ function AddTeam() {
       setIsError((prev) => ({ ...prev, imageUrl: true }));
     }
 
-    // // 에러가 있는지 다시 확인
-    // if (
-    //   team.name.length < 1 ||
-    //   team.imageUrl === '/icons/BaseTeam_Icon.svg' ||
-    //   isError.imageDuplicate
-    // ) {
-    //   console.log('팀 생성에 실패했습니다. 입력 정보를 확인해주세요.');
-    // } else {
-    //   console.log('팀이 성공적으로 생성되었습니다:', team);
-    //   // 여기에 팀 생성 로직을 추가하세요
-    // }
+    // 에러가 있는지 다시 확인
+    if (
+      team.name.length < 1 ||
+      team.imageUrl === '/icons/BaseTeam_Icon.svg' ||
+      isError.imageDuplicate
+    ) {
+      // console.log('팀 생성에 실패했습니다. 입력 정보를 확인해주세요.');
+    } else {
+      // console.log('팀이 성공적으로 생성되었습니다:', team);
+      teamMutation.mutate({ name: team.name, imageUrl: team.imageUrl });
+    }
   };
 
   return (
