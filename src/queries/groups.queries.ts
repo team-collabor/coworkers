@@ -1,4 +1,4 @@
-import { postImage, postTeam } from '@/apis/group';
+import { postImage, postTeam } from '@/apis/groups.api';
 import { Team } from '@/types/team';
 import { useMutation } from '@tanstack/react-query';
 

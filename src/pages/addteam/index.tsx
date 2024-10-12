@@ -8,7 +8,10 @@ import Button, {
   TextSize,
 } from '@/components/common/Button/Button';
 import Input from '@/components/common/Input';
-import { useTeamMutation, useUploadImageMutation } from '@/queries/group';
+import {
+  useTeamMutation,
+  useUploadImageMutation,
+} from '@/queries/groups.queries';
 import { Team } from '@/types/team';
 import Image from 'next/image';
 import React, { useRef, useState } from 'react';
@@ -72,7 +75,6 @@ function AddTeam() {
     if (team.image === '/icons/BaseTeam_Icon.svg') {
       setIsError((prev) => ({ ...prev, image: true }));
     }
-
     // 에러가 있는지 다시 확인
     if (
       team.name.length < 1 ||

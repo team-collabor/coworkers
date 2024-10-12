@@ -15,7 +15,7 @@ export async function postImage(file: File): Promise<string> {
       formData,
       {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
       }
     );
