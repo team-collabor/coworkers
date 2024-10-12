@@ -1,10 +1,18 @@
-import postTeam from '@/apis/group';
+import { postImage, postTeam } from '@/apis/group';
 import { Team } from '@/types/team';
 import { useMutation } from '@tanstack/react-query';
 
-export default function useTeamMutation() {
+export function useUploadImageMutation() {
+  const uploadImageMutation = useMutation({
+    mutationFn: (image: File) => postImage(image),
+  });
+
+  return uploadImageMutation;
+}
+
+export function useTeamMutation() {
   const signUpTeamMutation = useMutation({
-    mutationFn: ({ name, imageUrl }: Team) => postTeam({ name, imageUrl }),
+    mutationFn: ({ name, image }: Team) => postTeam({ name, image }),
     // onSuccess: (data) => {
     //   // 생성된 팀 ID를 콘솔에 출력
     //   console.log('생성된 팀 ID:', data);
