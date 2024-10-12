@@ -1,12 +1,15 @@
 import { ReactNode } from 'react';
 import { Aside } from './aside';
 import { Header } from './header';
+import LayoutProvider from './layout.provider';
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <>
-      <Header />
-      <Aside />
+      <LayoutProvider>
+        <Header />
+        <Aside />
+      </LayoutProvider>
       <div className="h-16" />
       <main
         className="mx-auto flex min-h-screen max-w-[75rem] flex-col items-center
