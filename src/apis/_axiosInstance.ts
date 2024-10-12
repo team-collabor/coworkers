@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
-import { AuthState } from '@/store/useAuthStore';
 import axios, { InternalAxiosRequestConfig } from 'axios';
 
 const TEAM_ID = '8-4';
@@ -17,7 +16,8 @@ axiosInstance.interceptors.request.use(
     if (typeof window !== 'undefined') {
       const authStorage = localStorage.getItem('authStore') || '{}';
       try {
-        const { accessToken } = JSON.parse(authStorage) as AuthState;
+        const { state } = JSON.parse(authStorage);
+        const { accessToken } = state;
         if (accessToken) {
           const modifiedConfig = { ...config };
           // eslint-disable-next-line @typescript-eslint/dot-notation
