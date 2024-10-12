@@ -12,12 +12,13 @@ import {
   useTeamMutation,
   useUploadImageMutation,
 } from '@/queries/groups.queries';
-import { Team } from '@/types/team';
+import { TeamCreate } from '@/types/team';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import React, { useRef, useState } from 'react';
 
 function AddTeam() {
-  const [team, setTeam] = useState<Team>({
+  const [team, setTeam] = useState<TeamCreate>({
     name: '',
     image: '/icons/BaseTeam_Icon.svg',
   });
@@ -27,8 +28,10 @@ function AddTeam() {
   const [isError, setIsError] = useState({
     name: false,
     image: false,
-    imageDuplicate: false,
+    nameDuplicate: false,
   });
+
+  const router = useRouter();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -66,29 +69,21 @@ function AddTeam() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // 팀 이름 유효성 검사
     if (team.name.length < 1) {
       setIsError((prev) => ({ ...prev, name: true }));
-    }
-
-    // 이미지 URL 유효성 검사 (기본 이미지가 아닌 경우)
-    if (team.image === '/icons/BaseTeam_Icon.svg') {
+    } else if (team.image === '/icons/BaseTeam_Icon.svg' || !selectImage) {
       setIsError((prev) => ({ ...prev, image: true }));
-    }
-    // 에러가 있는지 다시 확인
-    if (
-      team.name.length < 1 ||
-      team.image === '/icons/BaseTeam_Icon.svg' ||
-      isError.imageDuplicate ||
-      !selectImage
-    ) {
-      // console.log('팀 생성에 실패했습니다. 입력 정보를 확인해주세요.');
+    } else if (isError.nameDuplicate) {
+      // console.log('이름 중복');
     } else {
-      // console.log('팀이 성공적으로 생성되었습니다:', team);
-
       const imageUrl = await uploadImageMutation.mutateAsync(selectImage);
 
-      teamMutation.mutate({ name: team.name, image: imageUrl });
+      const newTeam = await teamMutation.mutateAsync({
+        name: team.name,
+        image: imageUrl,
+      });
+
+      await router.replace(`/${newTeam.id}`);
     }
   };
 
