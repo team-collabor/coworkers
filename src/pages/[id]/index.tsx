@@ -75,8 +75,7 @@ export default function TeamPage() {
       >
         <div>
           <div className="flex items-center ">
-            <svg className="h-[169px] w-[169px]" viewBox="0 0 100 100">
-              {/* 전체 원 (회색) */}
+            {/* <svg className="h-[169px] w-[169px]" viewBox="0 0 100 100">
               <circle
                 cx="50"
                 cy="50"
@@ -85,7 +84,6 @@ export default function TeamPage() {
                 stroke="lightgray"
                 strokeWidth="18"
               />
-              {/* 15% 채워진 부분 (파란색) */}
               <path
                 d="M 50 50 m 0,-40 a 40,40 0 1,1 -38.57,10.73"
                 fill="none"
@@ -93,7 +91,7 @@ export default function TeamPage() {
                 strokeWidth="18"
                 strokeLinecap="round"
               />
-            </svg>
+            </svg> */}
             <CircularProgressChart />
             <div>
               <p className="text-md-medium">

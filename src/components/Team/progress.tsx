@@ -1,5 +1,6 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-// eslint-disable-next-line import/no-extraneous-dependencies
+
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 
 interface CircularProgressProps {
@@ -10,8 +11,8 @@ interface CircularProgressProps {
   textColor?: string;
 }
 function CircularProgressChart({
-  size = '100px',
-  value = 10,
+  size = '150px',
+  value = 25,
   pathColor = '#5F81FF',
   trailColor = '#DFE8FF',
   textColor = '#2B2D36',
@@ -20,13 +21,14 @@ function CircularProgressChart({
     <div style={{ width: size, height: size }}>
       <CircularProgressbar
         value={value}
-        text={`${value}%`}
-        strokeWidth={10}
+        strokeWidth={20}
+        strokeLinecap="round"
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         styles={buildStyles({
           pathColor,
           trailColor,
           textColor,
+          strokeLinecap: 'round',
         })}
       />
     </div>
