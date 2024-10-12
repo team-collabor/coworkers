@@ -14,7 +14,7 @@ export default function HeaderList({
     <Aside.Toggle>
       <UnoptimizedImage
         className={`${clsx(
-          'w-6 transition-all duration-200 ease-in-out md:w-0',
+          'w-6 transition-all duration-500 ease-in-out md:w-0',
           {
             'rotate-90': openState,
           }

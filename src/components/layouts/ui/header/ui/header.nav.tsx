@@ -7,7 +7,7 @@ export default function HeaderNav() {
   return (
     <nav className="use-scrollbar-none mx-10 hidden h-full md:block">
       <ul className="flex h-full flex-row items-center gap-x-10 whitespace-nowrap">
-        <li className={defaultItemClassName}>
+        <li className={`${defaultItemClassName} hover:scale-105`}>
           <Link href="/boards">자유게시판</Link>
         </li>
       </ul>

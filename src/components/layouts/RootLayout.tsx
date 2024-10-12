@@ -1,7 +1,5 @@
 import { ReactNode } from 'react';
-import { Aside } from './aside';
-import { Header } from './header';
-import LayoutProvider from './layout.provider';
+import { Aside, Header, LayoutProvider } from './ui';
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (

@@ -12,7 +12,7 @@ export default function AsideMain() {
     <aside
       className={clsx(
         'fixed inset-y-0 w-1/3 min-w-max max-w-60 bg-tertiary',
-        'z-40 overflow-auto transition-all duration-200  ease-in-out',
+        'z-40 overflow-auto transition-all duration-500 ease-in-out',
         {
           '-translate-x-full': !openState,
           'md:-translate-x-full': openState,

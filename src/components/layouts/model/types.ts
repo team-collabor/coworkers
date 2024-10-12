@@ -1,4 +1,4 @@
-export type TGroups = Array<{
+export type TGroup = {
   teamId: string;
   updatedAt: string;
   createdAt: string;
@@ -7,7 +7,9 @@ export type TGroups = Array<{
   id: number;
   members?: TMembers;
   taskLists?: TTaskLists;
-}>;
+};
+
+export type TGroups = Array<TGroup>;
 
 export type TMember = {
   role: 'ADMIN';
