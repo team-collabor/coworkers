@@ -1,5 +1,6 @@
 import DropDown from '@/components/common/dropdown';
 import Member from '@/components/common/Team/member';
+import CircularProgressChart from '@/components/Team/progress';
 import Image from 'next/image';
 
 export default function TeamPage() {
@@ -93,6 +94,7 @@ export default function TeamPage() {
                 strokeLinecap="round"
               />
             </svg>
+            <CircularProgressChart />
             <div>
               <p className="text-md-medium">
                 오늘의 <br />
