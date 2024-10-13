@@ -1,16 +1,21 @@
 import DropDown from '@/components/common/dropdown';
-import Member from '@/components/common/Team/member';
-import CircularProgressChart from '@/components/Team/progress';
+import TaskList from '@/components/TaskList/TaskList';
+import Member from '@/components/Team/Member';
+import CircularProgressChart from '@/components/Team/Progress';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 export default function TeamPage() {
+  const router = useRouter();
+  const { id } = router.query;
+
   return (
     <div className="flex w-full flex-col gap-5 px-20 pt-10">
       <div
         className="flex h-[4rem] items-center
      justify-between  rounded-xl border border-primary bg-secondary px-5"
       >
-        <p className="text-xl-bold">TeamPage</p>
+        <p className="text-xl-bold">TeamPage {id}</p>
 
         <div className="flex items-center gap-7">
           <Image
@@ -50,58 +55,16 @@ export default function TeamPage() {
           + 새로운 목록 추가하기
         </button>
       </div>
-      <div
-        className="relative flex h-[2.5rem]
-     items-center justify-between  rounded-xl bg-secondary px-5"
-      >
-        <div
-          className="absolute bottom-0 left-0 
-        top-0 z-0 w-[0.8rem] 
-        rounded-l-xl bg-point-purple"
-        />
-        <span className="text-md-medium">법인 설립</span>
-        <Image
-          src="../icons/Kebab_large.svg"
-          alt="kebab"
-          width={16}
-          height={16}
-        />
-      </div>
+
+      <TaskList />
 
       <p className="text-lg-medium">리포트</p>
       <div
         className="flex h-[13.5625rem] items-center
      justify-between rounded-xl bg-secondary px-5"
       >
-        <div>
-          <div className="flex items-center ">
-            {/* <svg className="h-[169px] w-[169px]" viewBox="0 0 100 100">
-              <circle
-                cx="50"
-                cy="50"
-                r="40"
-                fill="none"
-                stroke="lightgray"
-                strokeWidth="18"
-              />
-              <path
-                d="M 50 50 m 0,-40 a 40,40 0 1,1 -38.57,10.73"
-                fill="none"
-                stroke="blue"
-                strokeWidth="18"
-                strokeLinecap="round"
-              />
-            </svg> */}
-            <CircularProgressChart />
-            <div>
-              <p className="text-md-medium">
-                오늘의 <br />
-                진행 상황
-              </p>
-              <p className=" text-4xl">0%</p>
-            </div>
-          </div>
-        </div>
+        <CircularProgressChart />
+
         <div className="flex flex-col gap-5">
           <div
             className="flex h-[4.78125rem] w-[25rem] 
@@ -121,7 +84,7 @@ export default function TeamPage() {
               <p className="text-xs-medium text-secondary ">한 일</p>
               <p className="text-2xl-bold text-brand-tertiary">0개</p>
             </div>
-            <Image src="../images/Todo.svg" alt="todo" width={40} height={40} />
+            <Image src="../images/Done.svg" alt="done" width={40} height={40} />
           </div>
         </div>
       </div>
