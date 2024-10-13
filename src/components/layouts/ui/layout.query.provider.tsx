@@ -4,7 +4,7 @@ import { LayoutContext } from '../model/layout.context';
 import { groupsQueries } from '../model/layout.queries';
 import { TGroups } from '../model/types';
 
-export default function LayoutProvider({ children }: PropsWithChildren) {
+export default function LayoutQueryProvider({ children }: PropsWithChildren) {
   const { data, isLoading, isSuccess, isError } = useQuery<TGroups>(
     groupsQueries().list(1)
   );

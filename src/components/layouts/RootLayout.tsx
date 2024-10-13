@@ -1,13 +1,13 @@
 import { ReactNode } from 'react';
-import { Aside, Header, LayoutProvider } from './ui';
+import { Aside, Header, LayoutQueryProvider } from './ui';
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <>
-      <LayoutProvider>
+      <LayoutQueryProvider>
         <Header />
         <Aside />
-      </LayoutProvider>
+      </LayoutQueryProvider>
       <div className="h-16" />
       <main
         className="mx-auto flex min-h-screen max-w-[75rem] flex-col items-center

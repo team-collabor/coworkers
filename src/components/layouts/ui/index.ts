@@ -1,5 +1,5 @@
-import LayoutProvider from './layout.provider';
+import LayoutQueryProvider from './layout.query.provider';
 
 export { Aside } from './aside';
 export { Header } from './header';
-export { LayoutProvider };
+export { LayoutQueryProvider };

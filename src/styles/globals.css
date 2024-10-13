@@ -31,3 +31,11 @@ select {
   background-position: right 10px center; /* 화살표 위치 조정 */
   background-size: 36px; /* 화살표 크기 조정 */
 }
+
+@layer components {
+  .skeleton {
+    @apply relative overflow-hidden bg-slate-500 before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] 
+      before:bg-gradient-to-r before:from-slate-500 
+      before:via-white/30 before:to-slate-500 before:content-[''];
+  }
+}
