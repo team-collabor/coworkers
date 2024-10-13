@@ -2,6 +2,7 @@ import DropDown from '@/components/common/dropdown';
 import TaskList from '@/components/TaskList/TaskList';
 import Member from '@/components/Team/Member';
 import CircularProgressChart from '@/components/Team/Progress';
+import { useTeamQuery } from '@/queries/groups.quries';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
@@ -9,13 +10,18 @@ export default function TeamPage() {
   const router = useRouter();
   const { id } = router.query;
 
+  const { team, isError } = useTeamQuery(Number(id));
+
+  if (isError || !team) {
+    return <p>팀 정보를 불러오는 데 실패했습니다.</p>;
+  }
   return (
     <div className="flex w-full flex-col gap-5 px-20 pt-10">
       <div
         className="flex h-[4rem] items-center
      justify-between  rounded-xl border border-primary bg-secondary px-5"
       >
-        <p className="text-xl-bold">TeamPage {id}</p>
+        <p className="text-xl-bold">TeamPage {team?.name}</p>
 
         <div className="flex items-center gap-7">
           <Image

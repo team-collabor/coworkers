@@ -5,6 +5,11 @@ interface UploadImageResponse {
   url: string;
 }
 
+export async function getTeams(id: number): Promise<Team> {
+  const response = await axiosInstance.get<Team>(`groups/${id}`);
+  return response.data;
+}
+
 export async function postImage(file: File): Promise<string> {
   const formData = new FormData();
   formData.append('image', file);
