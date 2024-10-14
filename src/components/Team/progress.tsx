@@ -1,6 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
+import ChangingProgressProvider from '@/providers/ChangingProgressProvider';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 
 interface CircularProgressProps {
@@ -20,17 +21,21 @@ function CircularProgressChart({
   return (
     <div className="flex items-center gap-12">
       <div style={{ width: size, height: size }}>
-        <CircularProgressbar
-          value={value}
-          strokeWidth={20}
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-          styles={buildStyles({
-            pathColor,
-            trailColor,
-            textColor,
-            strokeLinecap: 'round',
-          })}
-        />
+        <ChangingProgressProvider values={[0, value]}>
+          {(currentValue) => (
+            <CircularProgressbar
+              value={currentValue}
+              strokeWidth={18}
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+              styles={buildStyles({
+                pathColor,
+                trailColor,
+                textColor,
+                strokeLinecap: 'round',
+              })}
+            />
+          )}
+        </ChangingProgressProvider>
       </div>
       <div className="flex flex-col gap-2">
         <p className="text-md-medium">

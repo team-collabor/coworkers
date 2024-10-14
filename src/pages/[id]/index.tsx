@@ -1,8 +1,8 @@
 import DropDown from '@/components/common/dropdown';
-import TaskList from '@/components/TaskList/TaskList';
-import Member from '@/components/Team/Member';
+import TaskLists from '@/components/TaskList/TaskLists';
+import Members from '@/components/Team/Members';
 import CircularProgressChart from '@/components/Team/Progress';
-import { useTeamQuery } from '@/queries/groups.quries';
+import { useTeamQuery } from '@/queries/groups.queries';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
@@ -15,13 +15,14 @@ export default function TeamPage() {
   if (isError || !team) {
     return <p>팀 정보를 불러오는 데 실패했습니다.</p>;
   }
+
   return (
     <div className="flex w-full flex-col gap-5 px-20 pt-10">
       <div
         className="flex h-[4rem] items-center
      justify-between  rounded-xl border border-primary bg-secondary px-5"
       >
-        <p className="text-xl-bold">TeamPage {team?.name}</p>
+        <p className="text-xl-bold">{team?.name}</p>
 
         <div className="flex items-center gap-7">
           <Image
@@ -56,13 +57,18 @@ export default function TeamPage() {
         </div>
       </div>
       <div className="flex justify-between">
-        <p className="text-lg-medium">할 일 목록</p>
+        <div className="flex gap-2">
+          <p className="text-lg-medium">할 일 목록</p>
+          <p className="text-lg-medium text-default">
+            ({team.taskLists.length}개)
+          </p>
+        </div>
         <button type="button" className="text-brand-primary">
           + 새로운 목록 추가하기
         </button>
       </div>
 
-      <TaskList />
+      <TaskLists taskLists={team.taskLists} />
 
       <p className="text-lg-medium">리포트</p>
       <div
@@ -71,9 +77,9 @@ export default function TeamPage() {
       >
         <CircularProgressChart />
 
-        <div className="flex flex-col gap-5">
+        <div className="flex w-[25rem] flex-col gap-5 ">
           <div
-            className="flex h-[4.78125rem] w-[25rem] 
+            className="flex h-[4.78125rem] 
            items-center justify-between rounded-xl bg-tertiary p-5"
           >
             <div className="flex flex-col gap-1">
@@ -83,7 +89,7 @@ export default function TeamPage() {
             <Image src="../images/Todo.svg" alt="todo" width={40} height={40} />
           </div>
           <div
-            className="flex h-[4.78125rem] w-[25rem] items-center 
+            className="flex h-[4.78125rem]  items-center 
           justify-between rounded-xl bg-tertiary p-5"
           >
             <div className="flex flex-col gap-1">
@@ -96,12 +102,17 @@ export default function TeamPage() {
       </div>
 
       <div className="flex justify-between">
-        <p className="text-lg-medium">멤버</p>
+        <div className="flex gap-2">
+          <p className="text-lg-medium">멤버</p>
+          <p className="text-lg-medium text-default">
+            ({team.members.length}개)
+          </p>
+        </div>
         <button type="button" className="text-brand-primary">
           + 새로운 멤버 초대하기
         </button>
       </div>
-      <Member />
+      <Members members={team.members} />
     </div>
   );
 }
