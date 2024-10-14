@@ -31,6 +31,16 @@ function AddTeam() {
     nameDuplicate: false,
   });
 
+  // image file extension checker
+  const imageExtensionValidCheck = (fileName: string) => {
+    const imageExtensions = ['jpg', 'jpeg', 'png', 'bmp', 'webp'];
+    const extension = fileName.split('.').pop()?.toLowerCase();
+
+    if (!extension) return false;
+
+    return imageExtensions.includes(extension);
+  };
+
   const router = useRouter();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -41,6 +51,12 @@ function AddTeam() {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      // 이미지 파일 확장자 검사
+      if (!imageExtensionValidCheck(file.name)) {
+        alert('이미지 확장자는 jpg, jpeg, png, bmp, webp만 가능합니다');
+        return;
+      }
+
       const imageUrl = URL.createObjectURL(file);
       setTeam({ ...team, image: imageUrl });
       setSelectImage(file);
