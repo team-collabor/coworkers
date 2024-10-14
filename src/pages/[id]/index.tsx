@@ -17,7 +17,7 @@ export default function TeamPage() {
   }
 
   return (
-    <div className="flex w-full flex-col gap-5 px-20 pt-10">
+    <div className="flex w-full flex-col gap-5 px-20 pt-10 tab:px-5">
       <div
         className="flex h-[4rem] items-center
      justify-between  rounded-xl border border-primary bg-secondary px-5"
@@ -34,7 +34,7 @@ export default function TeamPage() {
           <div className="h-[24px] w-[24px]">
             <DropDown
               dropdownStyle="right-0 z-20"
-              childrenStyle=" "
+              childrenStyle=""
               trigger={
                 <button type="button">
                   <Image
@@ -63,6 +63,7 @@ export default function TeamPage() {
             ({team.taskLists.length}개)
           </p>
         </div>
+
         <button type="button" className="text-brand-primary">
           + 새로운 목록 추가하기
         </button>
@@ -77,7 +78,7 @@ export default function TeamPage() {
       >
         <CircularProgressChart />
 
-        <div className="flex w-[25rem] flex-col gap-5 ">
+        <div className="flex w-[25rem] flex-col gap-5 tab:w-[17.5rem]">
           <div
             className="flex h-[4.78125rem] 
            items-center justify-between rounded-xl bg-tertiary p-5"
