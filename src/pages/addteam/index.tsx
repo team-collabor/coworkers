@@ -31,7 +31,6 @@ function AddTeam() {
     nameDuplicate: false,
   });
 
-  // image file extension checker
   const imageExtensionValidCheck = (fileName: string) => {
     const imageExtensions = ['jpg', 'jpeg', 'png', 'bmp', 'webp'];
     const extension = fileName.split('.').pop()?.toLowerCase();
@@ -51,9 +50,13 @@ function AddTeam() {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      // 이미지 파일 확장자 검사
       if (!imageExtensionValidCheck(file.name)) {
         alert('이미지 확장자는 jpg, jpeg, png, bmp, webp만 가능합니다');
+        return;
+      }
+
+      if (file.size > 10 * 1024 * 1024) {
+        alert('이미지 파일 크기는 10MB를 초과할 수 없습니다');
         return;
       }
 
