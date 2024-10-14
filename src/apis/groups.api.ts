@@ -1,4 +1,4 @@
-import { Team } from '@/types/team';
+import { Team, TeamCreate } from '@/types/team';
 import { axiosInstance } from './_axiosInstance';
 
 interface UploadImageResponse {
@@ -27,7 +27,7 @@ export async function postImage(file: File): Promise<string> {
   }
 }
 
-export async function postTeam({ name, image }: Team) {
+export async function postTeam({ name, image }: TeamCreate) {
   const response = await axiosInstance.post<Team>(
     'groups',
     { name, image },
