@@ -154,6 +154,13 @@ const config: Config = {
         pc: { min: '75rem' },
       },
     },
+    keyframes: {
+      shimmer: {
+        '100%': {
+          transform: 'translateX(100%)',
+        },
+      },
+    },
   },
   plugins: [],
 };
