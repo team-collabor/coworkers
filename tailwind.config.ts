@@ -107,13 +107,20 @@ const config: Config = {
           tertiary: '#a3e635',
         },
         point: {
-          purple: 'a855f7',
-          blue: '#3b82f6',
-          cyan: '#06b6d4',
-          pink: '#ec4899',
-          rose: '#f43f5e',
-          orange: '#f97316',
-          yellow: '#eab308',
+          purple: '#A855F7',
+          blue: '#3B82F6',
+          cyan: '#06B6D4',
+          pink: '#EC4899',
+          rose: '#F43F5E',
+          orange: '#F97316',
+          yellow: '#EAB308',
+        },
+        background: {
+          primary: '#0F172A',
+          secondary: '#1E293B',
+          tertiary: '#334155',
+          inverse: '#FFFFFF',
+          'brand-gradient': 'linear-gradient(to right, #10b981, #a3e635)',
         },
         interaction: {
           inactive: '#94a3b8',
@@ -152,6 +159,15 @@ const config: Config = {
         tab: { max: '74.9375rem' },
         mob: { max: '46.4375rem' },
         pc: { min: '75rem' },
+        xl: '78rem',
+        sm: '26.5625rem',
+        xs: '20rem',
+      },
+      height: {
+        header: '3.75rem',
+      },
+      inset: {
+        header: '3.75rem',
       },
     },
     keyframes: {
