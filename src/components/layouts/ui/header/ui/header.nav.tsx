@@ -6,13 +6,10 @@ import {
 } from '@/components/layouts/model/layout.context';
 import { useContextSelector } from '@/hooks/context/use-context-selector';
 import Link from 'next/link';
-import { Context, useRef } from 'react';
-import { useHeaderNavScroll } from '../lib/use-header-nav-scroll';
+import { Context } from 'react';
 import HeaderNavSkeleton from './header.nav.skeleton';
 
 export default function HeaderNav() {
-  const ref = useRef<HTMLDivElement>(null);
-  useHeaderNavScroll(ref);
   const { groups } = useContextSelector(
     LayoutContext as Context<TLayoutContext>
   );
@@ -23,11 +20,7 @@ export default function HeaderNav() {
   }
 
   return (
-    <nav
-      className="scrollbar-none mx-10 hidden h-full md:block"
-      ref={ref}
-      data-d="false"
-    >
+    <nav className="scrollbar-none mx-10 hidden h-full md:block">
       <ul className="flex h-full flex-row items-center gap-x-10 whitespace-nowrap">
         {data?.map(({ id, name }) => {
           return (

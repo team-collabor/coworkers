@@ -1,10 +1,10 @@
 export type TGroup = {
-  teamId: string;
-  updatedAt: string;
-  createdAt: string;
-  image: string;
-  name: string;
   id: number;
+  name: string;
+  image: string;
+  createdAt: string;
+  updatedAt: string;
+  teamId: string;
   members?: TMembers;
   taskLists?: TTaskLists;
 };
@@ -12,7 +12,7 @@ export type TGroup = {
 export type TGroups = Array<TGroup>;
 
 export type TMember = {
-  role: 'ADMIN';
+  role: 'ADMIN' | 'MEMBER';
   userImage: string;
   userEmail: string;
   userName: string;
@@ -23,12 +23,12 @@ export type TMember = {
 export type TMembers = Array<TMember>;
 
 export type TTaskList = {
-  displayIndex: number;
-  groupId: number;
-  updatedAt: string;
-  createdAt: string;
-  name: string;
   id: number;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  groupId: number;
+  displayIndex: number;
   tasks: string[];
 };
 
