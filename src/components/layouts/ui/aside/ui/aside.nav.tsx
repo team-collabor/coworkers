@@ -10,24 +10,21 @@ import AsideNavSkeleton from './aside.nav.skeleton';
 
 /* eslint-disable max-len */
 export default function AsideNav() {
-  const { data, isLoading } = useContextSelector(
+  const { groups } = useContextSelector(
     LayoutContext as Context<TLayoutContext>
   );
-  const defaultItemClassName = 'hover:opacity-80';
+  const { data, isLoading } = groups;
   return isLoading ? (
     <AsideNavSkeleton />
   ) : (
-    <ul className="mt-16 flex flex-col gap-y-6 p-4 text-md-medium text-primary">
+    <ul className="relative flex translate-y-16 flex-col gap-y-6 p-4 text-md-medium text-primary">
       {data?.map(({ id, name }) => {
         return (
           <li key={id} className="flex justify-between">
-            <button
-              type="button"
-              className={`${defaultItemClassName} hover:scale-105`}
-            >
+            <button type="button" className="hover:scale-105 hover:opacity-80">
               <span>{name}</span>
             </button>
-            <button type="button" className={defaultItemClassName}>
+            <button type="button" className="hover:opacity-80">
               <UnoptimizedImage
                 src="/icons/Kebab_large.svg"
                 alt=""
@@ -38,7 +35,7 @@ export default function AsideNav() {
           </li>
         );
       })}
-      <li className={`${defaultItemClassName} hover:scale-105`}>
+      <li className="hover:scale-105 hover:opacity-80">
         <Link href="/boards">자유게시판</Link>
       </li>
     </ul>

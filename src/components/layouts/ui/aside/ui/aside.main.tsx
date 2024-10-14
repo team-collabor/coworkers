@@ -20,7 +20,7 @@ export default function AsideMain() {
       )}
     >
       <div className="mt-16 flex flex-col">
-        <AsideToggle className="fixed self-end p-4">
+        <AsideToggle className="fixed z-10 self-end bg-tertiary p-4">
           <UnoptimizedImage src="/icons/X.svg" alt="" width={24} height={24} />
         </AsideToggle>
         <AsideNav />

@@ -15,7 +15,7 @@ export const getGroups = async (
   // const { data } = response;
   return new Promise((resolve) => {
     const data = Array.from(
-      { length: 5 },
+      { length: 30 },
       (_, index): TGroup => ({
         id: index + 1,
         name: faker.person.jobArea(),
