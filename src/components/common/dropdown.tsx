@@ -1,5 +1,6 @@
 import React, {
   HTMLAttributes,
+  ReactElement,
   useCallback,
   useEffect,
   useRef,
@@ -9,36 +10,45 @@ import React, {
 interface DropdownProps {
   children: React.ReactNode;
   trigger: React.ReactNode;
-  dropdownStyle?: HTMLAttributes<HTMLLabelElement>['className'];
-  childrenStyle?: HTMLAttributes<HTMLLabelElement>['className'];
+  dropdownStyle?: HTMLAttributes<HTMLDivElement>['className'];
 }
+
+interface ChildProps {
+  onClick?: () => void;
+}
+
 /**
  * Dropdown 공통 컴포넌트
  *
  * @param trigger dropdown visible 값을 토글하는 버튼 디자인 컴포넌트
  * @param dropdownStyle dropdown box의 css 조정시 사용
- * @param childrenStyle dropdown box 내부 컴포넌트의 css 조정시 사용
  *
  * @example
- * <DropDown
- *   dropdownStyle="custom-class"
- *   childrenStyle="custom-class"
- *   trigger={<button type="button">메뉴</button>}
- * >
- *   <button className="h-[46px]" type="button">
- *     마이 히스토리
- *   </button>
- *   <button className="h-[46px]" type="button">
- *     계정 설정
- *   </button>
- * </DropDown>
+ *   <Dropdown
+ *    trigger={
+ *      <button className="custom-trigger" type="button">
+ *        {selectedItem}
+ *      </button>
+ *    }
+ *    dropdownStyle="custom-style"
+ *  >
+ *    <button
+ *      type="button"
+ *      className="h-[46px]"
+ *      onClick={() => handleClick('최신순')}
+ *   >
+ *     최신순
+ *    </button>
+ *    <button type="button" onClick={() => handleClick('추천순')}>
+ *      추천순
+ *    </button>
+ *  </Dropdown>
  */
 
 export default function Dropdown({
   children,
   trigger,
   dropdownStyle,
-  childrenStyle,
 }: DropdownProps) {
   const [isVisible, setIsVisible] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -60,12 +70,6 @@ export default function Dropdown({
         triggerRef.current.contains(event.target as Node)
       ) {
         toggleDropdown();
-        return;
-      }
-
-      // 드롭다운 내부 또는 외부 클릭 시 닫기
-      if (dropdownRef.current) {
-        closeDropdown();
       }
     };
 
@@ -79,31 +83,34 @@ export default function Dropdown({
   return (
     <div>
       <div ref={triggerRef}>{trigger}</div>
-      <div ref={dropdownRef} className="relative">
-        {isVisible && (
-          <div
-            className={`
-              absolute flex max-h-[12.5rem] w-[8.4375rem] 
-              flex-col overflow-y-auto rounded-xl border border-solid 
-              border-primary border-opacity-10 
-              bg-secondary p-2 
-              ${dropdownStyle}
-            `}
-          >
-            {React.Children.map(children, (child) => (
-              <div
-                className={`
-                 flex items-center justify-center
+      {isVisible && (
+        <div
+          ref={dropdownRef}
+          className={`
+          absolute flex max-h-[12.5rem] w-[8.4375rem]
+          flex-col overflow-y-auto rounded-xl border border-solid 
+          border-primary border-opacity-10 bg-secondary p-2 
+          ${dropdownStyle}
+        `}
+        >
+          {React.Children.map(children, (child) => {
+            if (React.isValidElement(child)) {
+              return React.cloneElement(child as ReactElement, {
+                className: `
+                  flex items-center justify-center
                   rounded-xl hover:bg-tertiary
-                    ${childrenStyle}
-                `}
-              >
-                {child}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+                   ${child.props.className}
+                `,
+                onClick: () => {
+                  (child.props as ChildProps).onClick?.();
+                  closeDropdown();
+                },
+              });
+            }
+            return child;
+          })}
+        </div>
+      )}
     </div>
   );
 }
