@@ -1,5 +1,4 @@
-import { getArticles } from '@/apis/article.api';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useAllArticlesQuery } from '@/queries/article.queries';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
@@ -9,24 +8,16 @@ import ArticleCard from './ArticleCard';
 type AllArticlesSectionProps = {
   searchValue: string;
 };
+type OrderByType = 'recent' | 'like';
 
 function AllArticlesSection({ searchValue }: AllArticlesSectionProps) {
-  const [orderBy, setOrderBy] = useState<'recent' | 'like'>('recent');
+  const [orderBy, setOrderBy] = useState<OrderByType>('recent');
   const PAGE_SIZE = 4;
-
-  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
-    queryKey: ['allArticles', orderBy, searchValue],
-    queryFn: ({ pageParam = 1 }) =>
-      getArticles({
-        page: pageParam,
-        pageSize: PAGE_SIZE,
-        orderBy,
-        keyword: searchValue,
-      }),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage, allPages) =>
-      allPages.length < lastPage.totalCount ? allPages.length + 1 : undefined,
-  });
+  const { data, fetchNextPage, hasNextPage } = useAllArticlesQuery(
+    orderBy,
+    searchValue,
+    PAGE_SIZE
+  );
 
   const { ref, inView } = useInView({ threshold: 0.5 });
 
