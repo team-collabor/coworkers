@@ -154,6 +154,7 @@ const config: Config = {
       },
       borderColor: {
         primary: '#f8fafc1a',
+        tertiary: '#334155',
       },
       screens: {
         tab: { max: '74.9375rem' },
