@@ -1,9 +1,9 @@
-export interface Writer {
+export type Writer = {
   nickname: string;
   id: number;
-}
+};
 
-export interface Article {
+export type Article = {
   updatedAt: string;
   createdAt: string;
   likeCount: number;
@@ -11,9 +11,9 @@ export interface Article {
   image: string;
   title: string;
   id: number;
-}
+};
 
-export interface ArticleListResponse {
+export type ArticleListResponse = {
   totalCount: number;
   list: Article[];
-}
+};

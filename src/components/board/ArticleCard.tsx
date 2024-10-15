@@ -1,20 +1,10 @@
+import { Article } from '@/types/dto/responses/article.response.types';
 import { formatDate } from '@/utils/dateTimeUtils/FormatData';
 import Image from 'next/image';
 
-interface AllArticleCardProps {
-  article: {
-    id: number;
-    title: string;
-    image: string;
-    writer: {
-      id: number;
-      nickname: string;
-    };
-    likeCount: number;
-    createdAt: string;
-    updatedAt: string;
-  };
-}
+type AllArticleCardProps = {
+  article: Article;
+};
 
 function ArticleCard({ article }: AllArticleCardProps) {
   return (

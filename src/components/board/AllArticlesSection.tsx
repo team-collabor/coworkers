@@ -6,9 +6,9 @@ import { useInView } from 'react-intersection-observer';
 import Dropdown from '../common/dropdown';
 import ArticleCard from './ArticleCard';
 
-interface AllArticlesSectionProps {
+type AllArticlesSectionProps = {
   searchValue: string;
-}
+};
 
 function AllArticlesSection({ searchValue }: AllArticlesSectionProps) {
   const [orderBy, setOrderBy] = useState<'recent' | 'like'>('recent');

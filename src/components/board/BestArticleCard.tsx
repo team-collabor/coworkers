@@ -1,21 +1,11 @@
+import { Article } from '@/types/dto/responses/article.response.types';
 import { formatDate } from '@/utils/dateTimeUtils/FormatData';
 import Image from 'next/image';
 
-interface BestArticleCardProps {
-  article: {
-    id: number;
-    title: string;
-    image: string;
-    writer: {
-      id: number;
-      nickname: string;
-    };
-    likeCount: number;
-    createdAt: string;
-    updatedAt: string;
-  };
+type BestArticleCardProps = {
+  article: Article;
   className?: string;
-}
+};
 
 function BestArticleCard({ article, className }: BestArticleCardProps) {
   return (
