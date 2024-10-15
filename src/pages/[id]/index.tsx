@@ -74,7 +74,7 @@ export default function TeamPage() {
           />
           <div className="h-[24px] w-[24px]">
             <DropDown
-              dropdownStyle="right-0 z-20"
+              dropdownStyle="transform translate-x-[-80%] z-20"
               trigger={
                 <button type="button">
                   <Image
@@ -86,10 +86,10 @@ export default function TeamPage() {
                 </button>
               }
             >
-              <button className="h-[46px] w-full " type="button">
+              <button className="h-[35px] w-full " type="button">
                 수정하기
               </button>
-              <button className="h-[46px] w-full " type="button">
+              <button className="h-[35px] w-full " type="button">
                 삭제하기
               </button>
             </DropDown>

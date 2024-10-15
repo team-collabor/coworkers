@@ -70,6 +70,11 @@ export default function Dropdown({
         triggerRef.current.contains(event.target as Node)
       ) {
         toggleDropdown();
+      } else if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        closeDropdown();
       }
     };
 
