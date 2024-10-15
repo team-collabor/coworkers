@@ -45,6 +45,7 @@ export default function Dropdown({
   const triggerRef = useRef<HTMLDivElement>(null);
 
   const toggleDropdown = useCallback(() => {
+    // console.log(111);
     setIsVisible((prevState) => !prevState);
   }, []);
 
@@ -83,10 +84,10 @@ export default function Dropdown({
         {isVisible && (
           <div
             className={`
-              absolute flex max-h-[12.5rem] w-[8.4375rem] 
-              flex-col overflow-y-auto rounded-xl border border-solid 
-              border-primary border-opacity-10 
-              bg-secondary p-2 
+              absolute flex max-h-[12.5rem] w-[8.4375rem]
+              flex-col overflow-y-auto rounded-xl border border-solid
+              border-primary border-opacity-10
+              bg-secondary p-2
               ${dropdownStyle}
             `}
           >
