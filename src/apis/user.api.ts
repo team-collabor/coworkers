@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { TBaseApiQuery, TResponse } from '@/types/base.types';
 import { TGroup } from '@/types/group.types';
-import { TMembership } from '@/types/membership.types';
+import { TMembership, TMemberships } from '@/types/membership.types';
 import { TUser } from '@/types/user.types';
-import axios from 'axios';
+import { axiosInstance } from './_axiosInstance';
 import { withExceptionHandler } from './_withExceptionHandler';
 
 export type TGetPrefetchedUserData =
@@ -15,19 +16,13 @@ export type TGetPrefetchedUserData =
     })
   | null;
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 const _getUser = async ({
   path,
   config,
 }: TBaseApiQuery): Promise<TResponse<TGetPrefetchedUserData>> => {
-  const response = await axios.get<TGetPrefetchedUserData>(
-    `http://localhost:3000/api/${path}`,
-    {
-      ...config,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
+  const response = await axiosInstance.get<TGetPrefetchedUserData>(
+    path,
+    config
   );
   const { data } = response;
   return { data };
@@ -35,3 +30,15 @@ const _getUser = async ({
 
 export const getUser =
   withExceptionHandler<TResponse<TGetPrefetchedUserData>>(_getUser);
+
+const _getMemberships = async ({
+  path,
+  config,
+}: TBaseApiQuery): Promise<TResponse<TMemberships>> => {
+  const response = await axiosInstance.get<TMemberships>(path, config);
+  const { data } = response;
+  return { data };
+};
+
+export const getMemberships =
+  withExceptionHandler<TResponse<TMemberships>>(_getMemberships);

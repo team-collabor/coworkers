@@ -7,7 +7,7 @@ export const getGroupsQuery = <T>(): FetchQueryOptions<T> => ({
   queryKey: [`${ROOT_GROUP}s`],
   queryFn: async ({ signal }): Promise<T> => {
     const data = await getGroups({
-      path: `${ROOT_GROUP}s`,
+      path: `/${ROOT_GROUP}s`,
       config: {
         signal,
       },

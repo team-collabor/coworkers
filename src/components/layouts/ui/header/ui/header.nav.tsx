@@ -1,14 +1,19 @@
 import Dropdown from '@/components/common/dropdown';
-import { useLayoutContext } from '@/components/layouts/model/layout.context';
+import { useRootContext } from '@/components/layouts/model/root.context';
 import { UnoptimizedImage } from '@/components/next';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import HeaderNavSkeleton from './header.nav.skeleton';
 
 export default function HeaderNav() {
-  const { memberships } = useLayoutContext();
-  const [currentTop, setCurrentTop] = useState<string>(
-    memberships?.data?.[0].group.name || ''
-  );
+  const { memberships } = useRootContext();
+  const [currentTop, setCurrentTop] = useState<string>('');
+  useEffect(() => {
+    setCurrentTop(memberships.data?.data?.[0].group.name || '');
+  }, [memberships.data?.data]);
+  if (memberships.loading) {
+    return <HeaderNavSkeleton />;
+  }
   return (
     <nav className="scrollbar-none mx-10 hidden h-full md:block">
       <ul
@@ -32,16 +37,19 @@ export default function HeaderNav() {
             translate-y-4 -translate-x-[245px] overflow-hidden min-w-max
           `}
         >
-          {memberships?.data?.map((m) => {
+          {memberships.data?.data?.map((m) => {
             return (
-              <div className="grid grid-cols-[1fr_auto] items-center">
+              <div
+                key={m.groupId}
+                className="grid grid-cols-[1fr_auto] items-center"
+              >
                 <button
                   type="button"
                   className="grid grid-cols-[auto_1fr] items-center gap-x-4 p-4"
                   onClick={() => setCurrentTop(m.group.name)}
                 >
                   <div className="size-12 bg-red-500" />
-                  <div>{m.group.name}</div>
+                  <div className="text-start">{m.group.name}</div>
                 </button>
                 {m.role === 'ADMIN' && (
                   <UnoptimizedImage

@@ -8,9 +8,7 @@ export const _getGroups = async ({
   path,
   config,
 }: TBaseApiQuery): Promise<TResponse<TGroups>> => {
-  const response = await axiosInstance.get<TGroups>(`/${path}s`, {
-    ...config,
-  });
+  const response = await axiosInstance.get<TGroups>(path, config);
   const { data } = response;
   return { data };
 };

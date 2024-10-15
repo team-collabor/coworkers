@@ -1,8 +1,14 @@
 /* eslint-disable max-len */
 
+import { useRootContext } from '@/components/layouts/model/root.context';
 import { UnoptimizedImage } from '@/components/next';
+import HeaderProfileSkeleton from './header.profile.skeleton';
 
 export default function HeaderProfile() {
+  const { user } = useRootContext();
+  if (user.loading) {
+    return <HeaderProfileSkeleton />;
+  }
   return (
     <div
       className={`
@@ -18,7 +24,7 @@ export default function HeaderProfile() {
         height={24}
       />
       <span className="w-0 cursor-pointer overflow-hidden text-md-medium hover:scale-105 md:w-auto">
-        test
+        {user.data?.data?.nickname}
       </span>
     </div>
   );
