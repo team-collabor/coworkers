@@ -1,4 +1,4 @@
-import { Team, TeamCreate } from '@/types/team';
+import { TaskList, Team, TeamCreate } from '@/types/team';
 import { axiosInstance } from './_axiosInstance';
 
 interface UploadImageResponse {
@@ -45,4 +45,23 @@ export async function postTeam({ name, image }: TeamCreate) {
   const body = response.data;
 
   return body;
+}
+
+export async function postTaskList(groupId: number, name: string) {
+  const response = await axiosInstance.post<TaskList>(
+    `/groups/${groupId}/task-lists`,
+    { name },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+  const body = response.data;
+  return body;
+}
+
+export async function getInviteGroup(id: number): Promise<string> {
+  const response = await axiosInstance.get<string>(`groups/${id}/invitation`);
+  return response.data;
 }

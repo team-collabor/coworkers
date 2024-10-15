@@ -1,20 +1,61 @@
+/* eslint-disable no-console */
+import Button, {
+  ButtonBackgroundColor,
+  ButtonBorderColor,
+  ButtonPadding,
+  ButtonStyle,
+  ButtonWidth,
+  TextColor,
+  TextSize,
+} from '@/components/common/Button/Button';
 import DropDown from '@/components/common/dropdown';
+import Input from '@/components/common/Input';
+import { Modal } from '@/components/modal';
 import TaskLists from '@/components/TaskList/TaskLists';
 import Members from '@/components/Team/Members';
 import CircularProgressChart from '@/components/Team/Progress';
-import { useTeamQuery } from '@/queries/groups.queries';
+import {
+  useInviteGroupQuery,
+  useTaskListMutation,
+  useTeamQuery,
+} from '@/queries/groups.queries';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 export default function TeamPage() {
+  const [taskListName, setTaskListName] = useState('');
+
   const router = useRouter();
   const { id } = router.query;
 
   const { team, isError } = useTeamQuery(Number(id));
+  const { data } = useInviteGroupQuery(Number(id));
+  const createTaskList = useTaskListMutation();
 
   if (isError || !team) {
     return <p>팀 정보를 불러오는 데 실패했습니다.</p>;
   }
+
+  const handleInviteGroup = () => {
+    if (id && data) {
+      const dataString = JSON.stringify(data).replace(/"/g, '');
+      navigator.clipboard
+        .writeText(dataString)
+        .then(() => {
+          console.log('데이터가 클립보드에 복사되었습니다.');
+        })
+        .catch((err) => {
+          console.error('클립보드 복사 실패:', err);
+        });
+    }
+  };
+
+  const handleCreateTask = () => {
+    console.log('생성된 할 일 목록 이름:', taskListName);
+    createTaskList.mutate({ groupId: Number(id), name: taskListName });
+    setTaskListName('');
+  };
 
   return (
     <div className="flex w-full flex-col gap-5 px-20 pt-10 tab:px-5">
@@ -64,9 +105,45 @@ export default function TeamPage() {
           </p>
         </div>
 
-        <button type="button" className="text-brand-primary">
-          + 새로운 목록 추가하기
-        </button>
+        <Modal>
+          <Modal.Toggle className="text-brand-primary">
+            + 새로운 목록 추가하기
+          </Modal.Toggle>
+          <Modal.Portal>
+            <Modal.Overlay />
+            <Modal.Content withToggle>
+              <div className="flex flex-col gap-5">
+                <div>
+                  <Modal.Header>
+                    <Modal.Title>할 일 목록</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Summary>
+                    <Input
+                      id="task-list-name"
+                      wrapperClassName="w-[280px]"
+                      placeholder="목록 명을 입력해주세요"
+                      value={taskListName}
+                      onChange={(e) => setTaskListName(e.target.value)}
+                    />
+                  </Modal.Summary>
+                </div>
+
+                <Button
+                  buttonStyle={ButtonStyle.Box}
+                  textColor={TextColor.White}
+                  textSize={TextSize.Large}
+                  buttonWidth={ButtonWidth.Full}
+                  buttonBackgroundColor={ButtonBackgroundColor.Green}
+                  buttonBorderColor={ButtonBorderColor.Green}
+                  buttonPadding={ButtonPadding.Medium}
+                  onClick={handleCreateTask}
+                >
+                  만들기
+                </Button>
+              </div>
+            </Modal.Content>
+          </Modal.Portal>
+        </Modal>
       </div>
 
       <TaskLists taskLists={team.taskLists} />
@@ -109,9 +186,39 @@ export default function TeamPage() {
             ({team.members.length}개)
           </p>
         </div>
-        <button type="button" className="text-brand-primary">
-          + 새로운 멤버 초대하기
-        </button>
+
+        <Modal>
+          <Modal.Toggle className="text-brand-primary">
+            + 새로운 멤버 초대하기
+          </Modal.Toggle>
+          <Modal.Portal>
+            <Modal.Overlay />
+            <Modal.Content withToggle>
+              <div className="flex flex-col gap-5">
+                <div>
+                  <Modal.Header>
+                    <Modal.Title>멤버 초대</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Summary>
+                    그룹에 참여할 수 있는 링크를 복사 합니다.
+                  </Modal.Summary>
+                </div>
+                <Button
+                  buttonStyle={ButtonStyle.Box}
+                  textColor={TextColor.White}
+                  textSize={TextSize.Large}
+                  buttonWidth={ButtonWidth.Full}
+                  buttonBackgroundColor={ButtonBackgroundColor.Green}
+                  buttonBorderColor={ButtonBorderColor.Green}
+                  buttonPadding={ButtonPadding.Medium}
+                  onClick={handleInviteGroup}
+                >
+                  링크 복사하기
+                </Button>
+              </div>
+            </Modal.Content>
+          </Modal.Portal>
+        </Modal>
       </div>
       <Members members={team.members} />
     </div>

@@ -12,17 +12,14 @@ interface TaskItemProps {
 }
 
 function TaskItem({ taskList, taskListColor }: TaskItemProps) {
-  // eslint-disable-next-line no-console
-  console.log(taskListColor);
   return (
     <div
-      className="relative flex h-[2.5rem]
-items-center justify-between  rounded-xl bg-secondary px-5"
+      className="relative flex  min-h-[2.5rem] 
+     items-center justify-between rounded-xl bg-secondary px-5"
     >
       <div
-        className={`absolute bottom-0 left-0
-top-0 z-0 w-[0.8rem]
-rounded-l-xl ${taskListColor}`}
+        className={`absolute bottom-0 left-0 top-0 
+          z-0  w-[0.8rem] rounded-l-xl ${taskListColor}`}
       />
       <span className="text-md-medium">{taskList.name}</span>
       <div className="flex h-[1.5625rem] gap-1">
@@ -47,7 +44,7 @@ export default function TaskLists({ taskLists }: TaskListProps) {
   ];
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex max-h-[13rem] flex-col gap-3 overflow-y-auto">
       {taskLists.map((taskList, index) => (
         <TaskItem
           key={taskList.id}
