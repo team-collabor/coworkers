@@ -75,7 +75,6 @@ export default function TeamPage() {
           <div className="h-[24px] w-[24px]">
             <DropDown
               dropdownStyle="right-0 z-20"
-              childrenStyle=""
               trigger={
                 <button type="button">
                   <Image
@@ -151,7 +150,7 @@ export default function TeamPage() {
       <p className="text-lg-medium">리포트</p>
       <div
         className="flex h-[13.5625rem] items-center
-     justify-between rounded-xl bg-secondary px-5"
+     justify-between rounded-xl bg-secondary px-5 mob:gap-5"
       >
         <CircularProgressChart />
 

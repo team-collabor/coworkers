@@ -38,9 +38,11 @@ items-center justify-between rounded-xl bg-secondary px-6"
 
 export default function Members({ members }: MembersProps) {
   return (
-    <div>
+    <div className="grid grid-cols-3 gap-4 mob:grid-cols-2">
       {members.map((member) => (
-        <MemberItem key={member.userId} member={member} />
+        <div key={member.userId}>
+          <MemberItem member={member} />
+        </div>
       ))}
     </div>
   );
