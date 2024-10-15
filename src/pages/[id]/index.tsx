@@ -21,17 +21,16 @@ import {
 } from '@/queries/groups.queries';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useRef } from 'react';
 
 export default function TeamPage() {
-  const [taskListName, setTaskListName] = useState('');
-
   const router = useRouter();
   const { id } = router.query;
 
   const { team, isError } = useTeamQuery(Number(id));
   const { data } = useInviteGroupQuery(Number(id));
   const createTaskList = useTaskListMutation();
+  const taskListNameRef = useRef<HTMLInputElement>(null);
 
   if (isError || !team) {
     return <p>팀 정보를 불러오는 데 실패했습니다.</p>;
@@ -52,9 +51,28 @@ export default function TeamPage() {
   };
 
   const handleCreateTask = () => {
-    console.log('생성된 할 일 목록 이름:', taskListName);
-    createTaskList.mutate({ groupId: Number(id), name: taskListName });
-    setTaskListName('');
+    const taskListName = taskListNameRef.current?.value.trim() || '';
+
+    if (taskListName) {
+      console.log('생성된 할 일 목록 이름:', taskListName);
+      createTaskList.mutate(
+        { groupId: Number(id), name: taskListName },
+        {
+          onError: (error: any) => {
+            if (error.response && error.response.status === 409) {
+              console.error('409 에러: 이미 존재하는 항목입니다.');
+            } else {
+              console.error('오류 발생:', error);
+            }
+          },
+        }
+      );
+      if (taskListNameRef.current) {
+        taskListNameRef.current.value = '';
+      }
+    } else {
+      console.log('할 일 목록 이름이 비어 있습니다.');
+    }
   };
 
   return (
@@ -121,8 +139,7 @@ export default function TeamPage() {
                       id="task-list-name"
                       wrapperClassName="w-[280px]"
                       placeholder="목록 명을 입력해주세요"
-                      value={taskListName}
-                      onChange={(e) => setTaskListName(e.target.value)}
+                      ref={taskListNameRef}
                     />
                   </Modal.Summary>
                 </div>
