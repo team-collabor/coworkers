@@ -1,3 +1,1 @@
-import UnoptimizedImage from './ui/unoptimized.image';
-
-export { UnoptimizedImage };
+export { UnoptimizedImage } from './ui/unoptimized.image';

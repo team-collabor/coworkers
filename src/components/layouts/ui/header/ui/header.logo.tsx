@@ -1,4 +1,4 @@
-import { UnoptimizedImage } from '@/components/common/next';
+import { UnoptimizedImage } from '@/components/next';
 import Link from 'next/link';
 import type { HTMLAttributes } from 'react';
 

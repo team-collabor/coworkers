@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import type { HTMLAttributes } from 'react';
 
-import { UnoptimizedImage } from '@/components/common/next';
+import { UnoptimizedImage } from '@/components/next';
 import { Aside } from '../../aside';
 import { useAsideStore } from '../../aside/model/aside.store';
 

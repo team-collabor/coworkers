@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
-import { UnoptimizedImage } from '@/components/common/next';
+
+import { UnoptimizedImage } from '@/components/next';
 
 export default function HeaderProfile() {
   return (
@@ -17,7 +18,7 @@ export default function HeaderProfile() {
         height={24}
       />
       <span className="w-0 cursor-pointer overflow-hidden text-md-medium hover:scale-105 md:w-auto">
-        {user.data?.nickname}
+        test
       </span>
     </div>
   );

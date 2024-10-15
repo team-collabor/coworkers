@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import clsx from 'clsx';
 
-import { UnoptimizedImage } from '@/components/common/next';
+import { UnoptimizedImage } from '@/components/next';
 import { useAsideStore } from '../model/aside.store';
 import AsideNav from './aside.nav';
 import AsideToggle from './aside.toggle';
