@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 import dynamic from 'next/dynamic';
 
+import ModalClose from './ui/modal.close';
 import ModalContent from './ui/modal.content';
 import ModalHeader from './ui/modal.header';
 import ModalOverlay from './ui/modal.overlay';
@@ -41,6 +42,7 @@ export const Modal = Object.assign(
   }),
   {
     Portal: ModalPortal,
+    Close: ModalClose,
     Overlay: ModalOverlay,
     Toggle: ModalToggle,
     Content: ModalContent,
