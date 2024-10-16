@@ -10,35 +10,68 @@ import Button, {
 import Input from '@/components/common/Input';
 import { useSignIn } from '@/queries/auth.queries';
 import { SignInRequest } from '@/types/dto/requests/auth.request.types';
+import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+const schema = z.object({
+  email: z
+    .string()
+    .min(1, '이메일은 필수 입력입니다.')
+    .email('이메일 형식으로 작성해 주세요.'),
+  password: z
+    .string()
+    .min(1, '비밀번호는 필수 입력입니다.')
+    .min(8, '비밀번호는 최소 8자 이상이어야 합니다.'),
+});
+
+interface SignInError extends Error {
+  response?: {
+    data?: {
+      details?: {
+        email?: {
+          message?: string;
+        };
+        password?: {
+          message?: string;
+        };
+      };
+      message?: string;
+    };
+  };
+}
 
 function SignInForm() {
-  const { login, isSuccess } = useSignIn();
+  const { login, isSuccess, isPending, error: signInError } = useSignIn();
   const router = useRouter();
 
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitSuccessful },
-  } = useForm<SignInRequest>();
+    formState: { errors: validErrors },
+  } = useForm<SignInRequest>({
+    mode: 'onBlur',
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+    resolver: zodResolver(schema),
+  });
 
   const onSubmit = (data: SignInRequest) => {
     login(data);
   };
 
   useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset();
-    }
-
     if (isSuccess) {
+      reset();
       router.push('/');
     }
-  }, [isSuccess, router, isSubmitSuccessful, reset]);
+  }, [isSuccess, router, reset]);
 
   return (
     <form
@@ -52,19 +85,8 @@ function SignInForm() {
         id="email-input"
         label="이메일"
         placeholder="이메일을 입력해주세요."
-        {...register('email', {
-          required: {
-            value: true,
-            message: '이메일을 입력해주세요',
-          },
-          pattern: {
-            value:
-              // eslint-disable-next-line max-len
-              /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
-            message: '이메일 형식이 올바르지 않습니다',
-          },
-        })}
-        errorMessage={errors.email?.message}
+        {...register('email')}
+        errorMessage={validErrors.email?.message}
       />
       <Input
         type="password"
@@ -72,14 +94,14 @@ function SignInForm() {
         label="비밀번호"
         placeholder="비밀번호를 입력해주세요."
         hasVisibilityButton
-        {...register('password', {
-          required: {
-            value: true,
-            message: '비밀번호를 입력해주세요',
-          },
-        })}
-        errorMessage={errors.password?.message}
+        {...register('password')}
+        errorMessage={validErrors.password?.message}
       />
+      {signInError && (
+        <p className="ml-2 text-md-semibold text-status-danger">
+          {(signInError as SignInError).response?.data?.message}
+        </p>
+      )}
       <Button
         type="submit"
         buttonStyle={ButtonStyle.Box}
@@ -89,6 +111,7 @@ function SignInForm() {
         buttonBackgroundColor={ButtonBackgroundColor.Green}
         buttonBorderColor={ButtonBorderColor.None}
         buttonPadding={ButtonPadding.Large}
+        disabled={isPending}
       >
         로그인
       </Button>
