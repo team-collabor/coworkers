@@ -9,6 +9,7 @@ import Button, {
 } from '@/components/common/Button/Button';
 import Input from '@/components/common/Input';
 import { useSignIn } from '@/queries/auth.queries';
+import { useAuthStore } from '@/store/useAuthStore';
 import { SignInRequest } from '@/types/dto/requests/auth.request.types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
@@ -46,6 +47,7 @@ type SignInError = {
 
 function SignInForm() {
   const { login, isSuccess, isPending, error: signInError } = useSignIn();
+  const { user } = useAuthStore();
   const router = useRouter();
 
   const {
@@ -67,11 +69,14 @@ function SignInForm() {
   };
 
   useEffect(() => {
+    if (user) {
+      router.replace('/');
+    }
     if (isSuccess) {
       reset();
-      router.push('/');
+      router.replace('/');
     }
-  }, [isSuccess, router, reset]);
+  }, [isSuccess, router, reset, user]);
 
   return (
     <form
