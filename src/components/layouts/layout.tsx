@@ -1,8 +1,7 @@
-import { getMembershipsQuery, getUserQuery } from '@/queries/user.queries';
-import { TResponse } from '@/types/base.types';
-import { TMemberships } from '@/types/membership.types';
-import { TUser } from '@/types/user.types';
-import { useQuery } from '@tanstack/react-query';
+import {
+  useGetMembershipsQuery,
+  useGetUserQuery,
+} from '@/queries/user.queries';
 import { useRouter } from 'next/router';
 import { ReactNode, useMemo } from 'react';
 import { RootContext } from './model/root.context';
@@ -11,8 +10,8 @@ import { Header } from './ui/header';
 
 export default function Layout({ children }: { children: ReactNode }) {
   const route = useRouter();
-  const user = useQuery(getUserQuery<TResponse<TUser>>({ prefetch: false }));
-  const memberships = useQuery(getMembershipsQuery<TResponse<TMemberships>>());
+  const user = useGetUserQuery();
+  const memberships = useGetMembershipsQuery();
   const value = useMemo(
     () => ({
       user: {
