@@ -1,6 +1,7 @@
 import Badge from '@/components/common/Badge';
 import { TaskList } from '@/types/team';
 import Image from 'next/image';
+import VirtualScroll from './VirtuarlScroll';
 
 interface TaskListProps {
   taskLists: TaskList[];
@@ -14,8 +15,8 @@ interface TaskItemProps {
 function TaskItem({ taskList, taskListColor }: TaskItemProps) {
   return (
     <div
-      className="relative flex  min-h-[2.5rem] 
-     items-center justify-between rounded-xl bg-secondary px-5"
+      className="relative mb-[12px] flex h-[40px] items-center 
+     justify-between rounded-xl bg-secondary px-5"
     >
       <div
         className={`absolute bottom-0 left-0 top-0 
@@ -44,14 +45,19 @@ export default function TaskLists({ taskLists }: TaskListProps) {
   ];
 
   return (
-    <div className="flex max-h-[13rem] flex-col gap-3 overflow-y-auto">
-      {taskLists.map((taskList, index) => (
-        <TaskItem
-          key={taskList.id}
-          taskList={taskList}
-          taskListColor={taskListColor[index % taskListColor.length]}
-        />
-      ))}
+    <div className="h-[13rem]">
+      <VirtualScroll
+        itemHeight={40} // 각 TaskItem의 높이 (패딩과 마진을 고려하여 설정)
+        renderAhead={4} // 미리 렌더링할 항목 수
+      >
+        {taskLists.map((taskList, index) => (
+          <TaskItem
+            key={taskList.id}
+            taskList={taskList}
+            taskListColor={taskListColor[index % taskListColor.length]}
+          />
+        ))}
+      </VirtualScroll>
     </div>
   );
 }
