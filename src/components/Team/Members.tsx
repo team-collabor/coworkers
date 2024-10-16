@@ -146,7 +146,10 @@ items-center justify-between rounded-xl bg-secondary px-6 "
 
 export default function Members({ members }: MembersProps) {
   return (
-    <div className="grid grid-cols-3 gap-4 mob:grid-cols-2">
+    <div
+      className="mb-10 grid h-[10rem] grid-cols-3 gap-3
+    overflow-y-auto mob:grid-cols-2"
+    >
       {members.map((member) => (
         <div key={member.userId}>
           <MemberItem member={member} />

@@ -1,7 +1,8 @@
 import Badge from '@/components/common/Badge';
 import { TaskList } from '@/types/team';
 import Image from 'next/image';
-import VirtualScroll from './VirtuarlScroll';
+import Link from 'next/link';
+import VirtualScroll from './VirtualScroll';
 
 interface TaskListProps {
   taskLists: TaskList[];
@@ -51,11 +52,13 @@ export default function TaskLists({ taskLists }: TaskListProps) {
         renderAhead={4} // 미리 렌더링할 항목 수
       >
         {taskLists.map((taskList, index) => (
-          <TaskItem
-            key={taskList.id}
-            taskList={taskList}
-            taskListColor={taskListColor[index % taskListColor.length]}
-          />
+          <Link key={taskList.id} href={`/wines/${taskList.id.toString()}`}>
+            <TaskItem
+              key={taskList.id}
+              taskList={taskList}
+              taskListColor={taskListColor[index % taskListColor.length]}
+            />
+          </Link>
         ))}
       </VirtualScroll>
     </div>

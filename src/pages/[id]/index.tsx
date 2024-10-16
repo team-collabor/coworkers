@@ -130,17 +130,15 @@ export default function TeamPage() {
             <Modal.Overlay />
             <Modal.Content withToggle>
               <div className="flex flex-col gap-5">
-                <div>
-                  <Modal.Header className="gap-30 flex">
-                    <Modal.Title>할 일 목록</Modal.Title>
-                    <Input
-                      id="task-list-name"
-                      wrapperClassName="w-[280px]"
-                      placeholder="목록 명을 입력해주세요"
-                      ref={taskListNameRef}
-                    />
-                  </Modal.Header>
-                </div>
+                <Modal.Header>
+                  <Modal.Title>할 일 목록</Modal.Title>
+                </Modal.Header>
+                <Input
+                  id="task-list-name"
+                  wrapperClassName="w-[280px]"
+                  placeholder="목록 명을 입력해주세요"
+                  ref={taskListNameRef}
+                />
                 <Modal.Toggle>
                   <div>
                     <Button
