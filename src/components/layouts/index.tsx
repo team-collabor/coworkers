@@ -1,7 +1,4 @@
-import {
-  useGetMembershipsQuery,
-  useGetUserQuery,
-} from '@/queries/user.queries';
+import { useGetMembershipsQuery, useGetUserQuery } from '@/queries/user';
 import { useRouter } from 'next/router';
 import { ReactNode, useMemo } from 'react';
 import { RootContext } from './model/root.context';
@@ -10,7 +7,7 @@ import { Header } from './ui/header';
 
 export default function Layout({ children }: { children: ReactNode }) {
   const route = useRouter();
-  const user = useGetUserQuery();
+  const user = useGetUserQuery({ prefetch: false });
   const memberships = useGetMembershipsQuery();
   const value = useMemo(
     () => ({

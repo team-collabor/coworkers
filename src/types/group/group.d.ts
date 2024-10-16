@@ -1,4 +1,4 @@
-import { TBaseDate } from './base.types';
+import { TBaseDate } from '../base';
 
 export type TGroup = TBaseDate & {
   teamId: string;
@@ -6,5 +6,3 @@ export type TGroup = TBaseDate & {
   name: string;
   id: number;
 };
-
-export type TGroups = Array<TGroup>;

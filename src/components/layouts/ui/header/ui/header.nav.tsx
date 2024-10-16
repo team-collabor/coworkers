@@ -9,7 +9,7 @@ export default function HeaderNav() {
   const { memberships } = useRootContext();
   const [currentTop, setCurrentTop] = useState<string>('');
   useEffect(() => {
-    setCurrentTop(memberships.data?.data?.[0].group.name || '');
+    setCurrentTop(memberships?.data?.data?.[0].group.name || '');
   }, [memberships.data?.data]);
   if (memberships.loading) {
     return <HeaderNavSkeleton />;

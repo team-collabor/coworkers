@@ -1,4 +1,4 @@
-import { TBaseApiQuery, TResponse } from '@/types/base.types';
+import { TResponse } from '@/types/common';
 import axios from 'axios';
 
 const createErrorResponse = (
@@ -13,12 +13,12 @@ const createErrorResponse = (
   });
 };
 
-export const withExceptionHandler = <R>(
-  callback: (...args: any[]) => Promise<R>
+export const withExceptionHandler = <T, R>(
+  callback: (args: T) => Promise<R>
 ) => {
-  return async (params: TBaseApiQuery): Promise<R> => {
+  return async (args: T): Promise<R> => {
     try {
-      const data = await callback(params);
+      const data = await callback(args);
       return data;
     } catch (e) {
       if (axios.isAxiosError(e)) {

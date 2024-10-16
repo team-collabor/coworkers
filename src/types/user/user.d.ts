@@ -1,6 +1,4 @@
-import { TBaseDate } from './base.types';
-
-export type TUserRole = 'ADMIN' | 'MEMBER';
+import { TBaseDate } from '../base/base.date';
 
 export type TUser = TBaseDate & {
   teamId: string;

@@ -1,7 +1,6 @@
 import { useContextSelector } from '@/hooks/context/use-context-selector';
-import { TResponse } from '@/types/base.types';
-import { TMemberships } from '@/types/membership.types';
-import { TUser } from '@/types/user.types';
+import { TResponse } from '@/types/common';
+import { TMemberships, TUser } from '@/types/user';
 import { Context, createContext } from 'react';
 
 type TRootContext = {
