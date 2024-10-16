@@ -8,7 +8,7 @@ import Button, {
   TextSize,
 } from '@/components/common/Button/Button';
 import Input from '@/components/common/Input';
-import { useSignUp } from '@/queries/auth.queries';
+import { useSignIn, useSignUp } from '@/queries/auth.queries';
 import { SignUpRequest } from '@/types/dto/requests/auth.request.types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
@@ -53,7 +53,14 @@ type SignUpError = {
 };
 
 function SignUpForm() {
-  const { signUp, isSuccess, isPending, error: signUpError } = useSignUp();
+  const {
+    signUp,
+    isSuccess: isSignUpSuccess,
+    isPending,
+    error: signUpError,
+    variables: signUpVariables,
+  } = useSignUp();
+  const { login, isSuccess: isSignInSuccess, error: signInError } = useSignIn();
   const router = useRouter();
 
   const {
@@ -77,11 +84,30 @@ function SignUpForm() {
   };
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSignUpSuccess && !isSignInSuccess) {
+      reset();
+      login({
+        email: signUpVariables.email,
+        password: signUpVariables.password,
+      });
+    }
+
+    if (isSignInSuccess) {
+      reset();
+      router.replace('/');
+    } else if (signInError) {
       reset();
       router.replace('/signin');
     }
-  }, [reset, isSuccess, router]);
+  }, [
+    isSignUpSuccess,
+    isSignInSuccess,
+    signInError,
+    signUpVariables,
+    reset,
+    router,
+    login,
+  ]);
 
   return (
     <form
