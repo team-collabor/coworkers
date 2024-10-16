@@ -131,31 +131,32 @@ export default function TeamPage() {
             <Modal.Content withToggle>
               <div className="flex flex-col gap-5">
                 <div>
-                  <Modal.Header>
+                  <Modal.Header className="gap-30 flex">
                     <Modal.Title>할 일 목록</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Summary>
                     <Input
                       id="task-list-name"
                       wrapperClassName="w-[280px]"
                       placeholder="목록 명을 입력해주세요"
                       ref={taskListNameRef}
                     />
-                  </Modal.Summary>
+                  </Modal.Header>
                 </div>
-
-                <Button
-                  buttonStyle={ButtonStyle.Box}
-                  textColor={TextColor.White}
-                  textSize={TextSize.Large}
-                  buttonWidth={ButtonWidth.Full}
-                  buttonBackgroundColor={ButtonBackgroundColor.Green}
-                  buttonBorderColor={ButtonBorderColor.Green}
-                  buttonPadding={ButtonPadding.Medium}
-                  onClick={handleCreateTask}
-                >
-                  만들기
-                </Button>
+                <Modal.Toggle>
+                  <div>
+                    <Button
+                      buttonStyle={ButtonStyle.Box}
+                      textColor={TextColor.White}
+                      textSize={TextSize.Large}
+                      buttonWidth={ButtonWidth.Full}
+                      buttonBackgroundColor={ButtonBackgroundColor.Green}
+                      buttonBorderColor={ButtonBorderColor.Green}
+                      buttonPadding={ButtonPadding.Medium}
+                      onClick={handleCreateTask}
+                    >
+                      만들기
+                    </Button>
+                  </div>
+                </Modal.Toggle>
               </div>
             </Modal.Content>
           </Modal.Portal>
