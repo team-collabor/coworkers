@@ -34,6 +34,7 @@ export default function HeaderProfile() {
               <Modal.Title>프로필</Modal.Title>
               <Modal.Summary>{user.data?.data?.email}</Modal.Summary>
             </Modal.Header>
+            <Modal.Body />
           </Modal.Content>
         </Modal.Portal>
       </Modal>

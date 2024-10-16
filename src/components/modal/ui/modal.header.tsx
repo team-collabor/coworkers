@@ -13,7 +13,7 @@ export default function ModalHeader({
   withIcon?: ReactNode;
 }) {
   return (
-    <div className="mb-2 flex flex-col items-center gap-y-2" {...rest}>
+    <div className="mb-2 flex flex-col items-center" {...rest}>
       {withIcon}
       {children}
     </div>
