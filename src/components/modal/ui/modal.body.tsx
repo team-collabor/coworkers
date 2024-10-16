@@ -1,5 +1,8 @@
-import { ReactNode } from 'react';
+import { HTMLAttributes } from 'react';
 
-export default function ModalBody({ children }: { children?: ReactNode }) {
-  return children;
+export default function ModalBody({
+  children,
+  ...props
+}: HTMLAttributes<HTMLDivElement>) {
+  return <div {...props}>{children}</div>;
 }

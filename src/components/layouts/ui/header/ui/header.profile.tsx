@@ -1,5 +1,14 @@
 /* eslint-disable max-len */
 
+import Button, {
+  ButtonBackgroundColor,
+  ButtonBorderColor,
+  ButtonPadding,
+  ButtonStyle,
+  ButtonWidth,
+  TextColor,
+  TextSize,
+} from '@/components/common/Button/Button';
 import { useRootContext } from '@/components/layouts/model/root.context';
 import { Modal } from '@/components/modal';
 import { UnoptimizedImage } from '@/components/next';
@@ -30,11 +39,35 @@ export default function HeaderProfile() {
         <Modal.Portal>
           <Modal.Overlay />
           <Modal.Content withToggle>
-            <Modal.Header>
-              <Modal.Title>프로필</Modal.Title>
+            <Modal.Header
+              className="mb-6"
+              withIcon={
+                <UnoptimizedImage
+                  className="mb-6"
+                  src="/icons/Member.svg"
+                  alt=""
+                  width={46}
+                  height={46}
+                />
+              }
+            >
+              <Modal.Title>{user.data?.data?.nickname}</Modal.Title>
               <Modal.Summary>{user.data?.data?.email}</Modal.Summary>
             </Modal.Header>
-            <Modal.Body />
+            <Modal.Body className="flex justify-center">
+              <Button
+                textSize={TextSize.Large}
+                textColor={TextColor.White}
+                buttonBackgroundColor={ButtonBackgroundColor.Green}
+                buttonStyle={ButtonStyle.Box}
+                buttonBorderColor={ButtonBorderColor.Green}
+                buttonPadding={ButtonPadding.Large}
+                buttonWidth={ButtonWidth.Full}
+                className="w-72"
+              >
+                이메일 복사하기
+              </Button>
+            </Modal.Body>
           </Modal.Content>
         </Modal.Portal>
       </Modal>
