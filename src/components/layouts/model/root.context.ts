@@ -1,15 +1,18 @@
+import { TGetUser } from '@/apis/user/get-user';
 import { useContextSelector } from '@/hooks/context/use-context-selector';
-import { TResponse } from '@/types/common';
-import { TMemberships, TUser } from '@/types/user';
+import { TError } from '@/types/common';
+import { TMemberships } from '@/types/user';
 import { Context, createContext } from 'react';
 
 type TRootContext = {
   user: {
-    data: TResponse<TUser> | undefined;
+    data?: TGetUser;
+    error?: TError;
     loading: boolean;
   };
   memberships: {
-    data: TResponse<TMemberships> | undefined;
+    data?: TMemberships;
+    error?: TError;
     loading: boolean;
   };
 };

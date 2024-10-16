@@ -7,9 +7,9 @@ import { TMembership, TUser } from '@/types/user';
 import { axiosInstance } from '../_axiosInstance';
 import { withExceptionHandler } from '../_withExceptionHandler';
 
-export type TGetPrefetchedUserData =
+export type TGetUser =
   | (TUser & {
-      memberships: Array<
+      memberships?: Array<
         TMembership & {
           group: TGroup;
         }
@@ -20,16 +20,12 @@ export type TGetPrefetchedUserData =
 const _getUser = async ({
   path,
   config,
-}: TBaseQuery): Promise<TResponse<TGetPrefetchedUserData>> => {
-  const response = await axiosInstance.get<TGetPrefetchedUserData>(
-    path,
-    config
-  );
+}: TBaseQuery): Promise<TResponse<TGetUser>> => {
+  const response = await axiosInstance.get<TGetUser>(path, config);
   const { data } = response;
   return { data };
 };
 
-export const getUser = withExceptionHandler<
-  TBaseQuery,
-  TResponse<TGetPrefetchedUserData>
->(_getUser);
+export const getUser = withExceptionHandler<TBaseQuery, TResponse<TGetUser>>(
+  _getUser
+);

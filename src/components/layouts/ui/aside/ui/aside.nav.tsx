@@ -16,7 +16,7 @@ export default function AsideNav() {
       p-4 text-md-medium text-primary
     `}
     >
-      {memberships.data?.data?.map((m) => {
+      {memberships.data?.map((m) => {
         return (
           <li key={m.groupId} className="flex justify-between gap-x-4">
             <button type="button" className="hover:scale-105 hover:opacity-80">

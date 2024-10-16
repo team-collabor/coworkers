@@ -9,8 +9,8 @@ export default function HeaderNav() {
   const { memberships } = useRootContext();
   const [currentTop, setCurrentTop] = useState<string>('');
   useEffect(() => {
-    setCurrentTop(memberships?.data?.data?.[0].group.name || '');
-  }, [memberships.data?.data]);
+    setCurrentTop(memberships?.data?.[0].group.name || '');
+  }, [memberships.data]);
   if (memberships.loading) {
     return <HeaderNavSkeleton />;
   }
@@ -37,7 +37,7 @@ export default function HeaderNav() {
             translate-y-4 -translate-x-[245px] overflow-hidden min-w-max
           `}
         >
-          {memberships.data?.data?.map((m) => {
+          {memberships.data?.map((m) => {
             return (
               <div
                 key={m.groupId}

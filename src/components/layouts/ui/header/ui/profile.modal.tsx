@@ -1,3 +1,4 @@
+import { TGetUser } from '@/apis/user/get-user';
 import Button, {
   ButtonBackgroundColor,
   ButtonBorderColor,
@@ -9,9 +10,8 @@ import Button, {
 } from '@/components/common/Button/Button';
 import { Modal } from '@/components/modal';
 import { UnoptimizedImage } from '@/components/next';
-import { TUser } from '@/types/user';
 
-export default function ProfileModal({ user }: { user?: TUser }) {
+export default function ProfileModal({ user }: { user?: TGetUser }) {
   return (
     <Modal>
       <Modal.Toggle>
