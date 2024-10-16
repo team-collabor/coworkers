@@ -28,7 +28,7 @@ const schema = z.object({
     .min(8, '비밀번호는 최소 8자 이상이어야 합니다.'),
 });
 
-interface SignInError extends Error {
+type SignInError = {
   response?: {
     data?: {
       details?: {
@@ -42,7 +42,7 @@ interface SignInError extends Error {
       message?: string;
     };
   };
-}
+};
 
 function SignInForm() {
   const { login, isSuccess, isPending, error: signInError } = useSignIn();
