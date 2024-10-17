@@ -38,7 +38,7 @@ function TaskItem({ taskList, taskListColor }: TaskItemProps) {
 }
 
 export default function TaskLists({ taskLists }: TaskListProps) {
-  const taskListColor = [
+  const TASK_LIST_COLORS = [
     'bg-point-purple',
     'bg-point-blue',
     'bg-point-cyan',
@@ -56,7 +56,7 @@ export default function TaskLists({ taskLists }: TaskListProps) {
             <TaskItem
               key={taskList.id}
               taskList={taskList}
-              taskListColor={taskListColor[index % taskListColor.length]}
+              taskListColor={TASK_LIST_COLORS[index % TASK_LIST_COLORS.length]}
             />
           </Link>
         ))}
