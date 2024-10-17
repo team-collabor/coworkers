@@ -1,9 +1,0 @@
-
-function Profile() {
-  return (
-    <aside className="flex flex-col gap-y-5 rounded-2xl border border-gray-300 p-5 shadow-[0_2px_20px_0_rgba(0,0,0,0.04)] tab2:gap-y-[1.875rem] tab2:py-[1.875rem] tab:tab2:px-10 pc:w-[17.5rem] pc:gap-y-12 pc:self-start pc:py-10">
-    </aside>
-  );
-}
-
-export default Profile;

@@ -1,37 +1,56 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-
-import axios, { InternalAxiosRequestConfig } from 'axios';
+import { useAuthStore } from '@/store/useAuthStore';
+import axios, { AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios';
+import { refreshAccessToken } from './auth.api';
 
 const TEAM_ID = '8-4';
 const BASE_URL = `https://fe-project-cowokers.vercel.app/${TEAM_ID}`;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const axiosInstance = axios.create({
   baseURL: BASE_URL,
 });
 
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    if (typeof window !== 'undefined') {
-      const authStorage = localStorage.getItem('authStore') || '{}';
-      try {
-        const { state } = JSON.parse(authStorage);
-        const { accessToken } = state;
-        if (accessToken) {
-          const modifiedConfig = { ...config };
-          // eslint-disable-next-line @typescript-eslint/dot-notation
-          modifiedConfig.headers['Authorization'] = `Bearer ${accessToken}`;
-          return modifiedConfig;
-        }
-      } catch {
-        return config;
-      }
+    const { accessToken } = useAuthStore.getState();
+    if (accessToken) {
+      const modifiedConfig = { ...config };
+      modifiedConfig.headers.Authorization = `Bearer ${accessToken}`;
+      return modifiedConfig;
     }
     return config;
   },
   (error) => {
-    // 에러 핸들링
+    return Promise.reject(error);
+  }
+);
+
+axiosInstance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    const originalRequest = error.config as AxiosRequestConfig;
+    if (error.response.status === 401 && !(originalRequest as any)._retry) {
+      const { refreshToken } = useAuthStore.getState();
+      if (refreshToken) {
+        try {
+          // refreshToken 으로 새로운 accessToken 발급
+          const { data } = await refreshAccessToken(refreshToken);
+          // Store에 새로운 accessToken 저장
+          useAuthStore.getState().setAccessToken(data.accessToken);
+          // 새로운 accessToken으로 재요청
+          (originalRequest as any)._retry = true;
+          if (originalRequest.headers) {
+            // eslint-disable-next-line max-len
+            originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
+          }
+          return await axiosInstance(originalRequest);
+        } catch (refreshError) {
+          useAuthStore.getState().clearAuth();
+          return Promise.reject(refreshError);
+        }
+      }
+    }
     return Promise.reject(error);
   }
 );
