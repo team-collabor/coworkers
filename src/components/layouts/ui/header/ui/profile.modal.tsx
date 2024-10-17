@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { TGetUser } from '@/apis/user/get-user';
 import Button, {
   ButtonBackgroundColor,
@@ -10,9 +11,10 @@ import Button, {
 } from '@/components/common/Button/Button';
 import { Modal } from '@/components/modal';
 import { UnoptimizedImage } from '@/components/next';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 export default function ProfileModal({ user }: { user?: TGetUser }) {
-  return (
+  return user ? (
     <Modal>
       <Modal.Toggle>
         <UnoptimizedImage
@@ -38,25 +40,27 @@ export default function ProfileModal({ user }: { user?: TGetUser }) {
               />
             }
           >
-            <Modal.Title>{user?.nickname}</Modal.Title>
-            <Modal.Summary>{user?.email}</Modal.Summary>
+            <Modal.Title>{user.nickname}</Modal.Title>
+            <Modal.Summary>{user.email}</Modal.Summary>
           </Modal.Header>
           <Modal.Body className="flex justify-center">
-            <Button
-              textSize={TextSize.Large}
-              textColor={TextColor.White}
-              buttonBackgroundColor={ButtonBackgroundColor.Green}
-              buttonStyle={ButtonStyle.Box}
-              buttonBorderColor={ButtonBorderColor.Green}
-              buttonPadding={ButtonPadding.Large}
-              buttonWidth={ButtonWidth.Full}
-              className="w-72"
-            >
-              이메일 복사하기
-            </Button>
+            <CopyToClipboard text={user.email}>
+              <Button
+                textSize={TextSize.Large}
+                textColor={TextColor.White}
+                buttonBackgroundColor={ButtonBackgroundColor.Green}
+                buttonStyle={ButtonStyle.Box}
+                buttonBorderColor={ButtonBorderColor.Green}
+                buttonPadding={ButtonPadding.Large}
+                buttonWidth={ButtonWidth.Full}
+                className="w-72"
+              >
+                이메일 복사하기
+              </Button>
+            </CopyToClipboard>
           </Modal.Body>
         </Modal.Content>
       </Modal.Portal>
     </Modal>
-  );
+  ) : null;
 }
