@@ -30,7 +30,6 @@ select {
   background-repeat: no-repeat;
   background-position: right 10px center; /* 화살표 위치 조정 */
   background-size: 36px; /* 화살표 크기 조정 */
-
 }
 
 @layer components {
@@ -55,5 +54,4 @@ select {
     width: 100vw;
     height: 100vh;
   }
-
 }
