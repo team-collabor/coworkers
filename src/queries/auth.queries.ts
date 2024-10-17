@@ -24,6 +24,7 @@ export const useSignIn = () => {
   const { setUser, setAccessToken, setRefreshToken, clearAuth } =
     useAuthStore();
   const { mutate: login, ...returns } = useMutation({
+    mutationKey: ['signin'],
     mutationFn: async ({ ...params }: SignInRequest) => {
       return signIn(params);
     },
