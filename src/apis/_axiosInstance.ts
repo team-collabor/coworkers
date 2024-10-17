@@ -2,8 +2,8 @@ import { useAuthStore } from '@/store/useAuthStore';
 import axios, { AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios';
 import { refreshAccessToken } from './auth.api';
 
-const TEAM_ID = '8-4';
-const BASE_URL = `https://fe-project-cowokers.vercel.app/${TEAM_ID}`;
+const TEAM_ID = process.env.NEXT_PUBLIC_TEAM_ID;
+const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/${TEAM_ID}`;
 
 export const axiosInstance = axios.create({
   baseURL: BASE_URL,
