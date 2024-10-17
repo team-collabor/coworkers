@@ -6,11 +6,12 @@ import {
 } from '@/types/dto/requests/auth.request.types';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import { authQueryKeys } from './keys/auth.keys';
 
 export const useSignUp = () => {
   const { mutate: signUp, ...returns } = useMutation({
-    mutationKey: ['signup'],
-    mutationFn: async ({ ...params }: SignUpRequest) => {
+    mutationKey: authQueryKeys.signUp(),
+    mutationFn: async (params: SignUpRequest) => {
       return addUser(params);
     },
     gcTime: 0,
@@ -24,16 +25,14 @@ export const useSignIn = () => {
   const { setUser, setAccessToken, setRefreshToken, clearAuth } =
     useAuthStore();
   const { mutate: login, ...returns } = useMutation({
-    mutationKey: ['signin'],
-    mutationFn: async ({ ...params }: SignInRequest) => {
+    mutationKey: authQueryKeys.signIn(),
+    mutationFn: async (params: SignInRequest) => {
       return signIn(params);
     },
     onSuccess: (res) => {
       if (res) {
         setUser({
           ...res.data.user,
-          createdAt: new Date(res.data.user.createdAt),
-          updatedAt: new Date(res.data.user.updatedAt),
           image: res.data.user.image || '/icons/Member.svg', // 기본 이미지 설정
         });
         setAccessToken(res.data.accessToken);

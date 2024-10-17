@@ -1,27 +1,13 @@
+import { User } from '@/types/users.types';
+
 export type SignUpResponse = {
-  user: {
-    id: number;
-    nickname: string;
-    createdAt: string;
-    updatedAt: string;
-    image: string | null;
-    teamId: string;
-    email: string;
-  };
+  user: User;
   accessToken: string;
   refreshToken: string;
 };
 
 export type SignInResponse = {
-  user: {
-    id: number;
-    nickname: string;
-    createdAt: string;
-    updatedAt: string;
-    image: string | null;
-    teamId: string;
-    email: string;
-  };
+  user: User;
   accessToken: string;
   refreshToken: string;
 };
