@@ -85,10 +85,11 @@ export default function TeamPage() {
 
         <div className="flex items-center gap-7">
           <Image
-            src="../images/Thumbnail_team.svg"
+            src="/images/Thumbnail_team.svg"
             alt="thumbnail"
             width={181}
             height={64}
+            priority
           />
           <div className="h-[24px] w-[24px]">
             <DropDown
@@ -96,7 +97,7 @@ export default function TeamPage() {
               trigger={
                 <button type="button">
                   <Image
-                    src="../icons/Gear.svg"
+                    src="/icons/Gear.svg"
                     alt="setting"
                     width={24}
                     height={24}
@@ -189,7 +190,13 @@ export default function TeamPage() {
               <p className="text-xs-medium text-secondary ">한 일</p>
               <p className="text-2xl-bold text-brand-tertiary">0개</p>
             </div>
-            <Image src="../images/Done.svg" alt="done" width={40} height={40} />
+            <Image
+              src="/images/Done.svg"
+              alt="완료된 작업"
+              width={40}
+              height={40}
+              style={{ width: 'auto', height: 'auto' }}
+            />
           </div>
         </div>
       </div>

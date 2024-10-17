@@ -24,9 +24,8 @@ function MemberItem({ member }: MemberProps) {
   const isMobileView = useIsMobile();
 
   const handleEmailCopy = () => {
-    const dataString = JSON.stringify(member.userEmail).replace(/"/g, '');
     navigator.clipboard
-      .writeText(dataString)
+      .writeText(member.userEmail)
       .then(() => {
         console.log('이메일이 클립보드에 복사되었습니다.');
       })
@@ -47,18 +46,19 @@ function MemberItem({ member }: MemberProps) {
               <div className="flex items-center gap-2">
                 <Image
                   src={
-                    member.userImage ? member.userImage : '../icons/Member.svg'
+                    member.userImage ? member.userImage : '/icons/Member.svg'
                   }
                   alt="user"
                   width={24}
                   height={24}
+                  style={{ width: 'auto', height: 'auto' }}
                 />
                 <span className="text-md-medium">{member.userName}</span>
               </div>
               <span className="text-xs-regular">{member.userEmail} </span>
             </div>
             <Image
-              src="../icons/Kebab_large.svg"
+              src="/icons/Kebab_large.svg"
               alt="kebab"
               width={16}
               height={16}
@@ -71,12 +71,11 @@ items-center justify-between rounded-xl bg-secondary px-6 "
           >
             <div className="flex gap-4 mob:items-center">
               <Image
-                src={
-                  member.userImage ? member.userImage : '../icons/Member.svg'
-                }
+                src={member.userImage ? member.userImage : '/icons/Member.svg'}
                 alt="user"
                 width={32}
                 height={32}
+                style={{ width: 'auto', height: 'auto' }}
               />
               <div className="flex flex-col items-start gap-1">
                 <span className="text-md-medium">{member.userName}</span>
@@ -85,7 +84,7 @@ items-center justify-between rounded-xl bg-secondary px-6 "
             </div>
 
             <Image
-              src="../icons/Kebab_large.svg"
+              src="/icons/Kebab_large.svg"
               alt="kebab"
               width={16}
               height={16}
@@ -104,11 +103,12 @@ items-center justify-between rounded-xl bg-secondary px-6 "
                       src={
                         member.userImage
                           ? member.userImage
-                          : '../icons/Member.svg'
+                          : '/icons/Member.svg'
                       }
                       alt="user"
                       width={52}
                       height={52}
+                      style={{ width: 'auto', height: 'auto' }}
                     />
                     <div className="flex flex-col items-center gap-2">
                       <span className="text-lg-medium">{member.userName}</span>
@@ -151,9 +151,7 @@ export default function Members({ members }: MembersProps) {
     overflow-y-auto mob:grid-cols-2"
     >
       {members.map((member) => (
-        <div key={member.userId}>
-          <MemberItem member={member} />
-        </div>
+        <MemberItem key={member.userId} member={member} />
       ))}
     </div>
   );

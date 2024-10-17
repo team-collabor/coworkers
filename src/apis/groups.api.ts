@@ -6,8 +6,12 @@ interface UploadImageResponse {
 }
 
 export async function getTeams(id: number): Promise<Team> {
-  const response = await axiosInstance.get<Team>(`groups/${id}`);
-  return response.data;
+  try {
+    const response = await axiosInstance.get<Team>(`groups/${id}`);
+    return response.data;
+  } catch (error) {
+    throw new Error('팀 정보를 가져오는 데 실패했습니다.');
+  }
 }
 
 export async function postImage(file: File): Promise<string> {
@@ -26,9 +30,7 @@ export async function postImage(file: File): Promise<string> {
     );
     return res.data.url;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('이미지 업로드 에러:', error);
-    throw error;
+    throw new Error('이미지를 업로드하는 데 실패했습니다.');
   }
 }
 
@@ -47,18 +49,24 @@ export async function postTeam({ name, image }: TeamCreate) {
   return body;
 }
 
-export async function postTaskList(groupId: number, name: string) {
-  const response = await axiosInstance.post<TaskList>(
-    `/groups/${groupId}/task-lists`,
-    { name },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  );
-  const body = response.data;
-  return body;
+export async function postTaskList(
+  groupId: number,
+  name: string
+): Promise<TaskList> {
+  try {
+    const response = await axiosInstance.post<TaskList>(
+      `/groups/${groupId}/task-lists`,
+      { name },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error('태스크 리스트를 생성하는 데 실패했습니다.');
+  }
 }
 
 export async function getInviteGroup(id: number): Promise<string> {

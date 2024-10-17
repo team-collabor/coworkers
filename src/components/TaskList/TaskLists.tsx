@@ -31,6 +31,7 @@ function TaskItem({ taskList, taskListColor }: TaskItemProps) {
           alt="kebab"
           width={16}
           height={16}
+          style={{ width: 'auto', height: 'auto' }}
         />
       </div>
     </div>

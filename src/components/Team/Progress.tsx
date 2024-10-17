@@ -10,15 +10,9 @@ import {
 
 interface CircularProgressProps {
   value?: number;
-  trailColor?: string;
-  textColor?: string;
 }
 
-function CircularProgressChart({
-  value = 25,
-  trailColor = '#334155',
-  textColor = '#DFE8FF',
-}: CircularProgressProps) {
+function CircularProgressChart({ value = 25 }: CircularProgressProps) {
   const isMobileView = useIsMobile();
   return (
     <div className="flex items-center gap-12">
@@ -46,12 +40,12 @@ function CircularProgressChart({
                 styles={buildStyles({
                   rotation: 0.25,
                   pathColor: 'url(#progressGradient)',
-                  trailColor,
+                  trailColor: '#334155',
                   strokeLinecap: 'round',
                 })}
               >
                 {isMobileView && (
-                  <div style={{ color: textColor, textAlign: 'center' }}>
+                  <div style={{ color: '#DFE8FF', textAlign: 'center' }}>
                     <p>오늘</p>
                     <p
                       className="bg-gradient-to-r from-[#10b981] to-[#a3e635] 
