@@ -6,10 +6,11 @@ import {
 } from '@/types/dto/requests/auth.request.types';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import { authQueryKeys } from './keys/auth.keys';
 
 export const useSignUp = () => {
   const { mutate: signUp, ...returns } = useMutation({
-    mutationKey: ['signup'],
+    mutationKey: authQueryKeys.signUp(),
     mutationFn: async ({ ...params }: SignUpRequest) => {
       return addUser(params);
     },
@@ -24,6 +25,7 @@ export const useSignIn = () => {
   const { setUser, setAccessToken, setRefreshToken, clearAuth } =
     useAuthStore();
   const { mutate: login, ...returns } = useMutation({
+    mutationKey: authQueryKeys.signIn(),
     mutationFn: async ({ ...params }: SignInRequest) => {
       return signIn(params);
     },
@@ -31,8 +33,6 @@ export const useSignIn = () => {
       if (res) {
         setUser({
           ...res.data.user,
-          createdAt: new Date(res.data.user.createdAt),
-          updatedAt: new Date(res.data.user.updatedAt),
           image: res.data.user.image || '/icons/Member.svg', // 기본 이미지 설정
         });
         setAccessToken(res.data.accessToken);
