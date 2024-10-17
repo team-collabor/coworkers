@@ -1,4 +1,4 @@
-import { postImage, postTeam } from '@/apis/groups.api';
+import { postImage, postInviteGroup, postTeam } from '@/apis/groups.api';
 import { TeamCreate } from '@/types/team';
 import { useMutation } from '@tanstack/react-query';
 
@@ -16,4 +16,13 @@ export function useTeamMutation() {
   });
 
   return signUpTeamMutation;
+}
+
+export function useInviteGroupMutation() {
+  const inviteGroupMutation = useMutation({
+    mutationFn: ({ userEmail, token }: { userEmail: string; token: string }) =>
+      postInviteGroup(userEmail, token),
+  });
+
+  return inviteGroupMutation;
 }
