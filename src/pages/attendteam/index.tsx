@@ -25,12 +25,7 @@ function AddTeam() {
 
   const handleLinkChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTeamLink(event.target.value);
-
-    if (teamLink.length < 1) {
-      setIsError(true);
-    } else {
-      setIsError(false);
-    }
+    setIsError(false);
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
