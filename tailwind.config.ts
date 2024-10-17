@@ -12,6 +12,14 @@ const config: Config = {
         pretendard: ['Pretendard', 'sans-serif'],
         verdana: ['Verdana', 'sans-serif'],
       },
+      backgroundImage: {
+        trainMedium: 'url("/images/Landing_trainwork_medium.svg")',
+        trainLarge: 'url("/images/Landing_trainwork_large.svg")',
+        trainSmall: 'url("/images/Landing_trainwork_small.svg")',
+        trafficLarge: 'url("/images/Landing_trafficwork_large.svg")',
+        trafficMedium: 'url("/images/Landing_trafficwork_medium.svg")',
+        trafficSmall: 'url("/images/Landing_trafficwork_small.svg")',
+      },
       fontSize: {
         // 40px / 48px => 2.5rem / 3rem, Medium
         '4xl': ['2.5rem', { lineHeight: '3rem', fontWeight: '500' }],
