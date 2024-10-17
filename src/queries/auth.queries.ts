@@ -11,7 +11,7 @@ import { authQueryKeys } from './keys/auth.keys';
 export const useSignUp = () => {
   const { mutate: signUp, ...returns } = useMutation({
     mutationKey: authQueryKeys.signUp(),
-    mutationFn: async ({ ...params }: SignUpRequest) => {
+    mutationFn: async (params: SignUpRequest) => {
       return addUser(params);
     },
     gcTime: 0,
@@ -26,7 +26,7 @@ export const useSignIn = () => {
     useAuthStore();
   const { mutate: login, ...returns } = useMutation({
     mutationKey: authQueryKeys.signIn(),
-    mutationFn: async ({ ...params }: SignInRequest) => {
+    mutationFn: async (params: SignInRequest) => {
       return signIn(params);
     },
     onSuccess: (res) => {
