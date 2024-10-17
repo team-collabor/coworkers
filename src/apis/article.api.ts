@@ -1,6 +1,11 @@
-import { GetArticlesParams } from '@/types/dto/requests/article.request.types';
-// eslint-disable-next-line max-len
-import { ArticleListResponse } from '@/types/dto/responses/article.response.types';
+import {
+  GetArticlesParams,
+  PostArticleParams,
+} from '@/types/dto/requests/article.request.types';
+import {
+  ArticleListResponse,
+  PostArticleResponse,
+} from '@/types/dto/responses/article.response.types';
 import { axiosInstance } from './_axiosInstance';
 
 export const getArticles = async ({
@@ -18,6 +23,15 @@ export const getArticles = async ({
       orderBy,
       keyword,
     },
+  });
+  return response.data;
+};
+
+export const postArticle = async (data: PostArticleParams) => {
+  const response = await axiosInstance<PostArticleResponse>({
+    method: 'POST',
+    url: '/articles',
+    data,
   });
   return response.data;
 };

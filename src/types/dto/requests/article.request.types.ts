@@ -4,3 +4,9 @@ export type GetArticlesParams = {
   orderBy: string;
   keyword?: string;
 };
+
+export type PostArticleParams = {
+  title: string;
+  content: string;
+  image?: string;
+};

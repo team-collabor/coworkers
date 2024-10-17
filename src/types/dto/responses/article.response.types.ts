@@ -17,3 +17,5 @@ export type ArticleListResponse = {
   totalCount: number;
   list: Article[];
 };
+
+export type PostArticleResponse = Article;

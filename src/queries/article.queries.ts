@@ -1,8 +1,11 @@
-import { getArticles } from '@/apis/article.api';
-import { GetArticlesParams } from '@/types/dto/requests/article.request.types';
+import { getArticles, postArticle } from '@/apis/article.api';
+import {
+  GetArticlesParams,
+  PostArticleParams,
+} from '@/types/dto/requests/article.request.types';
 // eslint-disable-next-line max-len
 import { ArticleListResponse } from '@/types/dto/responses/article.response.types';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
 export const useBestArticlesQuery = (params: GetArticlesParams) => {
   return useQuery({
@@ -28,5 +31,11 @@ export const useAllArticlesQuery = (
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) =>
       allPages.length < lastPage.totalCount ? allPages.length + 1 : undefined,
+  });
+};
+
+export const usePostArticleMutation = () => {
+  return useMutation({
+    mutationFn: (article: PostArticleParams) => postArticle(article),
   });
 };
