@@ -1,14 +1,6 @@
 /* eslint-disable max-len */
 
-import { useRootContext } from '@/components/layouts/model/root.context';
-import HeaderProfileSkeleton from './header.profile.skeleton';
-import ProfileModal from './profile.modal';
-
 export default function HeaderProfile() {
-  const { user } = useRootContext();
-  if (user.loading) {
-    return <HeaderProfileSkeleton />;
-  }
   return (
     <div
       className={`
@@ -16,10 +8,10 @@ export default function HeaderProfile() {
     hover:opacity-80 md:mr-4 xl:mr-0
     `}
     >
-      <ProfileModal user={user.data} />
+      {/* <ProfileModal user={user.data} />
       <span className="w-0 cursor-pointer overflow-hidden text-md-medium hover:scale-105 md:w-auto">
         {user.data?.nickname}
-      </span>
+      </span> */}
     </div>
   );
 }

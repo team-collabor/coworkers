@@ -1,20 +1,9 @@
-import { TGetUser } from '@/apis/user/get-user';
-import Button, {
-  ButtonBackgroundColor,
-  ButtonBorderColor,
-  ButtonPadding,
-  ButtonStyle,
-  ButtonWidth,
-  TextColor,
-  TextSize,
-} from '@/components/common/Button/Button';
 import { Modal } from '@/components/modal';
-import { UnoptimizedImage } from '@/components/next';
 
-export default function ProfileModal({ user }: { user?: TGetUser }) {
+export default function ProfileModal() {
   return (
     <Modal>
-      <Modal.Toggle>
+      {/* <Modal.Toggle>
         <UnoptimizedImage
           className="cursor-pointer hover:scale-110"
           src="/icons/User_large.svg"
@@ -56,7 +45,7 @@ export default function ProfileModal({ user }: { user?: TGetUser }) {
             </Button>
           </Modal.Body>
         </Modal.Content>
-      </Modal.Portal>
+      </Modal.Portal> */}
     </Modal>
   );
 }
