@@ -22,20 +22,23 @@ export function DatePicker() {
         <Button
           variant="outline"
           className={cn(
-            'w-[280px] justify-start text-left font-normal',
-            !date && 'text-muted-foreground'
+            'w-full justify-start rounded-xl py-[1.5rem] font-pretendard',
+            'text-left text-lg-regular text-primary',
+            'bg-secondary hover:bg-tertiary active:bg-tertiary',
+            'border-primary hover:border-interaction-hover',
+            !date && 'text-default'
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, 'PPP') : <span>Pick a date</span>}
+          {date ? format(date, 'PPP') : <span>날짜를 선택해주세요</span>}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0">
+      <PopoverContent className="w-auto rounded-xl p-0">
         <Calendar
           mode="single"
           selected={date}
           onSelect={setDate}
-          // initialFocus
+          initialFocus
         />
       </PopoverContent>
     </Popover>
