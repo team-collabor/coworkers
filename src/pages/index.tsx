@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -50,18 +51,17 @@ export default function Home() {
             </h1>
           </div>
           <div className="flex justify-center">
-            <button
-              type="button"
-              onClick={() => {
-                window.location.href = './signin';
-              }}
-              className={`h-[2.8125rem] w-[23.3125rem] rounded-full
+            <Link href="./signin">
+              <button
+                type="button"
+                className={`h-[2.8125rem] w-[23.3125rem] rounded-full
                 bg-gradient-to-r from-brand-primary to-brand-tertiary 
                 text-base font-bold mob:w-[21.4375rem]
                 `}
-            >
-              지금 시작하기
-            </button>
+              >
+                지금 시작하기
+              </button>
+            </Link>
           </div>
         </div>
 
