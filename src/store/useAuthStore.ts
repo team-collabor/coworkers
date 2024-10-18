@@ -1,18 +1,17 @@
-import { User } from '@/types/auth.types';
-import { CommonTypes } from '@/types/common.types';
-import { NullablePick } from '@/utils/utilityTypes/NullablePick';
+import { AuthTokens } from '@/types/auth.types';
+import { User } from '@/types/users.types';
 import { create } from 'zustand';
 import { combine, createJSONStorage, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
 export type AuthState = {
-  user: User;
-} & NullablePick<CommonTypes, 'accessToken' | 'refreshToken'>;
+  user: User | null;
+} & AuthTokens;
 
 export type AuthActions = {
   setUser: (user: User) => void;
-  setAccessToken: (accessToken: Pick<CommonTypes, 'accessToken'>) => void;
-  setRefreshToken: (refreshToken: Pick<CommonTypes, 'refreshToken'>) => void;
+  setAccessToken: (accessToken: AuthTokens['accessToken']) => void;
+  setRefreshToken: (refreshToken: AuthTokens['refreshToken']) => void;
   clearAuth: () => void;
   clearTokens: () => void;
 };
@@ -32,12 +31,12 @@ export const useAuthStore = create(
             state.user = user;
           });
         },
-        setAccessToken: (accessToken: CommonTypes['accessToken']) => {
+        setAccessToken: (accessToken: AuthTokens['accessToken']) => {
           set((state) => {
             state.accessToken = accessToken;
           });
         },
-        setRefreshToken: (refreshToken: CommonTypes['refreshToken']) => {
+        setRefreshToken: (refreshToken: AuthTokens['refreshToken']) => {
           set((state) => {
             state.refreshToken = refreshToken;
           });
