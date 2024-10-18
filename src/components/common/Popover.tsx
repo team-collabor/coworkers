@@ -24,8 +24,8 @@ const PopoverContent = React.forwardRef<
         'data-[side=left]:slide-in-from-right-2',
         'data-[side=right]:slide-in-from-left-2',
         'data-[side=top]:slide-in-from-bottom-2',
-        'z-50 w-72 rounded-md border border-neutral-200 bg-black p-4',
-        'border-neutral-800 text-white shadow-md outline-none',
+        'z-50 w-72 rounded-xl border border-primary bg-secondary p-4',
+        'text-primary shadow-md outline-none',
         className
       )}
       {...props}
