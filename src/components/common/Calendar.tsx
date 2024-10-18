@@ -32,20 +32,17 @@ function Calendar({
         table: 'w-full border-collapse space-y-1',
         head_row: 'flex',
         head_cell: cn(
-          'text-neutral-500 rounded-md w-9 font-normal text-[0.8rem]',
-          'dark:text-neutral-400'
+          'text-neutral-400 rounded-md w-9 font-normal text-[0.8rem]'
         ),
         row: cn('flex w-full mt-2'),
         cell: cn(
           'h-9 w-9 text-center text-sm p-0 relative',
           '[&:has([aria-selected].day-range-end)]:rounded-r-md',
-          '[&:has([aria-selected].day-outside)]:bg-neutral-100/50',
-          '[&:has([aria-selected])]:bg-neutral-100',
+          '[&:has([aria-selected].day-outside)]:bg-neutral-800/50',
+          '[&:has([aria-selected])]:bg-neutral-800',
           'first:[&:has([aria-selected])]:rounded-l-md',
           'last:[&:has([aria-selected])]:rounded-r-md',
-          'focus-within:relative focus-within:z-20',
-          'dark:[&:has([aria-selected].day-outside)]:bg-neutral-800/50',
-          'dark:[&:has([aria-selected])]:bg-neutral-800'
+          'focus-within:relative focus-within:z-20'
         ),
         day: cn(
           buttonVariants({ variant: 'ghost' }),
@@ -53,27 +50,18 @@ function Calendar({
         ),
         day_range_end: cn('day-range-end'),
         day_selected: cn(
-          'bg-neutral-900 text-neutral-50 hover:bg-neutral-900',
-          'hover:text-neutral-50 focus:bg-neutral-900 focus:text-neutral-50',
-          'dark:bg-neutral-50 dark:text-neutral-900',
-          'dark:hover:bg-neutral-50 dark:hover:text-neutral-900',
-          'dark:focus:bg-neutral-50 dark:focus:text-neutral-900'
+          'bg-neutral-50 text-neutral-900 hover:bg-neutral-50',
+          'hover:text-neutral-900 focus:bg-neutral-50 focus:text-neutral-900'
         ),
-        day_today: cn(
-          'bg-neutral-100 text-neutral-900',
-          'dark:bg-neutral-800 dark:text-neutral-50'
-        ),
+        day_today: cn('bg-neutral-800 text-neutral-50'),
         day_outside: cn(
-          'day-outside text-neutral-500 opacity-50',
-          'aria-selected:bg-neutral-100/50 aria-selected:text-neutral-500',
-          'aria-selected:opacity-30 dark:text-neutral-400',
-          'dark:aria-selected:bg-neutral-800/50',
-          'dark:aria-selected:text-neutral-400'
+          'day-outside text-neutral-400 opacity-50',
+          'aria-selected:bg-neutral-800/50 aria-selected:text-neutral-400',
+          'aria-selected:opacity-30'
         ),
-        day_disabled: cn('text-neutral-500 opacity-50 dark:text-neutral-400'),
+        day_disabled: cn('text-neutral-400 opacity-50'),
         day_range_middle: cn(
-          'aria-selected:bg-neutral-100 aria-selected:text-neutral-900',
-          'dark:aria-selected:bg-neutral-800 dark:aria-selected:text-neutral-50'
+          'aria-selected:bg-neutral-800 aria-selected:text-neutral-50'
         ),
         ...classNames,
       }}
