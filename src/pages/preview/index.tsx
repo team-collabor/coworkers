@@ -8,6 +8,12 @@ export default function PreviewPage() {
       <Link href="/preview/input" className="mt-5 text-2xl-bold text-primary">
         Input
       </Link>
+      <Link
+        href="/preview/calendar"
+        className="mt-5 text-2xl-bold text-primary"
+      >
+        Calendar
+      </Link>
     </>
   );
 }
