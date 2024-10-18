@@ -62,6 +62,7 @@ export async function postInviteGroup(userEmail: string, token: string) {
   const body = response.data;
 
   return body;
+}
 
 export async function postTaskList(
   groupId: number,

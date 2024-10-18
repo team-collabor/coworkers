@@ -1,12 +1,8 @@
-
-import { postImage, postInviteGroup, postTeam } from '@/apis/groups.api';
-import { TeamCreate } from '@/types/team';
-import { useMutation } from '@tanstack/react-query';
-
 import {
   getInviteGroup,
   getTeams,
   postImage,
+  postInviteGroup,
   postTaskList,
   postTeam,
 } from '@/apis/groups.api';
@@ -22,7 +18,6 @@ export function useTeamQuery(id: number) {
 
   return { team, isError };
 }
-
 
 export function useUploadImageMutation() {
   const uploadImageMutation = useMutation({
@@ -47,7 +42,7 @@ export function useInviteGroupMutation() {
   });
 
   return inviteGroupMutation;
-
+}
 export function useTaskListMutation() {
   const queryClient = useQueryClient();
   const taskListMutation = useMutation({
