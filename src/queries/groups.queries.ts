@@ -1,6 +1,8 @@
 import {
+  deleteTeam,
   getInviteGroup,
   getTeams,
+  patchTeam,
   postImage,
   postInviteGroup,
   postTaskList,
@@ -19,12 +21,36 @@ export function useTeamQuery(id: number) {
   return { team, isError };
 }
 
+export function usePatchTeamMutation() {
+  const patchTeamMutation = useMutation({
+    mutationFn: ({
+      id,
+      name,
+      image,
+    }: {
+      id: number;
+      name: string;
+      image?: string;
+    }) => patchTeam(id, { name, ...(image && { image }) }),
+  });
+
+  return patchTeamMutation;
+}
+
 export function useUploadImageMutation() {
   const uploadImageMutation = useMutation({
     mutationFn: (image: File) => postImage(image),
   });
 
   return uploadImageMutation;
+}
+
+export function useDeleteTeamMutation() {
+  const deleteTeamMutation = useMutation({
+    mutationFn: (id: number) => deleteTeam(id),
+  });
+
+  return deleteTeamMutation;
 }
 
 export function useTeamMutation() {

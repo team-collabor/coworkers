@@ -14,7 +14,7 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
-function AddTeam() {
+export default function AttendTeam() {
   const [teamLink, setTeamLink] = useState('');
   const [isError, setIsError] = useState(false);
 
@@ -96,5 +96,3 @@ function AddTeam() {
     </form>
   );
 }
-
-export default AddTeam;

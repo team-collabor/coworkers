@@ -15,6 +15,7 @@ import TaskLists from '@/components/TaskList/TaskLists';
 import Members from '@/components/Team/Members';
 import CircularProgressChart from '@/components/Team/Progress';
 import {
+  useDeleteTeamMutation,
   useInviteGroupQuery,
   useTaskListMutation,
   useTeamQuery,
@@ -26,10 +27,10 @@ import { useRef } from 'react';
 export default function TeamPage() {
   const router = useRouter();
   const { id } = router.query;
-
   const { team, isError } = useTeamQuery(Number(id));
   const { data } = useInviteGroupQuery(Number(id));
   const createTaskList = useTaskListMutation();
+  const deleteTeam = useDeleteTeamMutation();
   const taskListNameRef = useRef<HTMLInputElement>(null);
 
   if (isError || !team) {
@@ -48,6 +49,24 @@ export default function TeamPage() {
           console.error('클립보드 복사 실패:', err);
         });
     }
+  };
+
+  const handleEditTeam = () => {
+    router
+      .push(`${team.id}/editteam/`)
+      .catch((error) => console.error('라우팅 오류:', error));
+  };
+
+  const handleDeleteTeam = () => {
+    deleteTeam.mutate(Number(id), {
+      onSuccess: () => {
+        console.log('팀 삭제 성공');
+        router.push('/').catch((error) => console.error('라우팅 오류:', error));
+      },
+      onError: (error) => {
+        console.error('팀 삭제 실패:', error);
+      },
+    });
   };
 
   const handleCreateTask = () => {
@@ -82,7 +101,6 @@ export default function TeamPage() {
      justify-between  rounded-xl border border-primary bg-secondary px-5"
       >
         <p className="text-xl-bold">{team?.name}</p>
-
         <div className="flex items-center gap-7">
           <Image
             src="/images/Thumbnail_team.svg"
@@ -105,10 +123,18 @@ export default function TeamPage() {
                 </button>
               }
             >
-              <button className="h-[35px] w-full " type="button">
+              <button
+                className="h-[35px] w-full "
+                type="button"
+                onClick={handleEditTeam}
+              >
                 수정하기
               </button>
-              <button className="h-[35px] w-full " type="button">
+              <button
+                className="h-[35px] w-full "
+                type="button"
+                onClick={handleDeleteTeam}
+              >
                 삭제하기
               </button>
             </DropDown>
