@@ -1,4 +1,4 @@
-import Dropdown from '@/components/common/dropdown';
+import Dropdown from '@/components/common/Dropdown';
 import { useState } from 'react';
 
 export default function DropdownPreview() {

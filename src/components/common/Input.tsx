@@ -1,5 +1,5 @@
 import { CommonTypes } from '@/types/common.types';
-import { cn } from '@/utils/tailwind/Cn';
+import { cn } from '@/utils/tailwind/cn';
 import Image from 'next/image';
 import {
   forwardRef,
