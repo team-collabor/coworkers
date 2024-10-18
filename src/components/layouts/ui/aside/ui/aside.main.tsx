@@ -1,21 +1,24 @@
 /* eslint-disable max-len */
 import clsx from 'clsx';
 
+import { ASIDE_MENU } from '@/components/layouts/consts/_aside.menu';
+import { findHook } from '@/components/layouts/lib/use-find-hook';
 import { UnoptimizedImage } from '@/components/next';
-import { useAsideStore } from '../model/aside.store';
+import { useDropStore } from '@/store/useDropStore';
 import AsideNav from './aside.nav';
 import AsideToggle from './aside.toggle';
 
 export default function AsideMain() {
-  const { openState } = useAsideStore();
+  const { hooks } = useDropStore();
+  const isOpen = findHook(hooks, ASIDE_MENU);
   return (
     <aside
       className={clsx(
         'fixed inset-y-0 w-1/3 min-w-max max-w-60 bg-tertiary',
         'z-40 overflow-auto transition-all duration-500 ease-in-out',
         {
-          '-translate-x-full': !openState,
-          'md:-translate-x-full': openState,
+          '-translate-x-full': !isOpen,
+          'md:-translate-x-full': isOpen,
         }
       )}
     >
