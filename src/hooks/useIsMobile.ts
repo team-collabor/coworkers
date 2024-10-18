@@ -6,7 +6,7 @@ export default function useIsMobile() {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < MEDIA_QUERY_BREAK_POINT.DESKTOP_MIN_WIDTH) {
+      if (window.innerWidth < MEDIA_QUERY_BREAK_POINT.MOBILE_MAX_WIDTH) {
         setIsMobileView(true);
       } else {
         setIsMobileView(false);

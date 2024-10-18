@@ -143,6 +143,7 @@ const config: Config = {
         tertiary: '#334155',
         inverse: '#ffffff',
         select: '#18212f',
+        danger: '#dc2626',
       },
       textColor: {
         primary: '#f8fafc',

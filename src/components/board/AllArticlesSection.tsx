@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable import/no-extraneous-dependencies */
 import { useAllArticlesQuery } from '@/queries/article.queries';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import Dropdown from '../common/dropdown';
+import Dropdown from '../common/Dropdown';
 import ArticleCard from './ArticleCard';
 
 type AllArticlesSectionProps = {
