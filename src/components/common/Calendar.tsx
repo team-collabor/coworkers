@@ -2,7 +2,7 @@ import * as React from 'react';
 import { DayPicker } from 'react-day-picker';
 
 import { buttonVariants } from '@/components/common/Button/ShadcnButton';
-import { cn } from '@/utils/tailwind/Cn';
+import { cn } from '@/utils/tailwind/cn';
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 

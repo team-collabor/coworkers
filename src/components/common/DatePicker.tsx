@@ -11,7 +11,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/common/Popover';
-import { cn } from '@/utils/tailwind/Cn';
+import { cn } from '@/utils/tailwind/cn';
 
 export function DatePicker() {
   const [date, setDate] = React.useState<Date>();

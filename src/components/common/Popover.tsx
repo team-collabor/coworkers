@@ -1,4 +1,4 @@
-import { cn } from '@/utils/tailwind/Cn';
+import { cn } from '@/utils/tailwind/cn';
 import * as PopoverPrimitive from '@radix-ui/react-popover';
 import * as React from 'react';
 
