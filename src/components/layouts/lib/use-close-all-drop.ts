@@ -1,17 +1,18 @@
-import { useDropStore } from '@/store/useDropStore';
+import { useMenuStore } from '@/store/useMenuStore';
 import { useCallback, useEffect } from 'react';
 
 export function useCloseAllDrop() {
-  const { hooks, close } = useDropStore();
+  const { hooks, close } = useMenuStore();
   const handle = useCallback(
     (e: MouseEvent) => {
       const { target } = e;
       if (
+        hooks.length >= 1 &&
         target &&
         target instanceof HTMLElement &&
-        target.getAttribute('aria-label')?.includes(':') &&
-        (target.getAttribute('data-hook')?.match(/:/g) || []).length !==
-          hooks.length
+        !target.closest('[aria-label="menu-trigger"]') &&
+        !target.closest('[aria-label="menu-down"]') &&
+        !target.closest('[aria-label="aside-trigger"]')
       ) {
         close();
       }

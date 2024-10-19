@@ -4,15 +4,16 @@ import clsx from 'clsx';
 import { ASIDE_MENU } from '@/components/layouts/consts/_aside.menu';
 import { findHook } from '@/components/layouts/lib/use-find-hook';
 import { UnoptimizedImage } from '@/components/next';
-import { useDropStore } from '@/store/useDropStore';
+import { useMenuStore } from '@/store/useMenuStore';
 import AsideNav from './aside.nav';
 import AsideToggle from './aside.toggle';
 
 export default function AsideMain() {
-  const { hooks } = useDropStore();
+  const { hooks } = useMenuStore();
   const isOpen = findHook(hooks, ASIDE_MENU);
   return (
     <aside
+      aria-label="menu-down"
       className={clsx(
         'fixed inset-y-0 w-1/3 min-w-max max-w-60 bg-tertiary',
         'z-40 overflow-auto transition-all duration-500 ease-in-out',

@@ -4,14 +4,14 @@ import type { HTMLAttributes } from 'react';
 import { ASIDE_MENU } from '@/components/layouts/consts/_aside.menu';
 import { findHook } from '@/components/layouts/lib/use-find-hook';
 import { UnoptimizedImage } from '@/components/next';
-import { useDropStore } from '@/store/useDropStore';
+import { useMenuStore } from '@/store/useMenuStore';
 import { Aside } from '../../aside';
 
 export default function HeaderList({
   className,
   ...rest
 }: HTMLAttributes<HTMLImageElement>) {
-  const { hooks } = useDropStore();
+  const { hooks } = useMenuStore();
   const isOpen = findHook(hooks, ASIDE_MENU);
   return (
     <Aside.Toggle>
