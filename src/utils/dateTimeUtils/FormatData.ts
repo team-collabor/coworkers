@@ -7,11 +7,21 @@ export function formatDate(isoString: string): string {
   return `${year}. ${month}. ${day}`;
 }
 
-export function formatKoreanDate(date: Date): string {
+export function formatKoreanDate(date: Date | string | number): string {
+  let dateObj: Date;
+
+  if (date instanceof Date) {
+    dateObj = date;
+  } else if (typeof date === 'string' || typeof date === 'number') {
+    dateObj = new Date(date);
+  } else {
+    return '유효하지 않은 날짜입니다';
+  }
+
   const options: Intl.DateTimeFormatOptions = {
     month: 'long',
     day: 'numeric',
     weekday: 'short',
   };
-  return date.toLocaleDateString('ko-KR', options);
+  return dateObj.toLocaleDateString('ko-KR', options);
 }
