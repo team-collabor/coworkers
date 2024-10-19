@@ -40,58 +40,60 @@ export default function HeaderNav() {
             />
           </Menu.Trigger>
         </div>
-        <Menu id={GROUP_MENU}>
-          {memberships.map((m, index) => (
-            <li key={m.groupId} className="relative flex items-center">
-              <Link href={`/${m.groupId}`}>
-                <Menu.Trigger
-                  className="flex"
-                  id={GROUP_MENU}
-                  onEvent={() => {
-                    setCurrentTop(m.group.name);
-                  }}
-                >
-                  <button
-                    type="button"
-                    className="grid grid-cols-[1fr_2fr_auto] items-center gap-x-4 p-4 hover:bg-tertiary"
+        <Menu id={GROUP_MENU} className="">
+          <div className="relative h-[15.25rem] overflow-auto">
+            {memberships.map((m, index) => (
+              <li key={m.groupId} className="relative flex items-center">
+                <Link href={`/${m.groupId}`}>
+                  <Menu.Trigger
+                    className="flex"
+                    id={GROUP_MENU}
+                    onEvent={() => {
+                      setCurrentTop(m.group.name);
+                    }}
                   >
-                    <div className="size-12 bg-red-500" />
-                    <div className="text-start">{m.group.name}</div>
-                  </button>
-                </Menu.Trigger>
-              </Link>
-              {m.role === 'ADMIN' && (
-                <>
-                  <Menu.Trigger id={`${GROUP_MENU}:${m.groupId}`}>
-                    <button type="button">
-                      <UnoptimizedImage
-                        className="justify-self-end"
-                        src="/icons/Kebab_large.svg"
-                        alt=""
-                        width={24}
-                        height={24}
-                      />
+                    <button
+                      type="button"
+                      className="grid grid-cols-[1fr_2fr_auto] items-center gap-x-4 p-4 hover:bg-tertiary"
+                    >
+                      <div className="size-12 bg-red-500" />
+                      <div className="text-start">{m.group.name}</div>
                     </button>
                   </Menu.Trigger>
-                  <Menu
-                    className={`
+                </Link>
+                {m.role === 'ADMIN' && (
+                  <>
+                    <Menu.Trigger id={`${GROUP_MENU}:${m.groupId}`}>
+                      <button type="button">
+                        <UnoptimizedImage
+                          className="justify-self-end"
+                          src="/icons/Kebab_large.svg"
+                          alt=""
+                          width={24}
+                          height={24}
+                        />
+                      </button>
+                    </Menu.Trigger>
+                    <Menu
+                      className={`
                       right-0 z-10 
-                      ${memberships.length - 1 === index ? '-top-16' : ''}`}
-                    id={`${GROUP_MENU}:${m.groupId}`}
-                  >
-                    <div className="grid grid-flow-row auto-rows-fr">
-                      <button type="button" className="p-2 hover:bg-tertiary">
-                        수정하기
-                      </button>
-                      <button type="button" className="p-2 hover:bg-tertiary">
-                        삭제하기
-                      </button>
-                    </div>
-                  </Menu>
-                </>
-              )}
-            </li>
-          ))}
+                      ${memberships.length - 1 === index ? '-top-[4.5rem]' : ''}`}
+                      id={`${GROUP_MENU}:${m.groupId}`}
+                    >
+                      <div className="grid grid-flow-row auto-rows-fr">
+                        <button type="button" className="p-2 hover:bg-tertiary">
+                          수정하기
+                        </button>
+                        <button type="button" className="p-2 hover:bg-tertiary">
+                          삭제하기
+                        </button>
+                      </div>
+                    </Menu>
+                  </>
+                )}
+              </li>
+            ))}
+          </div>
         </Menu>
         <li className="hover:scale-105 hover:opacity-80">
           <Link href="/boards">자유게시판</Link>
