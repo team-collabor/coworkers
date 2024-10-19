@@ -133,7 +133,7 @@ export function DatePicker({
             mode="single"
             selected={mode === 'input' ? date : new Date(selectedDate)}
             onSelect={(value) => handleSelectDate(value as Date)}
-            initialFocus
+            defaultMonth={mode === 'input' ? date : new Date(selectedDate)}
           />
         </PopoverContent>
       </Popover>
