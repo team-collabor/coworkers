@@ -6,3 +6,12 @@ export function formatDate(isoString: string): string {
 
   return `${year}. ${month}. ${day}`;
 }
+
+export function formatKoreanDate(date: Date): string {
+  const options: Intl.DateTimeFormatOptions = {
+    month: 'long',
+    day: 'numeric',
+    weekday: 'short',
+  };
+  return date.toLocaleDateString('ko-KR', options);
+}
