@@ -1,4 +1,3 @@
-import { format } from 'date-fns';
 import {
   Calendar as CalendarIcon,
   ChevronLeftIcon,
@@ -19,42 +18,53 @@ import { cn } from '@/utils/tailwind/cn';
 
 type DatePickerProps = {
   mode: 'selector' | 'input';
+  className?: string;
+  inputButtonClassName?: string;
+  initialDate?: Date;
 };
 
-export function DatePicker({ mode }: DatePickerProps) {
+export function DatePicker({
+  mode,
+  className,
+  inputButtonClassName,
+  initialDate,
+}: DatePickerProps) {
   // selector 모드에서는 selectedDate를 사용하고, input 모드에서는 date를 사용
   const { selectedDate, setSelectedDate } = useTaskStore();
-  const [date, setDate] = React.useState<Date>();
+  const [date, setDate] = React.useState<Date>(initialDate || new Date());
+  const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
 
+  const handleSelectDate = (value: Date) => {
+    if (!value || !(value instanceof Date)) return;
+    if (mode === 'selector') {
+      setSelectedDate(value);
+    } else {
+      setDate(value);
+    }
+    setIsPopoverOpen(false);
+  };
   const handlePrevDate = () => {
     const yesterday = new Date(selectedDate);
     yesterday.setDate(yesterday.getDate() - 1);
-    setSelectedDate(yesterday);
+    handleSelectDate(yesterday);
   };
-
   const handleNextDate = () => {
     const tomorrow = new Date(selectedDate);
     tomorrow.setDate(tomorrow.getDate() + 1);
-    setSelectedDate(tomorrow);
+    handleSelectDate(tomorrow);
   };
 
   React.useEffect(() => {
-    if (!selectedDate) {
-      // selector 선택된 날짜가 없을 때
-      setSelectedDate(new Date());
+    if (mode === 'input') {
+      setDate(initialDate || new Date());
     }
-    if (!date) {
-      // input 선택된 날짜가 없을 때
-      // 없다면 오늘 날짜를 선택, 있다면 selector 선택된 날짜를 선택
-      setDate(selectedDate);
-    }
-  }, [selectedDate, date, setSelectedDate, setDate]);
+  }, [initialDate, mode]);
 
   return (
-    <div className="flex items-center gap-3">
+    <div className={cn('flex items-center gap-3', className)}>
       {mode === 'selector' && (
         <>
-          <p className="text-xl-medium text-primary">
+          <p className="text-xl-medium text-primary" suppressHydrationWarning>
             {selectedDate
               ? formatKoreanDate(selectedDate)
               : '날짜를 선택해주세요'}
@@ -87,7 +97,7 @@ export function DatePicker({ mode }: DatePickerProps) {
           </div>
         </>
       )}
-      <Popover>
+      <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
         <PopoverTrigger asChild>
           {mode === 'input' ? (
             <Button
@@ -97,11 +107,13 @@ export function DatePicker({ mode }: DatePickerProps) {
                 'text-left text-lg-regular text-primary',
                 'bg-secondary hover:bg-tertiary active:bg-tertiary',
                 'border-primary hover:border-interaction-hover',
-                !date && 'text-default'
+                !date && 'text-default',
+                inputButtonClassName
               )}
+              suppressHydrationWarning
             >
               <CalendarIcon className="mr-2 h-4 w-4" />
-              {date ? format(date, 'PPP') : <span>날짜를 선택해주세요</span>}
+              {date ? formatKoreanDate(date) : <span>날짜를 선택해주세요</span>}
             </Button>
           ) : (
             <Button
@@ -117,13 +129,10 @@ export function DatePicker({ mode }: DatePickerProps) {
         </PopoverTrigger>
         <PopoverContent className="w-auto rounded-xl p-0">
           <Calendar
+            id="date-picker"
             mode="single"
-            selected={date}
-            onSelect={
-              mode === 'selector'
-                ? (value) => setSelectedDate(value as Date)
-                : (value) => setDate(value as Date)
-            }
+            selected={mode === 'input' ? date : new Date(selectedDate)}
+            onSelect={(value) => handleSelectDate(value as Date)}
             initialFocus
           />
         </PopoverContent>
@@ -134,6 +143,7 @@ export function DatePicker({ mode }: DatePickerProps) {
           value={date?.toISOString()}
           className="hidden"
           disabled
+          suppressHydrationWarning
         />
       )}
     </div>

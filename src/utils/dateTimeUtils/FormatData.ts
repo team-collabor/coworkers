@@ -19,6 +19,7 @@ export function formatKoreanDate(date: Date | string | number): string {
   }
 
   const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
     month: 'long',
     day: 'numeric',
     weekday: 'short',
