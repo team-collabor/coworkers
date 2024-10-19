@@ -40,9 +40,9 @@ export default function HeaderNav() {
             />
           </Menu.Trigger>
         </div>
-        <Menu id={GROUP_MENU} className="">
-          <div className="relative h-[15.25rem] overflow-auto">
-            {memberships.map((m, index) => (
+        <Menu id={GROUP_MENU}>
+          <div className="relative h-[15.25rem] overflow-auto pb-20">
+            {memberships.map((m) => (
               <li key={m.groupId} className="relative flex items-center">
                 <Link href={`/${m.groupId}`}>
                   <Menu.Trigger
@@ -75,9 +75,7 @@ export default function HeaderNav() {
                       </button>
                     </Menu.Trigger>
                     <Menu
-                      className={`
-                      right-0 z-10 
-                      ${memberships.length - 1 === index ? '-top-[4.5rem]' : ''}`}
+                      className="right-0 z-10"
                       id={`${GROUP_MENU}:${m.groupId}`}
                     >
                       <div className="grid grid-flow-row auto-rows-fr">
