@@ -41,8 +41,8 @@ export default function HeaderNav() {
           </Menu.Trigger>
         </div>
         <Menu id={GROUP_MENU}>
-          {memberships.map((m) => (
-            <li key={m.groupId} className="flex items-center">
+          {memberships.map((m, index) => (
+            <li key={m.groupId} className="relative flex items-center">
               <Link href={`/${m.groupId}`}>
                 <Menu.Trigger
                   className="flex"
@@ -57,7 +57,13 @@ export default function HeaderNav() {
                   >
                     <div className="size-12 bg-red-500" />
                     <div className="text-start">{m.group.name}</div>
-                    {m.role === 'ADMIN' && (
+                  </button>
+                </Menu.Trigger>
+              </Link>
+              {m.role === 'ADMIN' && (
+                <>
+                  <Menu.Trigger id={`${GROUP_MENU}:${m.groupId}`}>
+                    <button type="button">
                       <UnoptimizedImage
                         className="justify-self-end"
                         src="/icons/Kebab_large.svg"
@@ -65,10 +71,25 @@ export default function HeaderNav() {
                         width={24}
                         height={24}
                       />
-                    )}
-                  </button>
-                </Menu.Trigger>
-              </Link>
+                    </button>
+                  </Menu.Trigger>
+                  <Menu
+                    className={`
+                      right-0 z-10 
+                      ${memberships.length - 1 === index ? '-top-16' : ''}`}
+                    id={`${GROUP_MENU}:${m.groupId}`}
+                  >
+                    <div className="grid grid-flow-row auto-rows-fr">
+                      <button type="button" className="p-2 hover:bg-tertiary">
+                        수정하기
+                      </button>
+                      <button type="button" className="p-2 hover:bg-tertiary">
+                        삭제하기
+                      </button>
+                    </div>
+                  </Menu>
+                </>
+              )}
             </li>
           ))}
         </Menu>

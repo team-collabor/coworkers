@@ -19,11 +19,10 @@ export function MenuMain({
         `absolute top-[4rem] -z-10 grid 
         grid-flow-row auto-rows-fr overflow-hidden
         rounded-xl border-2 border-primary 
-        bg-secondary text-center transition-all 
-        duration-200 ease-in-out ${className ?? ''}
+        bg-secondary text-center ${className ?? ''}
         `,
         {
-          'h-1 -translate-y-[50%]': !isOpen,
+          hidden: !isOpen,
         }
       )}
     >
