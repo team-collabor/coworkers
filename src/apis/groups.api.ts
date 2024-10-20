@@ -49,6 +49,21 @@ export async function postTeam({ name, image }: TeamCreate) {
   return body;
 }
 
+export async function postInviteGroup(userEmail: string, token: string) {
+  const response = await axiosInstance.post<string>(
+    'groups/accept-invitation',
+    { userEmail, token },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+  const body = response.data;
+
+  return body;
+}
+
 export async function postTaskList(
   groupId: number,
   name: string

@@ -2,6 +2,7 @@ import {
   getInviteGroup,
   getTeams,
   postImage,
+  postInviteGroup,
   postTaskList,
   postTeam,
 } from '@/apis/groups.api';
@@ -34,6 +35,14 @@ export function useTeamMutation() {
   return signUpTeamMutation;
 }
 
+export function useInviteGroupMutation() {
+  const inviteGroupMutation = useMutation({
+    mutationFn: ({ userEmail, token }: { userEmail: string; token: string }) =>
+      postInviteGroup(userEmail, token),
+  });
+
+  return inviteGroupMutation;
+}
 export function useTaskListMutation() {
   const queryClient = useQueryClient();
   const taskListMutation = useMutation({
