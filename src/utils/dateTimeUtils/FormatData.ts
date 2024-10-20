@@ -1,3 +1,5 @@
+import { FrequencyType, FrequencyTypeKorean } from '@/types/tasks.types';
+
 export function formatDate(isoString: string): string {
   const date = new Date(isoString);
   const year = date.getFullYear();
@@ -25,4 +27,17 @@ export function formatKoreanDate(date: Date | string | number): string {
     weekday: 'short',
   };
   return dateObj.toLocaleDateString('ko-KR', options);
+}
+
+export function formatFrequencyToKorean(
+  frequency: FrequencyType
+): FrequencyTypeKorean {
+  const frequencyMap: Record<FrequencyType, FrequencyTypeKorean> = {
+    DAILY: '매일 반복',
+    WEEKLY: '매주 반복',
+    MONTHLY: '매월 반복',
+    ONCE: '반복 없음',
+  };
+
+  return frequencyMap[frequency];
 }
