@@ -1,5 +1,6 @@
 import {
   Calendar as CalendarIcon,
+  CalendarSearchIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
 } from 'lucide-react';
@@ -92,7 +93,7 @@ export function DatePicker({
               )}
               onClick={handleNextDate}
             >
-              <ChevronRightIcon className="h-1 w-1" />
+              <ChevronRightIcon className="h-1 w-1 text-icon-primary" />
             </Button>
           </div>
         </>
@@ -112,7 +113,7 @@ export function DatePicker({
               )}
               suppressHydrationWarning
             >
-              <CalendarIcon className="mr-2 h-4 w-4" />
+              <CalendarIcon className="mb-1 mr-2 h-4 w-4 text-icon-primary" />
               {date ? formatKoreanDate(date) : <span>날짜를 선택해주세요</span>}
             </Button>
           ) : (
@@ -123,7 +124,7 @@ export function DatePicker({
                 'hover:bg-interaction-focus active:bg-interaction-pressed'
               )}
             >
-              <CalendarIcon className={cn('h-4 w-4 text-icon-primary')} />
+              <CalendarSearchIcon className={cn('h-4 w-4 text-icon-primary')} />
             </Button>
           )}
         </PopoverTrigger>
