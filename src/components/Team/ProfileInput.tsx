@@ -34,6 +34,11 @@ export default function ProfileInput({
         return;
       }
 
+      const hasKorean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(file.name);
+      if (hasKorean) {
+        throw new Error('파일명에 한글을 사용할 수 없습니다');
+      }
+
       onImageChange(file);
     }
   };

@@ -3,7 +3,6 @@ import {
   getInviteGroup,
   getTeams,
   patchTeam,
-  postImage,
   postInviteGroup,
   postTaskList,
   postTeam,
@@ -35,14 +34,6 @@ export function usePatchTeamMutation() {
   });
 
   return patchTeamMutation;
-}
-
-export function useUploadImageMutation() {
-  const uploadImageMutation = useMutation({
-    mutationFn: (image: File) => postImage(image),
-  });
-
-  return uploadImageMutation;
 }
 
 export function useDeleteTeamMutation() {

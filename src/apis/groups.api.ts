@@ -1,10 +1,6 @@
 import { TaskList, Team, TeamCreate, TeamUpdate } from '@/types/team';
 import { axiosInstance } from './_axiosInstance';
 
-interface UploadImageResponse {
-  url: string;
-}
-
 export const getTeams = async (id: number): Promise<Team> => {
   try {
     const response = await axiosInstance<Team>({
@@ -14,25 +10,6 @@ export const getTeams = async (id: number): Promise<Team> => {
     return response.data;
   } catch (error) {
     throw new Error('팀 정보를 가져오는 데 실패했습니다.');
-  }
-};
-
-export const postImage = async (file: File): Promise<string> => {
-  const formData = new FormData();
-  formData.append('image', file);
-
-  try {
-    const response = await axiosInstance<UploadImageResponse>({
-      method: 'POST',
-      url: 'images/upload',
-      data: formData,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-    return response.data.url;
-  } catch (error) {
-    throw new Error('이미지를 업로드하는 데 실패했습니다.');
   }
 };
 

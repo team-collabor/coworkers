@@ -9,10 +9,8 @@ import Button, {
 } from '@/components/common/Button/Button';
 import Input from '@/components/common/Input';
 import ProfileInput from '@/components/Team/ProfileInput';
-import {
-  useTeamMutation,
-  useUploadImageMutation,
-} from '@/queries/groups.queries';
+import { useTeamMutation } from '@/queries/groups.queries';
+import { useUploadImageMutation } from '@/queries/uploadImage.query';
 import { TeamCreate } from '@/types/team';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
