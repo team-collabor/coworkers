@@ -4,7 +4,7 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from 'lucide-react';
-import * as React from 'react';
+import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/common/Button/ShadcnButton';
 import { Calendar } from '@/components/common/Calendar';
@@ -32,8 +32,8 @@ export function DatePicker({
 }: DatePickerProps) {
   // selector 모드에서는 selectedDate를 사용하고, input 모드에서는 date를 사용
   const { selectedDate, setSelectedDate } = useTaskStore();
-  const [date, setDate] = React.useState<Date>(initialDate || new Date());
-  const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
+  const [date, setDate] = useState<Date>(initialDate || new Date());
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const handleSelectDate = (value: Date) => {
     if (!value || !(value instanceof Date)) return;
@@ -55,7 +55,7 @@ export function DatePicker({
     handleSelectDate(tomorrow);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (mode === 'input') {
       setDate(initialDate || new Date());
     }

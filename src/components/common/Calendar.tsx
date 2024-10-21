@@ -1,12 +1,12 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import * as React from 'react';
+import { ComponentProps } from 'react';
 import { DayPicker } from 'react-day-picker';
 
 import { buttonVariants } from '@/components/common/Button/ShadcnButton';
 import { cn } from '@/utils/tailwind/cn';
 import { ko } from 'date-fns/locale';
 
-export type CalendarProps = React.ComponentProps<typeof DayPicker>;
+export type CalendarProps = ComponentProps<typeof DayPicker>;
 
 function Calendar({
   className,
