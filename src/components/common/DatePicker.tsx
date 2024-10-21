@@ -81,7 +81,7 @@ export function DatePicker({
               )}
               onClick={handlePrevDate}
             >
-              <ChevronLeftIcon className="h-3 w-3" />
+              <ChevronLeftIcon className="h-3 w-3 text-icon-primary" />
             </Button>
             <Button
               variant="secondary"
