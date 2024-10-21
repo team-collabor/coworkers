@@ -96,7 +96,6 @@ function Tasks() {
             <div className="flex w-full items-center justify-between">
               <div className="flex w-full items-center justify-start gap-3">
                 <CheckableText
-                  text={task.name}
                   isChecked={task.doneAt !== null}
                   onChange={() => {
                     updateTaskStatus({
@@ -107,7 +106,9 @@ function Tasks() {
                       date: new Date(selectedDate).toLocaleDateString('ko-KR'),
                     });
                   }}
-                />
+                >
+                  {task.name}
+                </CheckableText>
                 <div
                   className={cn(
                     'text-sm-regular flex items-center gap-1 text-default'

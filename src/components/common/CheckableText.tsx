@@ -1,12 +1,12 @@
 import { cn } from '@/utils/tailwind/cn';
 
 type CheckableTextProps = {
-  text: string;
+  children: React.ReactNode;
   isChecked: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-function CheckableText({ text, isChecked, onChange }: CheckableTextProps) {
+function CheckableText({ children, isChecked, onChange }: CheckableTextProps) {
   return (
     <div className="flex items-center rounded-lg bg-gray-800 p-2.5">
       <input
@@ -28,7 +28,7 @@ function CheckableText({ text, isChecked, onChange }: CheckableTextProps) {
           isChecked ? 'line-through' : ''
         )}
       >
-        {text}
+        {children}
       </span>
     </div>
   );
