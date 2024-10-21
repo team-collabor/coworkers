@@ -14,6 +14,7 @@ import { Modal } from '@/components/modal';
 import TaskLists from '@/components/TaskList/TaskLists';
 import Members from '@/components/Team/Members';
 import CircularProgressChart from '@/components/Team/Progress';
+import { useToast } from '@/hooks/useToast';
 import {
   useDeleteTeamMutation,
   useInviteGroupQuery,
@@ -32,6 +33,7 @@ export default function TeamPage() {
   const createTaskList = useTaskListMutation();
   const deleteTeam = useDeleteTeamMutation();
   const taskListNameRef = useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
 
   if (isError || !team) {
     return <p>팀 정보를 불러오는 데 실패했습니다.</p>;
@@ -43,10 +45,18 @@ export default function TeamPage() {
       navigator.clipboard
         .writeText(dataString)
         .then(() => {
-          console.log('데이터가 클립보드에 복사되었습니다.');
+          toast({
+            title: '복사 성공',
+            description: '데이터가 클립보드에 복사되었습니다.',
+          });
         })
         .catch((err) => {
           console.error('클립보드 복사 실패:', err);
+          toast({
+            title: '복사 실패',
+            description: '데이터 복사를 실패하였습니다.',
+            variant: 'destructive',
+          });
         });
     }
   };
@@ -73,16 +83,20 @@ export default function TeamPage() {
     const taskListName = taskListNameRef.current?.value.trim() || '';
 
     if (taskListName) {
-      console.log('생성된 할 일 목록 이름:', taskListName);
       createTaskList.mutate(
         { groupId: Number(id), name: taskListName },
         {
-          onError: (error: any) => {
-            if (error.response && error.response.status === 409) {
-              console.error('409 에러: 이미 존재하는 항목입니다.');
-            } else {
-              console.error('오류 발생:', error);
-            }
+          onSuccess: () => {
+            toast({
+              title: '목록생성 완료',
+              description: '새 목록이 생성되었습니다',
+            });
+          },
+          onError: () => {
+            toast({
+              title: '목록생성 실패',
+              variant: 'destructive',
+            });
           },
         }
       );
@@ -90,7 +104,11 @@ export default function TeamPage() {
         taskListNameRef.current.value = '';
       }
     } else {
-      console.log('할 일 목록 이름이 비어 있습니다.');
+      toast({
+        title: '목록생성 실패',
+        description: '할 일 목록명을 입력해주세요.',
+        variant: 'destructive',
+      });
     }
   };
 
@@ -251,18 +269,22 @@ export default function TeamPage() {
                     그룹에 참여할 수 있는 링크를 복사 합니다.
                   </Modal.Summary>
                 </div>
-                <Button
-                  buttonStyle={ButtonStyle.Box}
-                  textColor={TextColor.White}
-                  textSize={TextSize.Large}
-                  buttonWidth={ButtonWidth.Full}
-                  buttonBackgroundColor={ButtonBackgroundColor.Green}
-                  buttonBorderColor={ButtonBorderColor.Green}
-                  buttonPadding={ButtonPadding.Medium}
-                  onClick={handleInviteGroup}
-                >
-                  링크 복사하기
-                </Button>
+                <Modal.Toggle>
+                  <div>
+                    <Button
+                      buttonStyle={ButtonStyle.Box}
+                      textColor={TextColor.White}
+                      textSize={TextSize.Large}
+                      buttonWidth={ButtonWidth.Full}
+                      buttonBackgroundColor={ButtonBackgroundColor.Green}
+                      buttonBorderColor={ButtonBorderColor.Green}
+                      buttonPadding={ButtonPadding.Medium}
+                      onClick={handleInviteGroup}
+                    >
+                      링크 복사하기
+                    </Button>
+                  </div>
+                </Modal.Toggle>
               </div>
             </Modal.Content>
           </Modal.Portal>

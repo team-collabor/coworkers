@@ -12,64 +12,56 @@ import ProfileInput from '@/components/Team/ProfileInput';
 import { useTeamMutation } from '@/queries/groups.queries';
 import { useUploadImageMutation } from '@/queries/uploadImage.query';
 import { TeamCreate } from '@/types/team';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+const teamSchema: z.ZodSchema<TeamCreate> = z.object({
+  name: z.string().min(1, { message: '팀 이름은 필수 입력입니다.' }),
+  image: z
+    .string()
+    .min(1)
+    .refine((val) => val !== '/icons/BaseTeam_Icon.svg'),
+});
 
 export default function AddTeam() {
-  const [team, setTeam] = useState<TeamCreate>({
-    name: '',
-    image: '/icons/BaseTeam_Icon.svg',
-  });
-
   const [selectImage, setSelectImage] = useState<File | null>(null);
-
-  const [isError, setIsError] = useState({
-    name: false,
-    image: false,
-    nameDuplicate: false,
-  });
-
   const router = useRouter();
   const teamMutation = useTeamMutation();
   const uploadImageMutation = useUploadImageMutation();
 
+  // React Hook Form 설정
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    watch,
+  } = useForm<TeamCreate>({
+    resolver: zodResolver(teamSchema),
+    defaultValues: {
+      name: '',
+      image: '/icons/BaseTeam_Icon.svg',
+    },
+  });
+
+  const watchImage = watch('image');
+
   const handleImageChange = (file: File) => {
     const imageUrl = URL.createObjectURL(file);
-    setTeam({ ...team, image: imageUrl });
     setSelectImage(file);
-    setIsError((prev) => ({ ...prev, image: false }));
+    setValue('image', imageUrl);
   };
 
-  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const name = event.target.value;
-    setTeam({ ...team, name });
-
-    if (name.length < 1) {
-      setIsError({ ...isError, name: true });
-    } else {
-      setIsError({ ...isError, name: false });
-    }
-  };
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (team.name.length < 1) {
-      setIsError((prev) => ({ ...prev, name: true }));
-    } else if (team.image === '/icons/BaseTeam_Icon.svg' || !selectImage) {
-      setIsError((prev) => ({ ...prev, image: true }));
-    } else if (isError.nameDuplicate) {
-      // console.log('이름 중복');
-    } else {
-      const imageUrl = await uploadImageMutation.mutateAsync(selectImage);
-
-      const newTeam = await teamMutation.mutateAsync({
-        name: team.name,
-        image: imageUrl,
-      });
-
-      await router.replace(`/${newTeam.id}`);
-    }
+  const onSubmit = async (data: TeamCreate) => {
+    const imageUrl = await uploadImageMutation.mutateAsync(selectImage!);
+    const newTeam = await teamMutation.mutateAsync({
+      name: data.name,
+      image: imageUrl,
+    });
+    await router.replace(`/${newTeam.id}`);
   };
 
   return (
@@ -77,22 +69,22 @@ export default function AddTeam() {
       className="mt-[12.5rem] flex flex-col items-center gap-20 
     tab:mt-[10rem] mob:mt-[8.25rem] mob:px-2"
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
     >
       <p className="text-4xl tab:text-2xl">팀 생성하기</p>
       <div className="flex flex-col items-start gap-8 ">
         <ProfileInput
-          image={team.image}
+          image={watchImage}
           onImageChange={handleImageChange}
-          error={isError.image}
+          error={!!errors.image}
         />
         <Input
           id="name"
           type="text"
           label="팀 이름"
           placeholder="팀 이름을 입력해주세요."
-          onChange={handleNameChange}
-          errorMessage={isError.name ? '팀 이름을 입력해주세요.' : ''}
+          {...register('name')}
+          errorMessage={errors.name?.message}
         />
         <Button
           buttonStyle={ButtonStyle.Box}

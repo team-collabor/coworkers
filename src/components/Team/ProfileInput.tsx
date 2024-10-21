@@ -1,4 +1,5 @@
 import Input from '@/components/common/Input';
+import { useToast } from '@/hooks/useToast';
 import Image from 'next/image';
 import { useRef } from 'react';
 
@@ -15,6 +16,8 @@ export default function ProfileInput({
 }: ProfileInputProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const { toast } = useToast();
+
   const imageExtensionValidCheck = (fileName: string) => {
     const imageExtensions = ['jpg', 'jpeg', 'png', 'bmp', 'webp'];
     const extension = fileName.split('.').pop()?.toLowerCase();
@@ -25,18 +28,31 @@ export default function ProfileInput({
     const file = event.target.files?.[0];
     if (file) {
       if (!imageExtensionValidCheck(file.name)) {
-        alert('이미지 확장자는 jpg, jpeg, png, bmp, webp만 가능합니다');
+        toast({
+          title: '이미지 등록 실패',
+          description: '이미지 확장자는 jpg, jpeg, png, bmp, webp만 가능합니다',
+          variant: 'destructive',
+        });
         return;
       }
 
       if (file.size > 10 * 1024 * 1024) {
-        alert('이미지 파일 크기는 10MB를 초과할 수 없습니다');
+        toast({
+          title: '이미지 등록 실패',
+          description: '이미지 파일 크기는 10MB를 초과할 수 없습니다',
+          variant: 'destructive',
+        });
         return;
       }
 
       const hasKorean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(file.name);
       if (hasKorean) {
-        throw new Error('파일명에 한글을 사용할 수 없습니다');
+        toast({
+          title: '이미지 등록 실패',
+          description: '파일명에 한글을 사용할 수 없습니다',
+          variant: 'destructive',
+        });
+        return;
       }
 
       onImageChange(file);

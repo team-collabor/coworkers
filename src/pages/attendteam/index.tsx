@@ -11,29 +11,37 @@ import Button, {
 import Input from '@/components/common/Input';
 import { useInviteGroupMutation } from '@/queries/groups.queries';
 import { useAuthStore } from '@/store/useAuthStore';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+const teamSchema = z.object({
+  link: z.string().min(1, { message: '팀 링크를 입력해주세요.' }),
+});
+
+type TeamLinkValues = z.infer<typeof teamSchema>;
 
 export default function AttendTeam() {
-  const [teamLink, setTeamLink] = useState('');
-  const [isError, setIsError] = useState(false);
-
   const router = useRouter();
   const teamMutation = useInviteGroupMutation();
 
   const user = useAuthStore();
 
-  const handleLinkChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTeamLink(event.target.value);
-    setIsError(false);
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<TeamLinkValues>({
+    resolver: zodResolver(teamSchema),
+    defaultValues: {
+      link: '',
+    },
+  });
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (teamLink.length < 1) {
-      setIsError(true);
-    } else if (!user.user) {
+  const onSubmit = (data: TeamLinkValues) => {
+    if (!user.user) {
       console.log('로그인 후 이용해주세요.');
       router
         .replace('/signin')
@@ -42,7 +50,7 @@ export default function AttendTeam() {
       teamMutation.mutate(
         {
           userEmail: user.user?.email,
-          token: teamLink,
+          token: data.link,
         },
         {
           onError: (error: any) => {
@@ -66,7 +74,8 @@ export default function AttendTeam() {
     <form
       className="mt-[12.5rem] flex flex-col items-center gap-10 
       tab:mt-[10rem] mob:mt-[8.25rem] mob:px-2"
-      onSubmit={handleSubmit}
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      onSubmit={handleSubmit(onSubmit)}
     >
       <p className="text-4xl tab:text-2xl">팀 참여하기</p>
 
@@ -75,8 +84,8 @@ export default function AttendTeam() {
         type="text"
         label="팀 링크"
         placeholder="팀 링크를 입력해주세요."
-        onChange={handleLinkChange}
-        errorMessage={isError ? '팀 링크를 입력해주세요.' : ''}
+        {...register('link')}
+        errorMessage={errors.link?.message}
       />
       <Button
         buttonStyle={ButtonStyle.Box}
