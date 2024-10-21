@@ -10,13 +10,18 @@ import { Team, TeamCreate } from '@/types/team';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export function useTeamQuery(id: number) {
-  const { data: team, isError } = useQuery<Team>({
+  const {
+    data: team,
+    isError,
+    isLoading,
+    isFetched,
+  } = useQuery<Team>({
     queryKey: ['team'],
     queryFn: () => getTeams(id),
     enabled: !!id, // id가 있을 때만 쿼리를 실행
   });
 
-  return { team, isError };
+  return { team, isError, isLoading, isFetched };
 }
 
 export function useUploadImageMutation() {
