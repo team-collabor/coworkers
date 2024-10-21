@@ -22,12 +22,14 @@ export enum ButtonWidth {
 export enum ButtonBackgroundColor {
   Green = 'green',
   White = 'white',
+  Gray = 'gray',
   Red = 'red',
   None = 'none',
 }
 export enum ButtonBorderColor {
   Green = 'green',
   Gray = 'gray',
+  LightGray = 'light-gray',
   None = 'none',
 }
 export enum ButtonPadding {
@@ -79,6 +81,8 @@ function Button({
             active:bg-interaction-pressed disabled:bg-interaction-inactive`]:
             buttonBackgroundColor === ButtonBackgroundColor.Green,
           'bg-inverse': buttonBackgroundColor === ButtonBackgroundColor.White,
+          'bg-icon-primary':
+            buttonBackgroundColor === ButtonBackgroundColor.Gray,
           'bg-status-danger':
             buttonBackgroundColor === ButtonBackgroundColor.Red,
           'bg-transparent':
@@ -102,6 +106,9 @@ function Button({
           disabled:border-interaction-inactive`]:
             buttonBorderColor === ButtonBorderColor.Green,
           'border-primary': buttonBorderColor === ButtonBorderColor.Gray,
+          [`border-icon-primary hover:border-icon-inverse
+            active:border-tertiary`]:
+            buttonBorderColor === ButtonBorderColor.LightGray,
           'border-none': buttonBorderColor === ButtonBorderColor.None,
           // buttonPadding
           'px-5 py-3.5': buttonPadding === ButtonPadding.Large,
