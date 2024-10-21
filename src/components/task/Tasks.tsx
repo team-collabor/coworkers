@@ -15,7 +15,6 @@ import {
   RepeatIcon,
 } from 'lucide-react';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 import { Button } from '../common/Button/ShadcnButton';
 import CheckableText from '../common/CheckableText';
 import TaskListSelector from './TaskListSelector';
@@ -34,8 +33,6 @@ function Tasks() {
     date: new Date(selectedDate).toLocaleDateString('ko-KR'),
   });
   const { mutate: updateTaskStatus } = useUpdateTaskStatus();
-
-  useEffect(() => {}, [tasks]);
 
   if (isTeamLoading) {
     return (
