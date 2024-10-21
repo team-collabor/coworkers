@@ -22,8 +22,10 @@ function TaskListSelector({ taskLists }: TaskListSelectorProps) {
   const { selectedTaskList, setSelectedTaskList } = useTaskStore();
 
   useEffect(() => {
-    // 디폴트로 첫 번째 할 일 목록을 선택
-    setSelectedTaskList(taskLists[0]);
+    // taskLists 배열이 비어있지 않은 경우에만 디폴트로 첫 번째 할 일 목록을 선택
+    if (taskLists.length > 0) {
+      setSelectedTaskList(taskLists[0]);
+    }
   }, [taskLists, setSelectedTaskList]);
 
   return (
@@ -33,7 +35,6 @@ function TaskListSelector({ taskLists }: TaskListSelectorProps) {
       <CarouselContent className="-ml-1">
         {taskLists.map((taskList) => (
           <CarouselItem
-            // eslint-disable-next-line react/no-array-index-key
             key={taskList.id}
             className="pl-3 tab:basis-1/5 mob:basis-1/3 pc:basis-1/6"
           >
@@ -42,7 +43,7 @@ function TaskListSelector({ taskLists }: TaskListSelectorProps) {
                 'border-[2px] border-background-tertiary',
                 'bg-background-secondary',
                 {
-                  'border-icon-inverse bg-background-tertiary':
+                  'border-icon-inverse bg-gray-500 bg-opacity-70':
                     selectedTaskList?.id === taskList.id,
                 }
               )}
