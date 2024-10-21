@@ -8,6 +8,8 @@ import Button, {
   TextSize,
 } from '@/components/common/Button/Button';
 import { DatePicker } from '@/components/common/DatePicker';
+import Tasks from '@/components/task/Tasks';
+import { CalendarPlusIcon } from 'lucide-react';
 
 export default function TaskPage() {
   return (
@@ -26,9 +28,13 @@ export default function TaskPage() {
           buttonPadding={ButtonPadding.ExtraSmall}
           buttonBorderColor={ButtonBorderColor.None}
         >
-          + 새로운 목록 추가하기
+          <div className="flex items-center justify-center gap-2">
+            <CalendarPlusIcon className="size-4" />
+            <span>새로운 목록 추가하기</span>
+          </div>
         </Button>
       </section>
+      <Tasks />
     </>
   );
 }
