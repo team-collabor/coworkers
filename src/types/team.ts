@@ -4,6 +4,11 @@ export type TeamCreate = {
   image: string;
 };
 
+export type TeamUpdate = {
+  name: string;
+  image?: string;
+};
+
 export type Team = TeamCreate & {
   teamId: string;
   updatedAt: string; // ISO 날짜 형식의 문자열

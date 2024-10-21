@@ -9,32 +9,45 @@ import Button, {
   TextSize,
 } from '@/components/common/Button/Button';
 import Input from '@/components/common/Input';
+import { useToast } from '@/hooks/useToast';
 import { useInviteGroupMutation } from '@/queries/groups.queries';
 import { useAuthStore } from '@/store/useAuthStore';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-function AddTeam() {
-  const [teamLink, setTeamLink] = useState('');
-  const [isError, setIsError] = useState(false);
+const teamSchema = z.object({
+  link: z.string().min(1, { message: '팀 링크를 입력해주세요.' }),
+});
 
+type TeamLinkValues = z.infer<typeof teamSchema>;
+
+export default function AttendTeam() {
   const router = useRouter();
   const teamMutation = useInviteGroupMutation();
 
   const user = useAuthStore();
+  const { toast } = useToast();
 
-  const handleLinkChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTeamLink(event.target.value);
-    setIsError(false);
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<TeamLinkValues>({
+    resolver: zodResolver(teamSchema),
+    defaultValues: {
+      link: '',
+    },
+  });
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (teamLink.length < 1) {
-      setIsError(true);
-    } else if (!user.user) {
-      console.log('로그인 후 이용해주세요.');
+  const onSubmit = (data: TeamLinkValues) => {
+    if (!user.user) {
+      toast({
+        title: '참여 실패',
+        description: '로그인 후 이용해주세요.',
+        variant: 'destructive',
+      });
       router
         .replace('/signin')
         .catch((error) => console.error('라우팅 오류:', error));
@@ -42,15 +55,14 @@ function AddTeam() {
       teamMutation.mutate(
         {
           userEmail: user.user?.email,
-          token: teamLink,
+          token: data.link,
         },
         {
-          onError: (error: any) => {
-            if (error) {
-              console.log(error.response.data.message);
-            } else {
-              console.error('오류 발생:', error);
-            }
+          onError: () => {
+            toast({
+              title: '참여 실패',
+              variant: 'destructive',
+            });
           },
           onSuccess: () => {
             router
@@ -66,7 +78,8 @@ function AddTeam() {
     <form
       className="mt-[12.5rem] flex flex-col items-center gap-10 
       tab:mt-[10rem] mob:mt-[8.25rem] mob:px-2"
-      onSubmit={handleSubmit}
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      onSubmit={handleSubmit(onSubmit)}
     >
       <p className="text-4xl tab:text-2xl">팀 참여하기</p>
 
@@ -75,8 +88,8 @@ function AddTeam() {
         type="text"
         label="팀 링크"
         placeholder="팀 링크를 입력해주세요."
-        onChange={handleLinkChange}
-        errorMessage={isError ? '팀 링크를 입력해주세요.' : ''}
+        {...register('link')}
+        errorMessage={errors.link?.message}
       />
       <Button
         buttonStyle={ButtonStyle.Box}
@@ -96,5 +109,3 @@ function AddTeam() {
     </form>
   );
 }
-
-export default AddTeam;
