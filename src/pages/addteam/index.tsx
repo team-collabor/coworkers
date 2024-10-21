@@ -32,7 +32,6 @@ export default function AddTeam() {
   const teamMutation = useTeamMutation();
   const uploadImageMutation = useUploadImageMutation();
 
-  // React Hook Form 설정
   const {
     register,
     handleSubmit,

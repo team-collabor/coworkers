@@ -70,11 +70,17 @@ export default function TeamPage() {
   const handleDeleteTeam = () => {
     deleteTeam.mutate(Number(id), {
       onSuccess: () => {
-        console.log('팀 삭제 성공');
+        toast({
+          title: '팀 삭제 완료',
+          description: '팀이 삭제되었습니다',
+        });
         router.push('/').catch((error) => console.error('라우팅 오류:', error));
       },
-      onError: (error) => {
-        console.error('팀 삭제 실패:', error);
+      onError: () => {
+        toast({
+          title: '팀 삭제 실패',
+          variant: 'destructive',
+        });
       },
     });
   };

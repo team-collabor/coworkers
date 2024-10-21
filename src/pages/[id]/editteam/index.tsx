@@ -10,6 +10,7 @@ import Button, {
 } from '@/components/common/Button/Button';
 import Input from '@/components/common/Input';
 import ProfileInput from '@/components/Team/ProfileInput';
+import { useToast } from '@/hooks/useToast';
 import { usePatchTeamMutation, useTeamQuery } from '@/queries/groups.queries';
 import { useUploadImageMutation } from '@/queries/uploadImage.query';
 import { TeamCreate } from '@/types/team';
@@ -32,10 +33,9 @@ export default function EditTeam() {
   const patchTeam = usePatchTeamMutation();
   const uploadImageMutation = useUploadImageMutation();
   const queryClient = useQueryClient();
-
   const [selectImage, setSelectImage] = useState<File | null>(null);
+  const { toast } = useToast();
 
-  // React Hook Form 설정
   const {
     register,
     handleSubmit,
@@ -73,8 +73,12 @@ export default function EditTeam() {
       await patchTeam.mutateAsync(updateData);
       await queryClient.invalidateQueries({ queryKey: ['team'] });
       await router.replace(`/${team?.id}`);
-    } catch (error) {
-      console.error('팀 업데이트 중 오류 발생:', error);
+    } catch {
+      toast({
+        title: '업데이트 실패',
+        description: '팀 업데이트 중 오류 발생.',
+        variant: 'destructive',
+      });
     }
   };
 

@@ -9,11 +9,11 @@ import Button, {
   TextSize,
 } from '@/components/common/Button/Button';
 import Input from '@/components/common/Input';
+import { useToast } from '@/hooks/useToast';
 import { useInviteGroupMutation } from '@/queries/groups.queries';
 import { useAuthStore } from '@/store/useAuthStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/router';
-
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -28,6 +28,7 @@ export default function AttendTeam() {
   const teamMutation = useInviteGroupMutation();
 
   const user = useAuthStore();
+  const { toast } = useToast();
 
   const {
     register,
@@ -42,7 +43,11 @@ export default function AttendTeam() {
 
   const onSubmit = (data: TeamLinkValues) => {
     if (!user.user) {
-      console.log('로그인 후 이용해주세요.');
+      toast({
+        title: '참여 실패',
+        description: '로그인 후 이용해주세요.',
+        variant: 'destructive',
+      });
       router
         .replace('/signin')
         .catch((error) => console.error('라우팅 오류:', error));
@@ -53,12 +58,11 @@ export default function AttendTeam() {
           token: data.link,
         },
         {
-          onError: (error: any) => {
-            if (error) {
-              console.log(error.response.data.message);
-            } else {
-              console.error('오류 발생:', error);
-            }
+          onError: () => {
+            toast({
+              title: '참여 실패',
+              variant: 'destructive',
+            });
           },
           onSuccess: () => {
             router
