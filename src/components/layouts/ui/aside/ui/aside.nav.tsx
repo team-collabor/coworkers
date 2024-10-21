@@ -22,7 +22,7 @@ export default function AsideNav() {
             <button type="button" className="hover:scale-105 hover:opacity-80">
               <span>{m.group.name}</span>
             </button>
-            <Menu.Trigger id={`${ASIDE_MENU}:${m.groupId}`}>
+            <Menu.Trigger menuId={`${ASIDE_MENU}:${m.groupId}`}>
               <button type="button">
                 <UnoptimizedImage
                   src="/icons/Kebab_large.svg"
@@ -34,7 +34,7 @@ export default function AsideNav() {
             </Menu.Trigger>
             <Menu
               className="right-0 z-10 -translate-y-8"
-              id={`${ASIDE_MENU}:${m.groupId}`}
+              menuId={`${ASIDE_MENU}:${m.groupId}`}
             >
               <div className="grid grid-flow-row auto-rows-fr">
                 <button type="button" className="p-4 hover:bg-tertiary">

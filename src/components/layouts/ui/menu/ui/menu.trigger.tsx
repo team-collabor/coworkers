@@ -4,11 +4,11 @@ import { HTMLAttributes } from 'react';
 export function MenuTrigger({
   children,
   className,
-  id,
+  menuId,
   onEvent,
   ...rest
 }: HTMLAttributes<HTMLElement> & {
-  id: string;
+  menuId: string;
   onEvent?: () => void;
 }) {
   const { toggle } = useMenuStore();
@@ -20,7 +20,7 @@ export function MenuTrigger({
         if (onEvent) {
           onEvent();
         }
-        toggle(id);
+        toggle(menuId);
       }}
       {...rest}
     >

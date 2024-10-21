@@ -26,7 +26,7 @@ export default function HeaderNav() {
         <div className="flex items-center gap-x-2 hover:opacity-80">
           <Menu.Trigger
             className="flex items-center gap-x-2"
-            id={GROUP_MENU}
+            menuId={GROUP_MENU}
             onEvent={() => {
               setCurrentTop(currentTop);
             }}
@@ -40,14 +40,14 @@ export default function HeaderNav() {
             />
           </Menu.Trigger>
         </div>
-        <Menu id={GROUP_MENU}>
+        <Menu menuId={GROUP_MENU}>
           <div className="relative h-[15.25rem] overflow-auto pb-20">
             {memberships.map((m) => (
               <li key={m.groupId} className="relative flex items-center">
                 <Link href={`/${m.groupId}`}>
                   <Menu.Trigger
                     className="flex"
-                    id={GROUP_MENU}
+                    menuId={GROUP_MENU}
                     onEvent={() => {
                       setCurrentTop(m.group.name);
                     }}
@@ -63,7 +63,7 @@ export default function HeaderNav() {
                 </Link>
                 {m.role === 'ADMIN' && (
                   <>
-                    <Menu.Trigger id={`${GROUP_MENU}:${m.groupId}`}>
+                    <Menu.Trigger menuId={`${GROUP_MENU}:${m.groupId}`}>
                       <button type="button">
                         <UnoptimizedImage
                           className="justify-self-end"
@@ -76,7 +76,7 @@ export default function HeaderNav() {
                     </Menu.Trigger>
                     <Menu
                       className="right-0 z-10"
-                      id={`${GROUP_MENU}:${m.groupId}`}
+                      menuId={`${GROUP_MENU}:${m.groupId}`}
                     >
                       <div className="grid grid-flow-row auto-rows-fr">
                         <button type="button" className="p-2 hover:bg-tertiary">

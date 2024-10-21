@@ -19,7 +19,7 @@ export default function HeaderProfile() {
   return (
     <>
       <Menu.Trigger
-        id={USER_MENU}
+        menuId={USER_MENU}
         className="ml-auto flex items-center gap-x-2"
       >
         <UnoptimizedImage
@@ -33,8 +33,8 @@ export default function HeaderProfile() {
           {user?.nickname}
         </span>
       </Menu.Trigger>
-      <Menu id={USER_MENU} className="right-0">
-        <Menu.Trigger id={USER_MENU}>
+      <Menu menuId={USER_MENU} className="right-0">
+        <Menu.Trigger menuId={USER_MENU}>
           <div
             className={buttonSt}
             onClick={() => {

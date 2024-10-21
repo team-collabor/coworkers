@@ -6,12 +6,12 @@ import { HTMLAttributes } from 'react';
 export function MenuMain({
   children,
   className,
-  id,
+  menuId,
 }: HTMLAttributes<HTMLElement> & {
-  id: string;
+  menuId: string;
 }) {
   const { hooks } = useMenuStore();
-  const isOpen = findHook(hooks, id);
+  const isOpen = findHook(hooks, menuId);
   return (
     <div
       aria-label="menu-down"
