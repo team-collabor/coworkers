@@ -180,6 +180,13 @@ const config: Config = {
         header: '3.75rem',
       },
     },
+    keyframes: {
+      shimmer: {
+        '100%': {
+          transform: 'translateX(100%)',
+        },
+      },
+    },
   },
   plugins: [],
 };
