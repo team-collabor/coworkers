@@ -43,7 +43,7 @@ function TaskListSelector({ taskLists }: TaskListSelectorProps) {
                 'border-[2px] border-background-tertiary',
                 'bg-background-secondary',
                 {
-                  'border-icon-inverse bg-gray-500 bg-opacity-70':
+                  'border-icon-inverse bg-gray-400 bg-opacity-50':
                     selectedTaskList?.id === taskList.id,
                 }
               )}
