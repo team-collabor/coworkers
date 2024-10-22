@@ -37,7 +37,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
 
         <textarea
           className={cn(
-            'w-full rounded-xl bg-secondary px-5 py-[0.875rem]',
+            'mt-3 w-full rounded-xl bg-secondary px-5 py-[0.875rem]',
             'font-pretendard text-lg-regular text-primary',
             'placeholder:text-default',
             'hover:border-interaction-hover',
