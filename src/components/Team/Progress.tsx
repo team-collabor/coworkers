@@ -12,7 +12,7 @@ interface CircularProgressProps {
   value?: number;
 }
 
-function CircularProgressChart({ value = 25 }: CircularProgressProps) {
+function CircularProgressChart({ value = 0 }: CircularProgressProps) {
   const isMobileView = useIsMobile();
   return (
     <div className="flex items-center gap-12">

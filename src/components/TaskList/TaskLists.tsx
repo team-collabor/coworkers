@@ -6,6 +6,7 @@ import VirtualScroll from './VirtualScroll';
 
 interface TaskListProps {
   taskLists: TaskList[];
+  id: string;
 }
 
 interface TaskItemProps {
@@ -25,7 +26,10 @@ function TaskItem({ taskList, taskListColor }: TaskItemProps) {
       />
       <span className="text-md-medium">{taskList.name}</span>
       <div className="flex h-[1.5625rem] gap-1">
-        <Badge count={1} left={5} />
+        <Badge
+          count={taskList.tasks.filter((task) => task.doneAt).length}
+          left={taskList.tasks.length}
+        />
         <Image
           src="../icons/Kebab_large.svg"
           alt="kebab"
@@ -38,7 +42,7 @@ function TaskItem({ taskList, taskListColor }: TaskItemProps) {
   );
 }
 
-export default function TaskLists({ taskLists }: TaskListProps) {
+export default function TaskLists({ taskLists, id }: TaskListProps) {
   const TASK_LIST_COLORS = [
     'bg-point-purple',
     'bg-point-blue',
@@ -53,7 +57,7 @@ export default function TaskLists({ taskLists }: TaskListProps) {
         renderAhead={4} // 미리 렌더링할 항목 수
       >
         {taskLists.map((taskList, index) => (
-          <Link key={taskList.id} href={`/wines/${taskList.id.toString()}`}>
+          <Link key={taskList.id} href={`/${id}/tasks`}>
             <TaskItem
               key={taskList.id}
               taskList={taskList}

@@ -1,6 +1,7 @@
 import {
   deleteTeam,
   getInviteGroup,
+  getTasks,
   getTeams,
   patchTeam,
   postInviteGroup,
@@ -93,4 +94,14 @@ export function useInviteGroupQuery(id: number) {
   });
 
   return inviteGroupQuery;
+}
+
+export function useTasksQuery(id: number, date: string) {
+  const task = useQuery({
+    queryKey: ['groupTask'],
+    queryFn: () => getTasks(id, date),
+    enabled: !!id,
+  });
+
+  return task;
 }

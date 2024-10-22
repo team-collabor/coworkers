@@ -34,5 +34,14 @@ export type TaskList = {
   createdAt: string; // ISO 날짜 형식의 문자열
   name: string;
   id: number;
-  tasks: string[]; // 문자열 배열
+  tasks: Task[]; // 문자열 배열
+};
+
+export type Task = {
+  commentCount: number;
+  date: string;
+  deletedAt: string;
+  description: string;
+  displayIndex: number;
+  doneAt: string;
 };

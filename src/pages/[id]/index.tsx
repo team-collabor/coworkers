@@ -19,21 +19,31 @@ import {
   useDeleteTeamMutation,
   useInviteGroupQuery,
   useTaskListMutation,
+  useTasksQuery,
   useTeamQuery,
 } from '@/queries/groups.queries';
+
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useRef } from 'react';
 
 export default function TeamPage() {
   const router = useRouter();
+  const today = new Date().toISOString().split('T')[0];
   const { id } = router.query;
   const { team, isError } = useTeamQuery(Number(id));
   const { data } = useInviteGroupQuery(Number(id));
+  const { data: tasks } = useTasksQuery(Number(id), today);
+
   const createTaskList = useTaskListMutation();
   const deleteTeam = useDeleteTeamMutation();
   const taskListNameRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+
+  const TODAY_PROGRESS = tasks?.length
+    ? tasks.filter((task) => task.doneAt).length / tasks.length
+    : 0;
+  const TODAY_PROGRESS_PERCENT = Math.floor(TODAY_PROGRESS * 100);
 
   if (isError || !team) {
     return <p>팀 정보를 불러오는 데 실패했습니다.</p>;
@@ -212,14 +222,14 @@ export default function TeamPage() {
         </Modal>
       </div>
 
-      <TaskLists taskLists={team.taskLists} />
+      <TaskLists taskLists={team.taskLists} id={id!.toString()} />
 
       <p className="text-lg-medium">리포트</p>
       <div
         className="flex h-[13.5625rem] items-center
      justify-between rounded-xl bg-secondary px-5 mob:gap-5"
       >
-        <CircularProgressChart />
+        <CircularProgressChart value={TODAY_PROGRESS_PERCENT} />
 
         <div className="flex w-[25rem] flex-col gap-5 tab:w-[17.5rem]">
           <div
@@ -228,7 +238,9 @@ export default function TeamPage() {
           >
             <div className="flex flex-col gap-1">
               <p className="text-xs-medium text-secondary ">오늘의 할 일</p>
-              <p className="text-2xl-bold text-brand-tertiary">0개</p>
+              <p className="text-2xl-bold text-brand-tertiary">
+                {tasks?.length}개
+              </p>
             </div>
             <Image src="../images/Todo.svg" alt="todo" width={40} height={40} />
           </div>
@@ -238,7 +250,9 @@ export default function TeamPage() {
           >
             <div className="flex flex-col gap-1">
               <p className="text-xs-medium text-secondary ">한 일</p>
-              <p className="text-2xl-bold text-brand-tertiary">0개</p>
+              <p className="text-2xl-bold text-brand-tertiary">
+                {tasks?.filter((task) => task.doneAt).length}개
+              </p>
             </div>
             <Image
               src="/images/Done.svg"
