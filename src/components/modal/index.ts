@@ -10,6 +10,7 @@ import ModalPortal from './ui/modal.portal';
 import ModalSummary from './ui/modal.summary';
 import ModalTitle from './ui/modal.title';
 import ModalToggle from './ui/modal.toggle';
+import ModalTrigger from './ui/modal.trigger';
 
 /**
  *
@@ -49,6 +50,7 @@ export const Modal = Object.assign(
   }),
   {
     Portal: ModalPortal,
+    Trigger: ModalTrigger,
     Close: ModalClose,
     Overlay: ModalOverlay,
     Toggle: ModalToggle,
