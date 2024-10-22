@@ -1,7 +1,12 @@
 import { User } from './users.types';
 
 // FrequencyType 반복 주기 Enum 정의
-export type FrequencyType = 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'ONCE';
+export enum FrequencyType {
+  Once = 'ONCE',
+  Daily = 'DAILY',
+  Weekly = 'WEEKLY',
+  Monthly = 'MONTHLY',
+}
 
 export type FrequencyTypeKorean =
   | '매일 반복'
