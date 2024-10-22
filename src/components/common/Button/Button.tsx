@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/utils/tailwind/cn';
 import { ButtonHTMLAttributes } from 'react';
 
 export enum ButtonStyle {
@@ -68,7 +68,7 @@ function Button({
   return (
     <button
       type={type === 'button' ? 'button' : 'submit'}
-      className={clsx(
+      className={cn(
         'flex items-center justify-center break-keep border-[1px] border-solid',
         {
           // buttonStyle
