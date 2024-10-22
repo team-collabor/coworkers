@@ -1,7 +1,7 @@
 import { useTeamQuery } from '@/queries/groups.queries';
 import { useTasks, useUpdateTaskStatus } from '@/queries/tasks.queries';
 import { useTaskStore } from '@/store/useTaskStore';
-import { Task } from '@/types/tasks.types';
+import { FrequencyType, Task } from '@/types/tasks.types';
 import {
   formatFrequencyToKorean,
   formatKoreanDate,
@@ -138,7 +138,7 @@ function Tasks() {
                   {formatKoreanDate(task.date)}
                 </span>
               </div>
-              {task.frequency !== 'ONCE' && (
+              {task.frequency !== FrequencyType.Once && (
                 <>
                   <span className="text-xs-regular text-default">|</span>
                   <div className="flex items-center gap-1">
