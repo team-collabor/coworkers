@@ -8,8 +8,10 @@ import Button, {
   TextSize,
 } from '@/components/common/Button/Button';
 import { DatePicker } from '@/components/common/DatePicker';
+import IconAndText from '@/components/common/IconAndText';
 import Tasks from '@/components/task/Tasks';
-import { CalendarPlusIcon } from 'lucide-react';
+import { cn } from '@/utils/tailwind/cn';
+import { CalendarPlusIcon, PlusIcon } from 'lucide-react';
 
 export default function TaskPage() {
   return (
@@ -35,6 +37,26 @@ export default function TaskPage() {
         </Button>
       </section>
       <Tasks />
+      <Button
+        className={cn(
+          'fixed bottom-[5vh] right-[10vw]',
+          'tab:bottom-7 tab:right-10',
+          'mob:bottom-[1.44rem] mob:right-7'
+        )}
+        buttonStyle={ButtonStyle.Floating}
+        buttonWidth={ButtonWidth.Fit}
+        buttonPadding={ButtonPadding.Large}
+        buttonBackgroundColor={ButtonBackgroundColor.Green}
+        textColor={TextColor.White}
+        textSize={TextSize.Large}
+        buttonBorderColor={ButtonBorderColor.None}
+      >
+        <IconAndText
+          icon={<PlusIcon className="size-4" />}
+          text="할 일 추가"
+          wrapperClassName="text-lg-semibold text-primary"
+        />
+      </Button>
     </>
   );
 }
