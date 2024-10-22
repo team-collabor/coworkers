@@ -19,16 +19,18 @@ import { cn } from '@/utils/tailwind/cn';
 
 type DatePickerProps = {
   mode: 'selector' | 'input';
+  initialDate?: Date;
   className?: string;
   inputButtonClassName?: string;
-  initialDate?: Date;
+  popoverContentClassName?: string;
 };
 
 export function DatePicker({
   mode,
+  initialDate,
   className,
   inputButtonClassName,
-  initialDate,
+  popoverContentClassName,
 }: DatePickerProps) {
   // selector 모드에서는 selectedDate를 사용하고, input 모드에서는 date를 사용
   const { selectedDate, setSelectedDate } = useTaskStore();
@@ -108,6 +110,7 @@ export function DatePicker({
                 'text-left text-lg-regular text-primary',
                 'bg-secondary hover:bg-tertiary active:bg-tertiary',
                 'border-primary hover:border-interaction-hover',
+                'active:bg-interaction-pressed',
                 !date && 'text-default',
                 inputButtonClassName
               )}
@@ -128,7 +131,9 @@ export function DatePicker({
             </Button>
           )}
         </PopoverTrigger>
-        <PopoverContent className="w-auto rounded-xl p-0">
+        <PopoverContent
+          className={cn('w-auto rounded-xl p-0', popoverContentClassName)}
+        >
           <Calendar
             id="date-picker"
             mode="single"
