@@ -1,5 +1,5 @@
 import Badge from '@/components/common/Badge';
-import { TaskList } from '@/types/team';
+import { TaskList } from '@/types/tasklist.types';
 import Image from 'next/image';
 import Link from 'next/link';
 import VirtualScroll from './VirtualScroll';
@@ -49,6 +49,16 @@ export default function TaskLists({ taskLists, id }: TaskListProps) {
     'bg-point-cyan',
     'bg-point-pink',
   ];
+
+  if (taskLists.length === 0) {
+    return (
+      <div className="flex h-[9rem] items-center justify-center">
+        <span className="text-center text-lg-medium text-default">
+          아직 할 일 목록이 없습니다.
+        </span>
+      </div>
+    );
+  }
 
   return (
     <div className="h-[13rem]">

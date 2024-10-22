@@ -1,9 +1,16 @@
-import { Task, TaskList, Team, TeamCreate, TeamUpdate } from '@/types/team';
+import {
+  InviteGroupRequest,
+  PostGroupRequest,
+  UpdateGroupRequest,
+} from '@/types/dto/requests/group.request.types';
+import { GetGroupResponse } from '@/types/dto/responses/group.response.types';
+import { TaskList } from '@/types/tasklist.types';
+import { Task } from '@/types/tasks.types';
 import { axiosInstance } from './_axiosInstance';
 
-export const getTeams = async (id: number): Promise<Team> => {
+export const getGroup = async (id: number) => {
   try {
-    const response = await axiosInstance<Team>({
+    const response = await axiosInstance<GetGroupResponse>({
       method: 'GET',
       url: `groups/${id}`,
     });
@@ -13,9 +20,9 @@ export const getTeams = async (id: number): Promise<Team> => {
   }
 };
 
-export async function postTeam({ name, image }: TeamCreate) {
+export const postGroup = async ({ name, image }: PostGroupRequest) => {
   try {
-    const response = await axiosInstance.post<Team>(
+    const response = await axiosInstance.post<GetGroupResponse>(
       'groups',
       { name, image },
       {
@@ -30,13 +37,10 @@ export async function postTeam({ name, image }: TeamCreate) {
   } catch (error) {
     throw new Error('팀 생성하는 데 실패했습니다.');
   }
-}
+};
 
-export const patchTeam = async (
-  id: number,
-  { name, image }: TeamUpdate
-): Promise<Team> => {
-  const response = await axiosInstance<Team>({
+export const patchGroup = async ({ id, name, image }: UpdateGroupRequest) => {
+  const response = await axiosInstance<GetGroupResponse>({
     method: 'PATCH',
     url: `groups/${id}`,
     data: { name, ...(image && { image }) },
@@ -47,7 +51,7 @@ export const patchTeam = async (
   return response.data;
 };
 
-export const deleteTeam = async (id: number): Promise<string> => {
+export const deleteGroup = async (id: number) => {
   const response = await axiosInstance<string>({
     method: 'DELETE',
     url: `groups/${id}`,
@@ -55,7 +59,10 @@ export const deleteTeam = async (id: number): Promise<string> => {
   return response.data;
 };
 
-export async function postInviteGroup(userEmail: string, token: string) {
+export async function postInviteGroup({
+  userEmail,
+  token,
+}: InviteGroupRequest) {
   try {
     const response = await axiosInstance.post<string>(
       'groups/accept-invitation',
@@ -74,10 +81,15 @@ export async function postInviteGroup(userEmail: string, token: string) {
   }
 }
 
-export const postTaskList = async (
-  groupId: number,
-  name: string
-): Promise<TaskList> => {
+export const getInviteGroup = async (id: number) => {
+  const response = await axiosInstance<string>({
+    method: 'GET',
+    url: `groups/${id}/invitation`,
+  });
+  return response.data;
+};
+
+export const postTaskList = async (groupId: number, name: string) => {
   try {
     const response = await axiosInstance<TaskList>({
       method: 'POST',
@@ -89,19 +101,11 @@ export const postTaskList = async (
     });
     return response.data;
   } catch (error) {
-    throw new Error('태스크 리스트를 생성하는 데 실패했습니다.');
+    throw new Error('할 일 목록를 생성하는 데 실패했습니다.');
   }
 };
 
-export const getInviteGroup = async (id: number): Promise<string> => {
-  const response = await axiosInstance<string>({
-    method: 'GET',
-    url: `groups/${id}/invitation`,
-  });
-  return response.data;
-};
-
-export async function getTasks(id: number, date: string): Promise<Task[]> {
+export async function getTasks(id: number, date: string) {
   try {
     const response = await axiosInstance.get<Task[]>(`groups/${id}/tasks`, {
       params: { date },

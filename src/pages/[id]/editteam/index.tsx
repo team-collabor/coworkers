@@ -13,7 +13,10 @@ import ProfileInput from '@/components/Team/ProfileInput';
 import { useToast } from '@/hooks/useToast';
 import { usePatchTeamMutation, useTeamQuery } from '@/queries/groups.queries';
 import { useUploadImageMutation } from '@/queries/uploadImage.query';
-import { TeamCreate } from '@/types/team';
+import {
+  PostGroupRequest,
+  UpdateGroupRequest,
+} from '@/types/dto/requests/group.request.types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
@@ -21,7 +24,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-const teamSchema: z.ZodSchema<TeamCreate> = z.object({
+const teamSchema: z.ZodSchema<PostGroupRequest> = z.object({
   name: z.string().min(1, { message: '팀 이름은 필수 입력입니다.' }),
   image: z.string().min(1),
 });
@@ -29,7 +32,7 @@ const teamSchema: z.ZodSchema<TeamCreate> = z.object({
 export default function EditTeam() {
   const router = useRouter();
   const { id } = router.query;
-  const { team } = useTeamQuery(Number(id));
+  const { data: group } = useTeamQuery(Number(id));
   const patchTeam = usePatchTeamMutation();
   const uploadImageMutation = useUploadImageMutation();
   const queryClient = useQueryClient();
@@ -43,7 +46,7 @@ export default function EditTeam() {
     setValue,
     reset,
     watch,
-  } = useForm<TeamCreate>({
+  } = useForm<PostGroupRequest>({
     resolver: zodResolver(teamSchema),
   });
 
@@ -56,11 +59,11 @@ export default function EditTeam() {
 
   const watchImage = watch('image');
 
-  const onSubmit = async (data: TeamCreate) => {
-    console.log(team, data.image, team?.image, team?.id);
+  const onSubmit = async (data: PostGroupRequest) => {
+    console.log(group, data.image, group?.image, group?.id);
 
     try {
-      const updateData: { id: number; name: string; image?: string } = {
+      const updateData: UpdateGroupRequest = {
         id: Number(id),
         name: data.name,
       };
@@ -72,7 +75,7 @@ export default function EditTeam() {
 
       await patchTeam.mutateAsync(updateData);
       await queryClient.invalidateQueries({ queryKey: ['team'] });
-      await router.replace(`/${team?.id}`);
+      await router.replace(`/${group?.id}`);
     } catch {
       toast({
         title: '업데이트 실패',
@@ -83,13 +86,13 @@ export default function EditTeam() {
   };
 
   useEffect(() => {
-    if (team) {
+    if (group) {
       reset({
-        name: team.name,
-        image: team.image || '/icons/BaseTeam_Icon.svg',
+        name: group.name,
+        image: group.image || '/icons/BaseTeam_Icon.svg',
       });
     }
-  }, [team, reset]);
+  }, [group, reset]);
 
   return (
     <form

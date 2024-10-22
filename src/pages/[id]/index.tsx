@@ -26,14 +26,15 @@ import {
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useRef } from 'react';
+import WithOutTeam from '../withoutteam';
 
 export default function TeamPage() {
   const router = useRouter();
   const today = new Date().toISOString().split('T')[0];
   const { id } = router.query;
-  const { team, isError } = useTeamQuery(Number(id));
-  const { data } = useInviteGroupQuery(Number(id));
-  const { data: tasks } = useTasksQuery(Number(id), today);
+  const { data: group, isError } = useTeamQuery(Number(id));
+  const { data: inviteLink } = useInviteGroupQuery(Number(id));
+  const { data: tasks } = useTasksQuery({ id: Number(id), date: today });
 
   const createTaskList = useTaskListMutation();
   const deleteTeam = useDeleteTeamMutation();
@@ -45,13 +46,13 @@ export default function TeamPage() {
     : 0;
   const TODAY_PROGRESS_PERCENT = Math.floor(TODAY_PROGRESS * 100);
 
-  if (isError || !team) {
-    return <p>팀 정보를 불러오는 데 실패했습니다.</p>;
+  if (isError || !group) {
+    return <WithOutTeam />;
   }
 
   const handleInviteGroup = () => {
-    if (id && data) {
-      const dataString = JSON.stringify(data).replace(/"/g, '');
+    if (id && inviteLink) {
+      const dataString = JSON.stringify(inviteLink).replace(/"/g, '');
       navigator.clipboard
         .writeText(dataString)
         .then(() => {
@@ -73,7 +74,7 @@ export default function TeamPage() {
 
   const handleEditTeam = () => {
     router
-      .push(`${team.id}/editteam/`)
+      .push(`${group.id}/editteam/`)
       .catch((error) => console.error('라우팅 오류:', error));
   };
 
@@ -134,7 +135,7 @@ export default function TeamPage() {
         className="flex h-[4rem] items-center
      justify-between  rounded-xl border border-primary bg-secondary px-5"
       >
-        <p className="text-xl-bold">{team?.name}</p>
+        <p className="text-xl-bold">{group?.name}</p>
         <div className="flex items-center gap-7">
           <Image
             src="/images/Thumbnail_team.svg"
@@ -179,7 +180,7 @@ export default function TeamPage() {
         <div className="flex gap-2">
           <p className="text-lg-medium">할 일 목록</p>
           <p className="text-lg-medium text-default">
-            ({team.taskLists.length}개)
+            ({group.taskLists.length}개)
           </p>
         </div>
 
@@ -221,9 +222,7 @@ export default function TeamPage() {
           </Modal.Portal>
         </Modal>
       </div>
-
-      <TaskLists taskLists={team.taskLists} id={id!.toString()} />
-
+      <TaskLists taskLists={group.taskLists} id={id!.toString()} />
       <p className="text-lg-medium">리포트</p>
       <div
         className="flex h-[13.5625rem] items-center
@@ -269,7 +268,7 @@ export default function TeamPage() {
         <div className="flex gap-2">
           <p className="text-lg-medium">멤버</p>
           <p className="text-lg-medium text-default">
-            ({team.members.length}개)
+            ({group.members.length}개)
           </p>
         </div>
 
@@ -310,7 +309,7 @@ export default function TeamPage() {
           </Modal.Portal>
         </Modal>
       </div>
-      <Members members={team.members} />
+      <Members members={group.members} />
     </div>
   );
 }

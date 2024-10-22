@@ -10,7 +10,7 @@ import Button, {
 } from '@/components/common/Button/Button';
 import { Modal } from '@/components/modal';
 import useIsMobile from '@/hooks/useIsMobile';
-import { Member } from '@/types/team';
+import { Member } from '@/types/dto/responses/group.response.types';
 import Image from 'next/image';
 
 interface MemberProps {
@@ -51,7 +51,7 @@ function MemberItem({ member }: MemberProps) {
                   alt="user"
                   width={24}
                   height={24}
-                  style={{ width: 'auto', height: 'auto' }}
+                  style={{ width: '24px', height: '24px' }}
                 />
                 <span className="text-md-medium">{member.userName}</span>
               </div>
