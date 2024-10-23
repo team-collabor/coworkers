@@ -1,3 +1,5 @@
+import { FrequencyType } from '@/types/tasks.types';
+
 export type GetTaskRequest = {
   groupId: number;
   taskListId: number;
@@ -10,4 +12,15 @@ export type UpdateTaskStatusRequest = {
   taskId: number;
   done: boolean;
   date?: string;
+};
+
+export type AddTaskRequest = {
+  name: string;
+  description: string;
+  groupId: number;
+  taskListId: number;
+  startDate: string;
+  frequencyType: FrequencyType;
+  weekDays?: number[];
+  monthDay?: number;
 };
