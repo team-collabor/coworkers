@@ -7,6 +7,7 @@ import ModalContent from './ui/modal.content';
 import ModalHeader from './ui/modal.header';
 import ModalOverlay from './ui/modal.overlay';
 import ModalPortal from './ui/modal.portal';
+import ModalSubmit from './ui/modal.submit';
 import ModalSummary from './ui/modal.summary';
 import ModalTitle from './ui/modal.title';
 import ModalToggle from './ui/modal.toggle';
@@ -54,6 +55,7 @@ export const Modal = Object.assign(
     Close: ModalClose,
     Overlay: ModalOverlay,
     Toggle: ModalToggle,
+    Submit: ModalSubmit,
     Content: ModalContent,
     Header: ModalHeader,
     Title: ModalTitle,
