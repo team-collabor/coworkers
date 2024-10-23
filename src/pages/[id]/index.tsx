@@ -133,9 +133,9 @@ export default function TeamPage() {
     <div className="flex w-full flex-col gap-5 px-20 pt-10 tab:px-5">
       <div
         className="relative flex h-[4rem] items-center
-     justify-start rounded-xl border border-primary bg-secondary pl-5"
+     justify-start rounded-xl border border-primary bg-secondary pl-5 pr-20"
       >
-        <p className="text-xl-bold">{group?.name}</p>
+        <p className="truncate text-xl-bold">{group?.name}</p>
         <div className="absolute right-5 flex items-center gap-7">
           <Image
             src="/images/Thumbnail_team.svg"

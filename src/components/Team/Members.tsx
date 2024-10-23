@@ -48,11 +48,11 @@ function MemberItem({ member }: MemberProps) {
       <Modal>
         {isMobileView ? (
           <Modal.Toggle
-            className="flex h-[74px] w-full
-    items-center justify-between rounded-xl bg-secondary px-6 "
+            className="flex h-[74px] w-full items-center justify-between 
+    rounded-xl bg-secondary px-6 "
           >
-            <div>
-              <div className="flex items-center gap-2">
+            <div className="flex w-full flex-col items-start gap-1">
+              <div className="flex w-full items-center gap-2">
                 <Image
                   src={
                     member.userImage ? member.userImage : '/icons/Member.svg'
@@ -62,9 +62,13 @@ function MemberItem({ member }: MemberProps) {
                   height={24}
                   style={{ width: '24px', height: '24px' }}
                 />
-                <span className="text-md-medium">{member.userName}</span>
+                <span className="truncate text-md-medium">
+                  {member.userName}
+                </span>
               </div>
-              <span className="text-xs-regular">{member.userEmail} </span>
+              <span className="truncate text-xs-regular">
+                {member.userEmail}
+              </span>
             </div>
             <Image
               src="/icons/Kebab_large.svg"
@@ -120,8 +124,10 @@ items-center justify-between rounded-xl bg-secondary px-6 "
                       style={{ width: 'auto', height: 'auto' }}
                     />
                     <div className="flex flex-col items-center gap-2">
-                      <span className="text-lg-medium">{member.userName}</span>
-                      <span className="text-md-regular">
+                      <span className="truncate text-lg-medium ">
+                        {member.userName}
+                      </span>
+                      <span className="truncate text-md-regular ">
                         {member.userEmail}
                       </span>
                     </div>
