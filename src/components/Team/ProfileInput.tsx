@@ -82,7 +82,12 @@ export default function ProfileInput({
           className="h-16 w-16 overflow-hidden 
           rounded-full border-2 border-primary"
         >
-          <Image src={image} alt={image} width={64} height={64} />
+          <Image
+            src={image || '/icons/BaseTeam_Icon.svg'}
+            alt={image || '기본 이미지'}
+            width={64}
+            height={64}
+          />
         </button>
         <div
           className="absolute bottom-0 right-0 flex h-5 w-5 

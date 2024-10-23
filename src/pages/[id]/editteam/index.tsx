@@ -89,7 +89,7 @@ export default function EditTeam() {
     if (group) {
       reset({
         name: group.name,
-        image: group.image || '/icons/BaseTeam_Icon.svg',
+        image: group.image,
       });
     }
   }, [group, reset]);
