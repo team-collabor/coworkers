@@ -51,7 +51,7 @@ function Tasks() {
     return (
       <div
         className={cn(
-          'flex h-[72vh] w-full items-center justify-center',
+          'flex h-[72vh] w-full items-center justify-center mob:h-[50vh]',
           'text-center text-lg-medium text-tertiary'
         )}
       >
@@ -66,7 +66,7 @@ function Tasks() {
     return (
       <div
         className={cn(
-          'flex h-[72vh] w-full items-center justify-center',
+          'flex h-[72vh] w-full items-center justify-center mob:h-[50vh]',
           'text-center text-lg-medium text-tertiary'
         )}
       >
@@ -155,7 +155,7 @@ function Tasks() {
       {isTasksFetched && tasks && tasks.length === 0 && (
         <div
           className={cn(
-            'flex h-[72vh] w-full items-center justify-center',
+            'flex h-[72vh] w-full items-center justify-center mob:h-[40vh]',
             'text-center text-lg-medium text-tertiary'
           )}
         >

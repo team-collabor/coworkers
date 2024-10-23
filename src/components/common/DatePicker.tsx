@@ -69,7 +69,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
     return (
       <div className={cn('flex items-center gap-3', className)}>
         {mode === 'selector' && (
-          <>
+          <div className="flex w-72 justify-between">
             <p className="text-xl-medium text-primary" suppressHydrationWarning>
               {selectedDate
                 ? formatKoreanDate(selectedDate)
@@ -101,7 +101,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
                 <ChevronRightIcon className="h-1 w-1 text-icon-primary" />
               </Button>
             </div>
-          </>
+          </div>
         )}
         <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
           <PopoverTrigger asChild>
