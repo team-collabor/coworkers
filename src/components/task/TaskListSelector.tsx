@@ -1,6 +1,7 @@
 import { useTaskStore } from '@/store/useTaskStore';
 import { TaskList } from '@/types/team';
 import truncateString from '@/utils/string/truncateString';
+import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures';
 import { useEffect } from 'react';
 import { cn } from '../../utils/tailwind/cn';
 import Button, {
@@ -30,6 +31,8 @@ function TaskListSelector({ taskLists }: TaskListSelectorProps) {
 
   return (
     <Carousel
+      opts={{ dragFree: true, duration: 60, watchDrag: true }}
+      plugins={[WheelGesturesPlugin()]}
       className={cn('sticky top-0 w-full bg-background-primary pb-1.5 pt-1.5')}
     >
       <CarouselContent className="-ml-1">
