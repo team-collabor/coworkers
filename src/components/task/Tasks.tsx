@@ -23,7 +23,7 @@ function Tasks() {
   const { id } = useRouter().query;
   const { selectedDate, selectedTaskList } = useTaskStore();
   const {
-    team,
+    data: team,
     isLoading: isTeamLoading,
     isFetched: isTeamFetched,
   } = useTeamQuery(Number(id));

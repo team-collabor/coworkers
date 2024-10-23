@@ -1,5 +1,5 @@
 import { useTaskStore } from '@/store/useTaskStore';
-import { TaskList } from '@/types/team';
+import { TaskList } from '@/types/tasklist.types';
 import truncateString from '@/utils/string/truncateString';
 import { useEffect } from 'react';
 import { cn } from '../../utils/tailwind/cn';
