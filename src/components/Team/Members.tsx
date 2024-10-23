@@ -9,7 +9,7 @@ import Button, {
   TextSize,
 } from '@/components/common/Button/Button';
 import { Modal } from '@/components/modal';
-import useIsMobile from '@/hooks/useIsMobile';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import { useToast } from '@/hooks/useToast';
 import { Member } from '@/types/dto/responses/group.response.types';
 import Image from 'next/image';

@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import useIsMobile from '@/hooks/useIsMobile';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import ChangingProgressProvider from '@/providers/ChangingProgressProvider';
 import {
   CircularProgressbarWithChildren,
