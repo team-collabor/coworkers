@@ -34,10 +34,7 @@ function TaskListSelector({ taskLists }: TaskListSelectorProps) {
     >
       <CarouselContent className="-ml-1">
         {taskLists.map((taskList) => (
-          <CarouselItem
-            key={taskList.id}
-            className="pl-3 tab:basis-1/5 mob:basis-1/3 pc:basis-1/6"
-          >
+          <CarouselItem key={taskList.id} className="pl-3">
             <Button
               className={cn(
                 'border-[2px] border-background-tertiary',
@@ -58,7 +55,7 @@ function TaskListSelector({ taskLists }: TaskListSelectorProps) {
                 setSelectedTaskList(taskList);
               }}
             >
-              {truncateString(taskList.name, 10)}
+              {truncateString(taskList.name, 25)}
             </Button>
           </CarouselItem>
         ))}
