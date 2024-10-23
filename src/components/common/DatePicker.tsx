@@ -4,7 +4,7 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from 'lucide-react';
-import { forwardRef, useEffect, useState } from 'react';
+import { forwardRef, useState } from 'react';
 
 import { Button } from '@/components/common/Button/ShadcnButton';
 import { Calendar } from '@/components/common/Calendar';
@@ -23,6 +23,7 @@ type DatePickerProps = {
   className?: string;
   inputButtonClassName?: string;
   popoverContentClassName?: string;
+  onDateChange?: (date: Date) => void;
 };
 
 export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
@@ -33,7 +34,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
       className,
       inputButtonClassName,
       popoverContentClassName,
-      ...rest
+      onDateChange,
     },
     ref
   ) => {
@@ -49,6 +50,9 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
       } else {
         setDate(value);
       }
+      if (onDateChange) {
+        onDateChange(value);
+      }
       setIsPopoverOpen(false);
     };
     const handlePrevDate = () => {
@@ -61,12 +65,6 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
       tomorrow.setDate(tomorrow.getDate() + 1);
       handleSelectDate(tomorrow);
     };
-
-    useEffect(() => {
-      if (mode === 'input') {
-        setDate(initialDate || new Date());
-      }
-    }, [initialDate, mode]);
 
     return (
       <div className={cn('flex items-center gap-3', className)}>
@@ -159,9 +157,9 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
             type="text"
             value={date?.toISOString()}
             className="hidden"
-            ref={ref as React.LegacyRef<HTMLInputElement>}
+            ref={ref}
             suppressHydrationWarning
-            {...rest}
+            readOnly
           />
         )}
       </div>

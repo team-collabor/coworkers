@@ -30,7 +30,7 @@ function Tasks() {
   const { data: tasks, isFetched: isTasksFetched } = useTasks({
     groupId: Number(id),
     taskListId: selectedTaskList?.id ?? 0,
-    date: new Date(selectedDate).toLocaleDateString('ko-KR'),
+    date: new Date(selectedDate).toISOString(),
   });
   const { mutate: updateTaskStatus } = useUpdateTaskStatus();
 
