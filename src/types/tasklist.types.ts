@@ -7,5 +7,5 @@ export type TaskList = {
   createdAt: string; // ISO 날짜 형식의 문자열
   name: string;
   id: number;
-  tasks: Task[]; // 문자열 배열
+  tasks: Task[];
 };
