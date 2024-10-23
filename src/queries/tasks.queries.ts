@@ -6,6 +6,7 @@ import {
   UpdateTaskStatusRequest,
 } from '@/types/dto/requests/tasks.request.types';
 import { FrequencyType } from '@/types/tasks.types';
+import { formatDate } from '@/utils/dateTimeUtils/FormatData';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { tasksQueryKeys } from './keys/tasks.keys';
 
@@ -44,6 +45,7 @@ export const useAddTask = () => {
         queryKey: tasksQueryKeys.tasks({
           groupId: params.groupId,
           taskListId: params.taskListId,
+          date: formatDate(params.startDate),
         }),
       });
     },
@@ -68,8 +70,8 @@ export const useUpdateTaskStatus = () => {
         queryKey: tasksQueryKeys.tasks({
           groupId: params.groupId,
           taskListId: params.taskListId,
-          date: params.date,
-        } as GetTaskRequest),
+          date: formatDate(params.date ?? ''),
+        }),
       });
     },
   });
