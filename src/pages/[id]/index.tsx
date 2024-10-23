@@ -201,22 +201,20 @@ export default function TeamPage() {
                   placeholder="목록 명을 입력해주세요"
                   ref={taskListNameRef}
                 />
-                <Modal.Toggle>
-                  <div>
-                    <Button
-                      buttonStyle={ButtonStyle.Box}
-                      textColor={TextColor.White}
-                      textSize={TextSize.Large}
-                      buttonWidth={ButtonWidth.Full}
-                      buttonBackgroundColor={ButtonBackgroundColor.Green}
-                      buttonBorderColor={ButtonBorderColor.Green}
-                      buttonPadding={ButtonPadding.Medium}
-                      onClick={handleCreateTask}
-                    >
-                      만들기
-                    </Button>
-                  </div>
-                </Modal.Toggle>
+                <Modal.Close>
+                  <Button
+                    buttonStyle={ButtonStyle.Box}
+                    textColor={TextColor.White}
+                    textSize={TextSize.Large}
+                    buttonWidth={ButtonWidth.Full}
+                    buttonBackgroundColor={ButtonBackgroundColor.Green}
+                    buttonBorderColor={ButtonBorderColor.Green}
+                    buttonPadding={ButtonPadding.Medium}
+                    onClick={handleCreateTask}
+                  >
+                    만들기
+                  </Button>
+                </Modal.Close>
               </div>
             </Modal.Content>
           </Modal.Portal>
@@ -288,22 +286,20 @@ export default function TeamPage() {
                     그룹에 참여할 수 있는 링크를 복사 합니다.
                   </Modal.Summary>
                 </div>
-                <Modal.Toggle>
-                  <div>
-                    <Button
-                      buttonStyle={ButtonStyle.Box}
-                      textColor={TextColor.White}
-                      textSize={TextSize.Large}
-                      buttonWidth={ButtonWidth.Full}
-                      buttonBackgroundColor={ButtonBackgroundColor.Green}
-                      buttonBorderColor={ButtonBorderColor.Green}
-                      buttonPadding={ButtonPadding.Medium}
-                      onClick={handleInviteGroup}
-                    >
-                      링크 복사하기
-                    </Button>
-                  </div>
-                </Modal.Toggle>
+                <Modal.Close>
+                  <Button
+                    buttonStyle={ButtonStyle.Box}
+                    textColor={TextColor.White}
+                    textSize={TextSize.Large}
+                    buttonWidth={ButtonWidth.Full}
+                    buttonBackgroundColor={ButtonBackgroundColor.Green}
+                    buttonBorderColor={ButtonBorderColor.Green}
+                    buttonPadding={ButtonPadding.Medium}
+                    onClick={handleInviteGroup}
+                  >
+                    링크 복사하기
+                  </Button>
+                </Modal.Close>
               </div>
             </Modal.Content>
           </Modal.Portal>

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import Button, {
   ButtonBackgroundColor,
   ButtonBorderColor,
@@ -30,7 +29,6 @@ function MemberItem({ member }: MemberProps) {
     navigator.clipboard
       .writeText(member.userEmail)
       .then(() => {
-        console.log('이메일이 클립보드에 복사되었습니다.');
         toast({
           title: '이메일이 클립보드에 복사되었습니다.',
         });
@@ -135,22 +133,20 @@ items-center justify-between rounded-xl bg-secondary px-6 "
                 </Modal.Title>
               </Modal.Header>
 
-              <Modal.Toggle>
-                <div>
-                  <Button
-                    buttonStyle={ButtonStyle.Box}
-                    textColor={TextColor.White}
-                    textSize={TextSize.Large}
-                    buttonWidth={ButtonWidth.Full}
-                    buttonBackgroundColor={ButtonBackgroundColor.Green}
-                    buttonBorderColor={ButtonBorderColor.Green}
-                    buttonPadding={ButtonPadding.Medium}
-                    onClick={handleEmailCopy}
-                  >
-                    이메일 복사하기
-                  </Button>
-                </div>
-              </Modal.Toggle>
+              <Modal.Close>
+                <Button
+                  buttonStyle={ButtonStyle.Box}
+                  textColor={TextColor.White}
+                  textSize={TextSize.Large}
+                  buttonWidth={ButtonWidth.Full}
+                  buttonBackgroundColor={ButtonBackgroundColor.Green}
+                  buttonBorderColor={ButtonBorderColor.Green}
+                  buttonPadding={ButtonPadding.Medium}
+                  onClick={handleEmailCopy}
+                >
+                  이메일 복사하기
+                </Button>
+              </Modal.Close>
             </div>
           </Modal.Content>
         </Modal.Portal>
