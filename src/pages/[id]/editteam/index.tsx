@@ -12,6 +12,7 @@ import Input from '@/components/common/Input';
 import ProfileInput from '@/components/Team/ProfileInput';
 import { useToast } from '@/hooks/useToast';
 import { usePatchTeamMutation, useTeamQuery } from '@/queries/groups.queries';
+import { groupsQueryKeys } from '@/queries/keys/groups.key';
 import { useUploadImageMutation } from '@/queries/uploadImage.query';
 import {
   PostGroupRequest,
@@ -60,8 +61,6 @@ export default function EditTeam() {
   const watchImage = watch('image');
 
   const onSubmit = async (data: PostGroupRequest) => {
-    console.log(group, data.image, group?.image, group?.id);
-
     try {
       const updateData: UpdateGroupRequest = {
         id: Number(id),
@@ -74,7 +73,9 @@ export default function EditTeam() {
       }
 
       await patchTeam.mutateAsync(updateData);
-      await queryClient.invalidateQueries({ queryKey: ['team'] });
+      await queryClient.invalidateQueries({
+        queryKey: groupsQueryKeys.groups(group!.id),
+      });
       await router.replace(`/${group?.id}`);
     } catch {
       toast({

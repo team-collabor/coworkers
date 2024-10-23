@@ -10,6 +10,7 @@ import Button, {
 } from '@/components/common/Button/Button';
 import { Modal } from '@/components/modal';
 import useIsMobile from '@/hooks/useIsMobile';
+import { useToast } from '@/hooks/useToast';
 import { Member } from '@/types/dto/responses/group.response.types';
 import Image from 'next/image';
 
@@ -23,14 +24,22 @@ interface MembersProps {
 function MemberItem({ member }: MemberProps) {
   const isMobileView = useIsMobile();
 
+  const { toast } = useToast();
+
   const handleEmailCopy = () => {
     navigator.clipboard
       .writeText(member.userEmail)
       .then(() => {
         console.log('이메일이 클립보드에 복사되었습니다.');
+        toast({
+          title: '이메일이 클립보드에 복사되었습니다.',
+        });
       })
-      .catch((err) => {
-        console.error('클립보드 복사 실패:', err);
+      .catch(() => {
+        toast({
+          title: '이메일 복사 실패',
+          variant: 'destructive',
+        });
       });
   };
 

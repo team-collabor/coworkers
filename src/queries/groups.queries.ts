@@ -14,10 +14,11 @@ import {
   UpdateGroupRequest,
 } from '@/types/dto/requests/group.request.types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { groupsInviteQueryKeys, groupsQueryKeys } from './keys/groups.key';
 
 export const useTeamQuery = (id: number) => {
   return useQuery({
-    queryKey: ['team'],
+    queryKey: groupsQueryKeys.groups(id),
     queryFn: () => getGroup(id),
     enabled: !!id,
   });
@@ -51,7 +52,7 @@ export const useInviteGroupMutation = () => {
 
 export const useInviteGroupQuery = (id: number) => {
   return useQuery({
-    queryKey: ['inviteGroup', id],
+    queryKey: groupsInviteQueryKeys.inviteGroups(id),
     queryFn: () => getInviteGroup(id),
     enabled: !!id,
   });
@@ -62,11 +63,13 @@ export const useTaskListMutation = () => {
   return useMutation({
     mutationFn: (params: { groupId: number; name: string }) =>
       postTaskList(params.groupId, params.name),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['team'] }).catch(() => {
-        // eslint-disable-next-line no-console
-        console.error('팀 다시 불러오기 오류');
-      });
+    onSuccess: (_, params) => {
+      queryClient
+        .invalidateQueries({ queryKey: groupsQueryKeys.groups(params.groupId) })
+        .catch(() => {
+          // eslint-disable-next-line no-console
+          console.error('팀 다시 불러오기 오류');
+        });
     },
   });
 };
