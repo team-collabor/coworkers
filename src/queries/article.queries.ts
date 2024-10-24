@@ -25,6 +25,7 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
+import { articleQueryKeys } from './keys/article.keys';
 
 export const useBestArticlesQuery = (params: GetArticlesParams) => {
   return useQuery({
@@ -39,7 +40,7 @@ export const useAllArticlesQuery = (
   pageSize: number
 ) => {
   return useInfiniteQuery<ArticleListResponse>({
-    queryKey: ['allArticles', orderBy, searchValue],
+    queryKey: articleQueryKeys.allArticles(orderBy, searchValue),
     queryFn: ({ pageParam = 1 }) =>
       getArticles({
         page: pageParam as number,
@@ -61,7 +62,7 @@ export const usePostArticleMutation = () => {
 
 export const useGetArticleDetailQuery = (articleId: number) => {
   return useQuery({
-    queryKey: ['articleDetail', articleId],
+    queryKey: articleQueryKeys.article(articleId),
     queryFn: () => getArticleDetail(articleId),
     enabled: !Number.isNaN(articleId),
   });
@@ -73,9 +74,15 @@ export const useLikeArticleMutation = () => {
     mutationFn: (articleId: number) => likeArticle(articleId),
     onSuccess: () => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      queryClient.invalidateQueries({ queryKey: ['articleDetail'] });
+      queryClient.invalidateQueries({ queryKey: articleQueryKeys.article() });
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      queryClient.invalidateQueries({ queryKey: ['allArticles'] });
+      queryClient.invalidateQueries({
+        queryKey: articleQueryKeys.allArticles(),
+      });
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      queryClient.invalidateQueries({
+        queryKey: articleQueryKeys.bestArticles(),
+      });
     },
   });
 };
@@ -86,9 +93,15 @@ export const useUnlikeArticleMutation = () => {
     mutationFn: (articleId: number) => unlikeArticle(articleId),
     onSuccess: () => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      queryClient.invalidateQueries({ queryKey: ['articleDetail'] });
+      queryClient.invalidateQueries({ queryKey: articleQueryKeys.article() });
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      queryClient.invalidateQueries({ queryKey: ['allArticles'] });
+      queryClient.invalidateQueries({
+        queryKey: articleQueryKeys.allArticles(),
+      });
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      queryClient.invalidateQueries({
+        queryKey: articleQueryKeys.bestArticles(),
+      });
     },
   });
 };
@@ -99,7 +112,9 @@ export const usePostArticleCommentMutation = () => {
     mutationFn: (data: PostArticleCommentParams) => postArticleComment(data),
     onSuccess: () => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      queryClient.invalidateQueries({ queryKey: ['articleComments'] });
+      queryClient.invalidateQueries({
+        queryKey: articleQueryKeys.articleComments(),
+      });
     },
   });
 };
@@ -109,7 +124,7 @@ export const useGetArticleCommentsQuery = (
   limit: number
 ) => {
   return useInfiniteQuery<ArticleCommentListResponse>({
-    queryKey: ['articleComments', articleId, limit],
+    queryKey: articleQueryKeys.articleComments(articleId, limit),
     queryFn: ({ pageParam = 0 }) =>
       getArticleComments({ limit, cursor: pageParam as number, articleId }),
     initialPageParam: 0,
@@ -124,7 +139,9 @@ export const useDeleteArticleCommentMutation = () => {
     mutationFn: (commentId: number) => deleteArticleComment(commentId),
     onSuccess: () => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      queryClient.invalidateQueries({ queryKey: ['articleComments'] });
+      queryClient.invalidateQueries({
+        queryKey: articleQueryKeys.articleComments(),
+      });
     },
   });
 };
@@ -141,7 +158,9 @@ export const useUpdateArticleCommentMutation = () => {
     }) => updateArticleComment(commentId, content),
     onSuccess: () => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      queryClient.invalidateQueries({ queryKey: ['articleComments'] });
+      queryClient.invalidateQueries({
+        queryKey: articleQueryKeys.articleComments(),
+      });
     },
   });
 };
