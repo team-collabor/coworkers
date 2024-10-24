@@ -1,7 +1,7 @@
 import { useTeamQuery } from '@/queries/groups.queries';
 import { useTasks, useUpdateTaskStatus } from '@/queries/tasks.queries';
 import { useTaskStore } from '@/store/useTaskStore';
-import { Task } from '@/types/tasks.types';
+import { FrequencyType, Task } from '@/types/tasks.types';
 import {
   formatFrequencyToKorean,
   formatKoreanDate,
@@ -30,7 +30,7 @@ function Tasks() {
   const { data: tasks, isFetched: isTasksFetched } = useTasks({
     groupId: Number(id),
     taskListId: selectedTaskList?.id ?? 0,
-    date: new Date(selectedDate).toLocaleDateString('ko-KR'),
+    date: new Date(selectedDate).toISOString(),
   });
   const { mutate: updateTaskStatus } = useUpdateTaskStatus();
 
@@ -51,7 +51,7 @@ function Tasks() {
     return (
       <div
         className={cn(
-          'flex h-[72vh] w-full items-center justify-center',
+          'flex h-[72vh] w-full items-center justify-center mob:h-[50vh]',
           'text-center text-lg-medium text-tertiary'
         )}
       >
@@ -66,7 +66,7 @@ function Tasks() {
     return (
       <div
         className={cn(
-          'flex h-[72vh] w-full items-center justify-center',
+          'flex h-[72vh] w-full items-center justify-center mob:h-[50vh]',
           'text-center text-lg-medium text-tertiary'
         )}
       >
@@ -138,7 +138,7 @@ function Tasks() {
                   {formatKoreanDate(task.date)}
                 </span>
               </div>
-              {task.frequency !== 'ONCE' && (
+              {task.frequency !== FrequencyType.Once && (
                 <>
                   <span className="text-xs-regular text-default">|</span>
                   <div className="flex items-center gap-1">
@@ -155,7 +155,7 @@ function Tasks() {
       {isTasksFetched && tasks && tasks.length === 0 && (
         <div
           className={cn(
-            'flex h-[72vh] w-full items-center justify-center',
+            'flex h-[72vh] w-full items-center justify-center mob:h-[40vh]',
             'text-center text-lg-medium text-tertiary'
           )}
         >

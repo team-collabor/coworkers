@@ -28,7 +28,9 @@
     "cross-env": "^7.0.3",
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.3.0",
+    "embla-carousel-wheel-gestures": "^8.0.1",
     "immer": "^10.1.1",
+    "lodash": "^4.17.21",
     "lucide-react": "^0.453.0",
     "next": "14.2.14",
     "react": "^18",
@@ -43,6 +45,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^9.0.3",
+    "@hookform/devtools": "^4.3.1",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-circular-progressbar": "^1.1.0",

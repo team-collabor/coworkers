@@ -1,40 +1,29 @@
-import Button, {
-  ButtonBackgroundColor,
-  ButtonBorderColor,
-  ButtonPadding,
-  ButtonStyle,
-  ButtonWidth,
-  TextColor,
-  TextSize,
-} from '@/components/common/Button/Button';
 import { DatePicker } from '@/components/common/DatePicker';
+import AddTaskListModal from '@/components/task/AddTaskListModal';
+import AddTaskModal from '@/components/task/AddTaskModal';
 import Tasks from '@/components/task/Tasks';
-import { CalendarPlusIcon } from 'lucide-react';
+import { cn } from '@/utils/tailwind/cn';
+import { useRouter } from 'next/router';
 
 export default function TaskPage() {
+  const router = useRouter();
+  const { id } = router.query;
+
   return (
     <>
       <section className="mt-10 flex w-full tab:mt-6">
         <h1 className="text-xl-bold text-primary">할 일</h1>
       </section>
-      <section className="mt-7 flex w-full items-center justify-between">
+      <section
+        className={cn(
+          'mt-7 flex w-full items-center justify-between mob:flex-col mob:gap-4'
+        )}
+      >
         <DatePicker mode="selector" />
-        <Button
-          buttonStyle={ButtonStyle.Box}
-          buttonBackgroundColor={ButtonBackgroundColor.None}
-          textColor={TextColor.Green}
-          textSize={TextSize.Medium}
-          buttonWidth={ButtonWidth.Fit}
-          buttonPadding={ButtonPadding.ExtraSmall}
-          buttonBorderColor={ButtonBorderColor.None}
-        >
-          <div className="flex items-center justify-center gap-2">
-            <CalendarPlusIcon className="size-4" />
-            <span>새로운 목록 추가하기</span>
-          </div>
-        </Button>
+        <AddTaskListModal groupId={Number(id)} />
       </section>
       <Tasks />
+      <AddTaskModal />
     </>
   );
 }
