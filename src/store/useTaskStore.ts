@@ -1,4 +1,4 @@
-import { TaskList } from '@/types/team';
+import { TaskList } from '@/types/tasklist.types';
 import { create } from 'zustand';
 import { combine } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';

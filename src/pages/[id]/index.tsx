@@ -19,29 +19,40 @@ import {
   useDeleteTeamMutation,
   useInviteGroupQuery,
   useTaskListMutation,
+  useTasksQuery,
   useTeamQuery,
 } from '@/queries/groups.queries';
+
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useRef } from 'react';
+import WithOutTeam from '../withoutteam';
 
 export default function TeamPage() {
   const router = useRouter();
+  const today = new Date().toISOString().split('T')[0];
   const { id } = router.query;
-  const { team, isError } = useTeamQuery(Number(id));
-  const { data } = useInviteGroupQuery(Number(id));
+  const { data: group, isError } = useTeamQuery(Number(id));
+  const { data: inviteLink } = useInviteGroupQuery(Number(id));
+  const { data: tasks } = useTasksQuery({ id: Number(id), date: today });
+
   const createTaskList = useTaskListMutation();
   const deleteTeam = useDeleteTeamMutation();
   const taskListNameRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
-  if (isError || !team) {
-    return <p>팀 정보를 불러오는 데 실패했습니다.</p>;
+  const TODAY_PROGRESS = tasks?.length
+    ? tasks.filter((task) => task.doneAt).length / tasks.length
+    : 0;
+  const TODAY_PROGRESS_PERCENT = Math.floor(TODAY_PROGRESS * 100);
+
+  if (isError || !group) {
+    return <WithOutTeam />;
   }
 
   const handleInviteGroup = () => {
-    if (id && data) {
-      const dataString = JSON.stringify(data).replace(/"/g, '');
+    if (id && inviteLink) {
+      const dataString = JSON.stringify(inviteLink).replace(/"/g, '');
       navigator.clipboard
         .writeText(dataString)
         .then(() => {
@@ -63,7 +74,7 @@ export default function TeamPage() {
 
   const handleEditTeam = () => {
     router
-      .push(`${team.id}/editteam/`)
+      .push(`${group.id}/editteam/`)
       .catch((error) => console.error('라우팅 오류:', error));
   };
 
@@ -121,11 +132,11 @@ export default function TeamPage() {
   return (
     <div className="flex w-full flex-col gap-5 px-20 pt-10 tab:px-5">
       <div
-        className="flex h-[4rem] items-center
-     justify-between  rounded-xl border border-primary bg-secondary px-5"
+        className="relative flex h-[4rem] items-center
+     justify-start rounded-xl border border-primary bg-secondary pl-5 pr-20"
       >
-        <p className="text-xl-bold">{team?.name}</p>
-        <div className="flex items-center gap-7">
+        <p className="truncate text-xl-bold">{group?.name}</p>
+        <div className="absolute right-5 flex items-center gap-7">
           <Image
             src="/images/Thumbnail_team.svg"
             alt="thumbnail"
@@ -169,7 +180,7 @@ export default function TeamPage() {
         <div className="flex gap-2">
           <p className="text-lg-medium">할 일 목록</p>
           <p className="text-lg-medium text-default">
-            ({team.taskLists.length}개)
+            ({group.taskLists.length}개)
           </p>
         </div>
 
@@ -190,36 +201,32 @@ export default function TeamPage() {
                   placeholder="목록 명을 입력해주세요"
                   ref={taskListNameRef}
                 />
-                <Modal.Toggle>
-                  <div>
-                    <Button
-                      buttonStyle={ButtonStyle.Box}
-                      textColor={TextColor.White}
-                      textSize={TextSize.Large}
-                      buttonWidth={ButtonWidth.Full}
-                      buttonBackgroundColor={ButtonBackgroundColor.Green}
-                      buttonBorderColor={ButtonBorderColor.Green}
-                      buttonPadding={ButtonPadding.Medium}
-                      onClick={handleCreateTask}
-                    >
-                      만들기
-                    </Button>
-                  </div>
-                </Modal.Toggle>
+                <Modal.Close>
+                  <Button
+                    buttonStyle={ButtonStyle.Box}
+                    textColor={TextColor.White}
+                    textSize={TextSize.Large}
+                    buttonWidth={ButtonWidth.Full}
+                    buttonBackgroundColor={ButtonBackgroundColor.Green}
+                    buttonBorderColor={ButtonBorderColor.Green}
+                    buttonPadding={ButtonPadding.Medium}
+                    onClick={handleCreateTask}
+                  >
+                    만들기
+                  </Button>
+                </Modal.Close>
               </div>
             </Modal.Content>
           </Modal.Portal>
         </Modal>
       </div>
-
-      <TaskLists taskLists={team.taskLists} />
-
+      <TaskLists taskLists={group.taskLists} id={id!.toString()} />
       <p className="text-lg-medium">리포트</p>
       <div
         className="flex h-[13.5625rem] items-center
      justify-between rounded-xl bg-secondary px-5 mob:gap-5"
       >
-        <CircularProgressChart />
+        <CircularProgressChart value={TODAY_PROGRESS_PERCENT} />
 
         <div className="flex w-[25rem] flex-col gap-5 tab:w-[17.5rem]">
           <div
@@ -228,7 +235,9 @@ export default function TeamPage() {
           >
             <div className="flex flex-col gap-1">
               <p className="text-xs-medium text-secondary ">오늘의 할 일</p>
-              <p className="text-2xl-bold text-brand-tertiary">0개</p>
+              <p className="text-2xl-bold text-brand-tertiary">
+                {tasks?.length}개
+              </p>
             </div>
             <Image src="../images/Todo.svg" alt="todo" width={40} height={40} />
           </div>
@@ -238,7 +247,9 @@ export default function TeamPage() {
           >
             <div className="flex flex-col gap-1">
               <p className="text-xs-medium text-secondary ">한 일</p>
-              <p className="text-2xl-bold text-brand-tertiary">0개</p>
+              <p className="text-2xl-bold text-brand-tertiary">
+                {tasks?.filter((task) => task.doneAt).length}개
+              </p>
             </div>
             <Image
               src="/images/Done.svg"
@@ -255,7 +266,7 @@ export default function TeamPage() {
         <div className="flex gap-2">
           <p className="text-lg-medium">멤버</p>
           <p className="text-lg-medium text-default">
-            ({team.members.length}개)
+            ({group.members.length}개)
           </p>
         </div>
 
@@ -275,28 +286,26 @@ export default function TeamPage() {
                     그룹에 참여할 수 있는 링크를 복사 합니다.
                   </Modal.Summary>
                 </div>
-                <Modal.Toggle>
-                  <div>
-                    <Button
-                      buttonStyle={ButtonStyle.Box}
-                      textColor={TextColor.White}
-                      textSize={TextSize.Large}
-                      buttonWidth={ButtonWidth.Full}
-                      buttonBackgroundColor={ButtonBackgroundColor.Green}
-                      buttonBorderColor={ButtonBorderColor.Green}
-                      buttonPadding={ButtonPadding.Medium}
-                      onClick={handleInviteGroup}
-                    >
-                      링크 복사하기
-                    </Button>
-                  </div>
-                </Modal.Toggle>
+                <Modal.Close>
+                  <Button
+                    buttonStyle={ButtonStyle.Box}
+                    textColor={TextColor.White}
+                    textSize={TextSize.Large}
+                    buttonWidth={ButtonWidth.Full}
+                    buttonBackgroundColor={ButtonBackgroundColor.Green}
+                    buttonBorderColor={ButtonBorderColor.Green}
+                    buttonPadding={ButtonPadding.Medium}
+                    onClick={handleInviteGroup}
+                  >
+                    링크 복사하기
+                  </Button>
+                </Modal.Close>
               </div>
             </Modal.Content>
           </Modal.Portal>
         </Modal>
       </div>
-      <Members members={team.members} />
+      <Members members={group.members} />
     </div>
   );
 }

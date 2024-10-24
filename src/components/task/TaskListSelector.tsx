@@ -1,5 +1,5 @@
 import { useTaskStore } from '@/store/useTaskStore';
-import { TaskList } from '@/types/team';
+import { TaskList } from '@/types/tasklist.types';
 import truncateString from '@/utils/string/truncateString';
 import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures';
 import { useEffect } from 'react';

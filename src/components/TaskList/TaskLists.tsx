@@ -1,11 +1,12 @@
 import Badge from '@/components/common/Badge';
-import { TaskList } from '@/types/team';
+import { TaskList } from '@/types/tasklist.types';
 import Image from 'next/image';
 import Link from 'next/link';
 import VirtualScroll from './VirtualScroll';
 
 interface TaskListProps {
   taskLists: TaskList[];
+  id: string;
 }
 
 interface TaskItemProps {
@@ -25,7 +26,10 @@ function TaskItem({ taskList, taskListColor }: TaskItemProps) {
       />
       <span className="text-md-medium">{taskList.name}</span>
       <div className="flex h-[1.5625rem] gap-1">
-        <Badge count={1} left={5} />
+        <Badge
+          count={taskList.tasks.filter((task) => task.doneAt).length}
+          left={taskList.tasks.length}
+        />
         <Image
           src="../icons/Kebab_large.svg"
           alt="kebab"
@@ -38,13 +42,23 @@ function TaskItem({ taskList, taskListColor }: TaskItemProps) {
   );
 }
 
-export default function TaskLists({ taskLists }: TaskListProps) {
+export default function TaskLists({ taskLists, id }: TaskListProps) {
   const TASK_LIST_COLORS = [
     'bg-point-purple',
     'bg-point-blue',
     'bg-point-cyan',
     'bg-point-pink',
   ];
+
+  if (taskLists.length === 0) {
+    return (
+      <div className="flex h-[9rem] items-center justify-center">
+        <span className="text-center text-lg-medium text-default">
+          아직 할 일 목록이 없습니다.
+        </span>
+      </div>
+    );
+  }
 
   return (
     <div className="h-[13rem]">
@@ -53,7 +67,7 @@ export default function TaskLists({ taskLists }: TaskListProps) {
         renderAhead={4} // 미리 렌더링할 항목 수
       >
         {taskLists.map((taskList, index) => (
-          <Link key={taskList.id} href={`/wines/${taskList.id.toString()}`}>
+          <Link key={taskList.id} href={`/${id}/tasks`}>
             <TaskItem
               key={taskList.id}
               taskList={taskList}

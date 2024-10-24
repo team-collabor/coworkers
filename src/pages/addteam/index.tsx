@@ -11,14 +11,14 @@ import Input from '@/components/common/Input';
 import ProfileInput from '@/components/Team/ProfileInput';
 import { useTeamMutation } from '@/queries/groups.queries';
 import { useUploadImageMutation } from '@/queries/uploadImage.query';
-import { TeamCreate } from '@/types/team';
+import { PostGroupRequest } from '@/types/dto/requests/group.request.types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-const teamSchema: z.ZodSchema<TeamCreate> = z.object({
+const teamSchema: z.ZodSchema<PostGroupRequest> = z.object({
   name: z.string().min(1, { message: '팀 이름은 필수 입력입니다.' }),
   image: z
     .string()
@@ -38,7 +38,7 @@ export default function AddTeam() {
     formState: { errors },
     setValue,
     watch,
-  } = useForm<TeamCreate>({
+  } = useForm<PostGroupRequest>({
     resolver: zodResolver(teamSchema),
     defaultValues: {
       name: '',
@@ -54,7 +54,7 @@ export default function AddTeam() {
     setValue('image', imageUrl);
   };
 
-  const onSubmit = async (data: TeamCreate) => {
+  const onSubmit = async (data: PostGroupRequest) => {
     const imageUrl = await uploadImageMutation.mutateAsync(selectImage!);
     const newTeam = await teamMutation.mutateAsync({
       name: data.name,

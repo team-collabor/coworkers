@@ -76,36 +76,37 @@ export default function AttendTeam() {
 
   return (
     <form
-      className="mt-[12.5rem] flex flex-col items-center gap-10 
+      className="mt-[12.5rem] flex flex-col items-center gap-20 
       tab:mt-[10rem] mob:mt-[8.25rem] mob:px-2"
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
       onSubmit={handleSubmit(onSubmit)}
     >
       <p className="text-4xl tab:text-2xl">팀 참여하기</p>
-
-      <Input
-        id="team-link"
-        type="text"
-        label="팀 링크"
-        placeholder="팀 링크를 입력해주세요."
-        {...register('link')}
-        errorMessage={errors.link?.message}
-      />
-      <Button
-        buttonStyle={ButtonStyle.Box}
-        textColor={TextColor.White}
-        textSize={TextSize.Medium}
-        buttonWidth={ButtonWidth.Full}
-        buttonBackgroundColor={ButtonBackgroundColor.Green}
-        buttonBorderColor={ButtonBorderColor.Gray}
-        buttonPadding={ButtonPadding.Medium}
-        type="submit"
-      >
-        참여하기
-      </Button>
-      <p className="text-lg-regular mob:text-md-regular">
-        공유받은 팀 링크를 입력해 참여할 수 있어요.
-      </p>
+      <div className="flex flex-col items-start gap-8 ">
+        <Input
+          id="team-link"
+          type="text"
+          label="팀 링크"
+          placeholder="팀 링크를 입력해주세요."
+          {...register('link')}
+          errorMessage={errors.link?.message}
+        />
+        <Button
+          buttonStyle={ButtonStyle.Box}
+          textColor={TextColor.White}
+          textSize={TextSize.Medium}
+          buttonWidth={ButtonWidth.Full}
+          buttonBackgroundColor={ButtonBackgroundColor.Green}
+          buttonBorderColor={ButtonBorderColor.Gray}
+          buttonPadding={ButtonPadding.Medium}
+          type="submit"
+        >
+          참여하기
+        </Button>
+        <p className="text-lg-regular mob:text-md-regular">
+          공유받은 팀 링크를 입력해 참여할 수 있어요.
+        </p>
+      </div>
     </form>
   );
 }
