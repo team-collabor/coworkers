@@ -11,6 +11,7 @@ import Button, {
 } from '@/components/common/Button/Button';
 import Input from '@/components/common/Input';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 
 function Boards() {
@@ -37,19 +38,21 @@ function Boards() {
       />
       <BestArticlesSection />
       <AllArticlesSection searchValue={searchValue} />
-      <Button
-        className="fixed tab:bottom-20 tab:right-5 pc:bottom-10 pc:right-10"
-        buttonStyle={ButtonStyle.Floating}
-        buttonBackgroundColor={ButtonBackgroundColor.Green}
-        buttonBorderColor={ButtonBorderColor.None}
-        textColor={TextColor.White}
-        textSize={TextSize.Large}
-        buttonWidth={ButtonWidth.Fit}
-        buttonPadding={ButtonPadding.Large}
-      >
-        <Image src="/icons/plus.svg" alt="plus" width={16} height={16} />
-        <p>글쓰기</p>
-      </Button>
+      <Link href="/addboard">
+        <Button
+          className="fixed tab:bottom-20 tab:right-5 pc:bottom-10 pc:right-10"
+          buttonStyle={ButtonStyle.Floating}
+          buttonBackgroundColor={ButtonBackgroundColor.Green}
+          buttonBorderColor={ButtonBorderColor.None}
+          textColor={TextColor.White}
+          textSize={TextSize.Large}
+          buttonWidth={ButtonWidth.Fit}
+          buttonPadding={ButtonPadding.Large}
+        >
+          <Image src="/icons/plus.svg" alt="plus" width={16} height={16} />
+          <p>글쓰기</p>
+        </Button>
+      </Link>
     </>
   );
 }
