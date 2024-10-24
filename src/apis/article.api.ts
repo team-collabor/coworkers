@@ -1,9 +1,14 @@
 import {
+  GetArticleCommentsParams,
   GetArticlesParams,
+  PostArticleCommentParams,
   PostArticleParams,
 } from '@/types/dto/requests/article.request.types';
 import {
+  ArticleCommentListResponse,
+  ArticleDetailResponse,
   ArticleListResponse,
+  PostArticleCommentResponse,
   PostArticleResponse,
 } from '@/types/dto/responses/article.response.types';
 import { axiosInstance } from './_axiosInstance';
@@ -34,4 +39,72 @@ export const postArticle = async (data: PostArticleParams) => {
     data,
   });
   return response.data;
+};
+
+export const getArticleDetail = async (articleId: number) => {
+  const response = await axiosInstance<ArticleDetailResponse>({
+    method: 'GET',
+    url: `/articles/${articleId}`,
+  });
+  return response.data;
+};
+
+export const likeArticle = async (articleId: number) => {
+  await axiosInstance({
+    method: 'POST',
+    url: `/articles/${articleId}/like`,
+  });
+};
+export const unlikeArticle = async (articleId: number) => {
+  await axiosInstance({
+    method: 'DELETE',
+    url: `/articles/${articleId}/like`,
+  });
+};
+
+export const postArticleComment = async (data: PostArticleCommentParams) => {
+  const response = await axiosInstance<PostArticleCommentResponse>({
+    method: 'POST',
+    url: `/articles/${data.articleId}/comments`,
+    data: {
+      content: data.content,
+    },
+  });
+  return response.data;
+};
+
+export const getArticleComments = async ({
+  limit,
+  cursor,
+  articleId,
+}: GetArticleCommentsParams) => {
+  const response = await axiosInstance<ArticleCommentListResponse>({
+    method: 'GET',
+    url: `/articles/${articleId}/comments`,
+    params: {
+      limit,
+      cursor,
+    },
+  });
+  return response.data;
+};
+
+export const deleteArticleComment = async (commentId: number) => {
+  await axiosInstance({
+    method: 'DELETE',
+    url: `/comments/${commentId}`,
+  });
+};
+
+export const updateArticleComment = async (
+  commentId: number,
+  content: string
+) => {
+  await axiosInstance({
+    method: 'PATCH',
+    url: `/comments/${commentId}`,
+    data: {
+      content,
+    },
+  });
 };
