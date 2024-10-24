@@ -44,7 +44,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   buttonStyle: ButtonStyle;
   textColor: TextColor;
   textSize: TextSize;
-  buttonWidth: ButtonWidth;
+  buttonWidth?: ButtonWidth;
   buttonBackgroundColor: ButtonBackgroundColor;
   buttonBorderColor: ButtonBorderColor;
   buttonPadding: ButtonPadding;
