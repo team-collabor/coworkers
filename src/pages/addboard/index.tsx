@@ -3,7 +3,6 @@ import Button, {
   ButtonBorderColor,
   ButtonPadding,
   ButtonStyle,
-  ButtonWidth,
   TextColor,
   TextSize,
 } from '@/components/common/Button/Button';
@@ -120,14 +119,13 @@ function AddBoard() {
 
   return (
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    <form className="flex w-full flex-col gap-10" onSubmit={handleSubmit}>
+    <form className="mt-20 flex w-full flex-col gap-10" onSubmit={handleSubmit}>
       <div className="flex items-center justify-between">
         <h1 className="text-xl-bold text-primary">게시글 쓰기</h1>
         <Button
           buttonStyle={ButtonStyle.Box}
           textColor={TextColor.White}
           textSize={TextSize.Large}
-          buttonWidth={ButtonWidth.Fit}
           buttonBackgroundColor={ButtonBackgroundColor.Green}
           buttonBorderColor={ButtonBorderColor.None}
           buttonPadding={ButtonPadding.Large}

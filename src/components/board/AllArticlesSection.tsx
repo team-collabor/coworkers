@@ -22,7 +22,7 @@ function AllArticlesSection({ searchValue }: AllArticlesSectionProps) {
     PAGE_SIZE
   );
 
-  const { ref, inView } = useInView({ threshold: 0.5 });
+  const { ref, inView } = useInView({ threshold: 0.8 });
 
   useEffect(() => {
     if (inView && hasNextPage) {
