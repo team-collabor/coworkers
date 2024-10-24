@@ -1,4 +1,4 @@
-import { Article } from '@/types/dto/responses/article.response.types';
+import { Article } from '@/types/article.types';
 import { formatDate } from '@/utils/dateTimeUtils/FormatData';
 import Image from 'next/image';
 
