@@ -74,6 +74,8 @@ export const useLikeArticleMutation = () => {
     onSuccess: () => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       queryClient.invalidateQueries({ queryKey: ['articleDetail'] });
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      queryClient.invalidateQueries({ queryKey: ['allArticles'] });
     },
   });
 };
@@ -85,6 +87,8 @@ export const useUnlikeArticleMutation = () => {
     onSuccess: () => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       queryClient.invalidateQueries({ queryKey: ['articleDetail'] });
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      queryClient.invalidateQueries({ queryKey: ['allArticles'] });
     },
   });
 };
