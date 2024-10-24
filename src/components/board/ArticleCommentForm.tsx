@@ -6,7 +6,6 @@ import Button, {
   ButtonBorderColor,
   ButtonPadding,
   ButtonStyle,
-  ButtonWidth,
   TextColor,
   TextSize,
 } from '../common/Button/Button';
@@ -54,10 +53,9 @@ function ArticleCommentForm({ boardId }: ArticleCommentFormProps) {
         textColor={TextColor.White}
         buttonBackgroundColor={ButtonBackgroundColor.Green}
         textSize={TextSize.Large}
-        buttonWidth={ButtonWidth.Fit}
         buttonBorderColor={ButtonBorderColor.None}
         buttonPadding={ButtonPadding.Large}
-        className="self-end"
+        className="w-44 self-end mob:w-20"
       >
         등록
       </Button>
