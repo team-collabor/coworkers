@@ -68,7 +68,7 @@ function TaskDetailContent({ task }: { task: Task }) {
             }
           )}
         >
-          {task.description}
+          {task.id}
           {task.description}
           {task.description}
           {task.description}
