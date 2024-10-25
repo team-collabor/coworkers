@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import {
   deleteArticleComment,
   getArticleComments,
@@ -50,7 +51,9 @@ export const useAllArticlesQuery = (
       }),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) =>
-      allPages.length < lastPage.totalCount ? allPages.length + 1 : undefined,
+      allPages.length < lastPage.totalCount / pageSize
+        ? allPages.length + 1
+        : undefined,
   });
 };
 
@@ -72,14 +75,13 @@ export const useLikeArticleMutation = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (articleId: number) => likeArticle(articleId),
-    onSuccess: () => {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      queryClient.invalidateQueries({ queryKey: articleQueryKeys.article() });
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    onSuccess: (_, articleId) => {
+      queryClient.invalidateQueries({
+        queryKey: articleQueryKeys.article(articleId),
+      });
       queryClient.invalidateQueries({
         queryKey: articleQueryKeys.allArticles(),
       });
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       queryClient.invalidateQueries({
         queryKey: articleQueryKeys.bestArticles(),
       });
@@ -91,14 +93,13 @@ export const useUnlikeArticleMutation = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (articleId: number) => unlikeArticle(articleId),
-    onSuccess: () => {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      queryClient.invalidateQueries({ queryKey: articleQueryKeys.article() });
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    onSuccess: (_, articleId) => {
+      queryClient.invalidateQueries({
+        queryKey: articleQueryKeys.article(articleId),
+      });
       queryClient.invalidateQueries({
         queryKey: articleQueryKeys.allArticles(),
       });
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       queryClient.invalidateQueries({
         queryKey: articleQueryKeys.bestArticles(),
       });
@@ -111,7 +112,6 @@ export const usePostArticleCommentMutation = () => {
   return useMutation({
     mutationFn: (data: PostArticleCommentParams) => postArticleComment(data),
     onSuccess: () => {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       queryClient.invalidateQueries({
         queryKey: articleQueryKeys.articleComments(),
       });
@@ -138,7 +138,6 @@ export const useDeleteArticleCommentMutation = () => {
   return useMutation({
     mutationFn: (commentId: number) => deleteArticleComment(commentId),
     onSuccess: () => {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       queryClient.invalidateQueries({
         queryKey: articleQueryKeys.articleComments(),
       });
@@ -157,7 +156,6 @@ export const useUpdateArticleCommentMutation = () => {
       content: string;
     }) => updateArticleComment(commentId, content),
     onSuccess: () => {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       queryClient.invalidateQueries({
         queryKey: articleQueryKeys.articleComments(),
       });
