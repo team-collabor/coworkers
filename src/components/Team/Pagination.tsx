@@ -15,7 +15,7 @@ export default function Pagination({ total, limit, page, setPage }: Props) {
   };
 
   return (
-    <div className="flex w-[100px]  gap-2">
+    <div className="my-5 flex w-[100px] gap-2">
       <button
         type="button"
         onClick={() => setPage(page - 1)}

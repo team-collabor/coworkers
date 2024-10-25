@@ -164,7 +164,7 @@ export default function Members({ members }: MembersProps) {
   return (
     <div className="flex flex-col items-center justify-center">
       <div
-        className="mb-10 grid  w-full grid-cols-3 gap-3
+        className="grid  w-full grid-cols-3 gap-3
     overflow-y-auto mob:grid-cols-2"
       >
         {members.slice(offset, offset + LIMIT).map((member) => (
