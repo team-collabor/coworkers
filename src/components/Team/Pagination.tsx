@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import Image from 'next/image';
 
 type Props = {
@@ -26,7 +27,7 @@ export default function Pagination({ total, limit, page, setPage }: Props) {
       {Array(numPages)
         .fill(0)
         .map((_, i) => (
-          <button value={i} type="button" onClick={() => handlePage(i)}>
+          <button key={i} value={i} type="button" onClick={() => handlePage(i)}>
             <span>{i + 1}</span>
           </button>
         ))}
