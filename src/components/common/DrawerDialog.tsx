@@ -17,6 +17,8 @@ import {
   DrawerTrigger,
 } from '@/components/common/Drawer';
 import { useIsMobile } from '@/hooks/useIsMobile';
+import { cn } from '@/utils/tailwind/cn';
+import React from 'react';
 
 type DrawerDialogProps = {
   open: boolean;
@@ -24,8 +26,9 @@ type DrawerDialogProps = {
   trigger?: React.ReactNode;
   title?: React.ReactNode;
   description?: React.ReactNode;
-  content?: React.ReactNode;
+  children?: React.ReactNode;
   closeButton?: React.ReactNode;
+  dialogClassName?: React.HTMLAttributes<HTMLDivElement>['className'];
 };
 
 export function DrawerDialog({
@@ -34,8 +37,9 @@ export function DrawerDialog({
   trigger,
   title,
   description,
-  content,
+  children,
   closeButton,
+  dialogClassName,
 }: DrawerDialogProps) {
   const isMobile = useIsMobile();
 
@@ -43,14 +47,23 @@ export function DrawerDialog({
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>{title}</DialogTitle>
-            {description && (
-              <DialogDescription>{description}</DialogDescription>
-            )}
-          </DialogHeader>
-          {content}
+        <DialogContent
+          className={cn(
+            'mx-auto h-full max-h-[90vh] w-full',
+            'overflow-y-scroll',
+            'max-w-[48rem]',
+            dialogClassName
+          )}
+        >
+          {(title || description) && (
+            <DialogHeader>
+              <DialogTitle>{title}</DialogTitle>
+              {description && (
+                <DialogDescription>{description}</DialogDescription>
+              )}
+            </DialogHeader>
+          )}
+          {children}
         </DialogContent>
       </Dialog>
     );
@@ -60,11 +73,15 @@ export function DrawerDialog({
     <Drawer open={open} onOpenChange={setOpen}>
       {trigger && <DrawerTrigger asChild>{trigger}</DrawerTrigger>}
       <DrawerContent>
-        <DrawerHeader className="text-left">
-          <DrawerTitle>{title}</DrawerTitle>
-          {description && <DrawerDescription>{description}</DrawerDescription>}
-        </DrawerHeader>
-        {content}
+        {(title || description) && (
+          <DrawerHeader className="text-left">
+            <DrawerTitle>{title}</DrawerTitle>
+            {description && (
+              <DrawerDescription>{description}</DrawerDescription>
+            )}
+          </DrawerHeader>
+        )}
+        {children}
         <DrawerFooter className="pt-2">
           {closeButton && <DrawerClose asChild>{closeButton}</DrawerClose>}
         </DrawerFooter>

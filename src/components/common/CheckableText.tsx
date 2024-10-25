@@ -8,11 +8,14 @@ type CheckableTextProps = {
 
 function CheckableText({ children, isChecked, onChange }: CheckableTextProps) {
   return (
-    <div className="flex items-center rounded-lg bg-gray-800 p-2.5">
+    <div className="flex items-center rounded-lg bg-transparent p-2.5">
       <input
         type="checkbox"
         checked={isChecked}
         onChange={onChange}
+        onClick={(e: React.MouseEvent<HTMLInputElement>) => {
+          e.stopPropagation();
+        }}
         className={cn(
           'h-5 w-5 cursor-pointer appearance-none rounded-md',
           'border-2 border-icon-inverse',
