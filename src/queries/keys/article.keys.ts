@@ -5,7 +5,7 @@ export const articleQueryKeys = {
     searchValue,
   ],
   bestArticles: () => ['bestArticles'],
-  article: (articleId?: number) => ['article', articleId],
+  article: (articleId: number) => ['article', articleId],
   articleComments: (articleId?: number, limit?: number) => [
     'articleComments',
     articleId,
