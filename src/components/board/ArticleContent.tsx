@@ -6,7 +6,6 @@ import {
 } from '@/queries/article.queries';
 import { formatDate } from '@/utils/dateTimeUtils/FormatData';
 import Image from 'next/image';
-import { useState } from 'react';
 
 type ArticleContentProps = {
   boardId: number;
@@ -17,15 +16,11 @@ function ArticleContent({ boardId }: ArticleContentProps) {
   const { mutateAsync: likeArticle } = useLikeArticleMutation();
   const { mutateAsync: unlikeArticle } = useUnlikeArticleMutation();
 
-  const [like, setLike] = useState(data?.isLiked);
-
   const handleLikeClick = async () => {
-    if (like) {
+    if (data?.isLiked) {
       await unlikeArticle(boardId);
-      setLike(false);
     } else {
       await likeArticle(boardId);
-      setLike(true);
     }
   };
 
@@ -73,7 +68,9 @@ function ArticleContent({ boardId }: ArticleContentProps) {
           <div className="flex items-center gap-1">
             <button type="button" onClick={handleLikeClick}>
               <Image
-                src={like ? '/icons/Red_Heart.svg' : '/icons/Heart.svg'}
+                src={
+                  data?.isLiked ? '/icons/Red_Heart.svg' : '/icons/Heart.svg'
+                }
                 alt="heartIcon"
                 width={16}
                 height={16}
