@@ -31,7 +31,7 @@ interface TaskItemProps {
 function TaskItem({ taskList, taskListColor }: TaskItemProps) {
   return (
     <div
-      className="relative mb-[10px] flex h-[42px] items-center 
+      className="relative mb-[10px] flex h-[40px] items-center 
      justify-between rounded-xl bg-secondary px-5"
     >
       <div
@@ -148,10 +148,10 @@ export default function TaskLists({ taskLists, id }: TaskListProps) {
         </Modal>
       </div>
 
-      <div className="h-[13rem]">
+      <div className="h-[200px]">
         <VirtualScroll
           itemHeight={40} // 각 TaskItem의 높이 (패딩과 마진을 고려하여 설정)
-          renderAhead={4} // 미리 렌더링할 항목 수
+          renderAhead={1} // 미리 렌더링할 항목 수
         >
           {taskLists.map((taskList, index) => (
             <Link key={taskList.id} href={`/${id}/tasks`}>
