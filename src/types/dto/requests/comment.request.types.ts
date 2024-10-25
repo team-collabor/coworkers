@@ -7,6 +7,7 @@ export type AddCommentRequest = {
 
 export type UpdateCommentRequest = {
   taskId: number;
+  commentId: number;
   content: Comment['content'];
 };
 
