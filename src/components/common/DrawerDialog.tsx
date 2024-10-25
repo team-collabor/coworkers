@@ -15,16 +15,16 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from '@/components/common/drawer';
+} from '@/components/common/Drawer';
 import { useIsMobile } from '@/hooks/useIsMobile';
 
 type DrawerDialogProps = {
   open: boolean;
   setOpen: (open: boolean) => void;
-  trigger: React.ReactNode;
+  trigger?: React.ReactNode;
   title?: React.ReactNode;
   description?: React.ReactNode;
-  content: React.ReactNode;
+  content?: React.ReactNode;
   closeButton?: React.ReactNode;
 };
 
@@ -42,11 +42,13 @@ export function DrawerDialog({
   if (!isMobile) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>{trigger}</DialogTrigger>
+        {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
-            <DialogDescription>{description}</DialogDescription>
+            {description && (
+              <DialogDescription>{description}</DialogDescription>
+            )}
           </DialogHeader>
           {content}
         </DialogContent>
@@ -56,15 +58,15 @@ export function DrawerDialog({
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>{trigger}</DrawerTrigger>
+      {trigger && <DrawerTrigger asChild>{trigger}</DrawerTrigger>}
       <DrawerContent>
         <DrawerHeader className="text-left">
           <DrawerTitle>{title}</DrawerTitle>
-          <DrawerDescription>{description}</DrawerDescription>
+          {description && <DrawerDescription>{description}</DrawerDescription>}
         </DrawerHeader>
         {content}
         <DrawerFooter className="pt-2">
-          <DrawerClose asChild>{closeButton}</DrawerClose>
+          {closeButton && <DrawerClose asChild>{closeButton}</DrawerClose>}
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

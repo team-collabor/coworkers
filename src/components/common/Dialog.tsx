@@ -46,8 +46,8 @@ const DialogContent = forwardRef<
         'data-[state=open]:slide-in-from-top-[48%]',
         'fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg',
         'translate-x-[-50%] translate-y-[-50%] gap-4 border',
-        'border-neutral-200 bg-white p-6 shadow-lg duration-200',
-        'sm:rounded-lg dark:border-neutral-800 dark:bg-neutral-950',
+        'border-primary bg-secondary p-6 shadow-lg duration-200',
+        'sm:rounded-lg',
         className
       )}
       {...props}
@@ -55,13 +55,12 @@ const DialogContent = forwardRef<
       {children}
       <DialogPrimitive.Close
         className={cn(
-          'absolute right-4 top-4 rounded-sm opacity-70 ring-offset-white',
+          'absolute right-4 top-4 rounded-sm',
+          'opacity-70 ring-offset-icon-inverse',
           'transition-opacity hover:opacity-100 focus:outline-none',
-          'focus:ring-2 focus:ring-neutral-950 focus:ring-offset-2',
+          'focus:ring-2 focus:ring-background-primary focus:ring-offset-2',
           'disabled:pointer-events-none data-[state=open]:bg-neutral-100',
-          'data-[state=open]:text-neutral-500 dark:ring-offset-neutral-950',
-          'dark:focus:ring-neutral-300 dark:data-[state=open]:bg-neutral-800',
-          'dark:data-[state=open]:text-neutral-400'
+          'data-[state=open]:text-neutral-500'
         )}
       >
         <X className="h-4 w-4" />
