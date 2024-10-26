@@ -12,7 +12,12 @@ import TaskDetailModal from './taskDetail/TaskDetailModal';
 
 function Tasks() {
   const { id } = useRouter().query;
-  const { selectedDate, selectedTaskList } = useTaskStore();
+  const {
+    selectedDate,
+    selectedTaskList,
+    taskDetailModalOpen,
+    setTaskDetailModalOpen,
+  } = useTaskStore();
   const {
     data: team,
     isLoading: isTeamLoading,
@@ -24,9 +29,6 @@ function Tasks() {
     date: new Date(selectedDate).toISOString(),
   });
   const { mutate: updateTaskStatus } = useUpdateTaskStatus();
-
-  const [taskDetailModalOpen, setTaskDetailModalOpen] =
-    useState<boolean>(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   const handleCheckBoxChange = (taskId: number, done: boolean) => {

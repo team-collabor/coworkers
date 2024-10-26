@@ -1,6 +1,17 @@
 import Avatar from '@/components/common/Avatar';
 import { Button } from '@/components/common/Button/ShadcnButton';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/common/Dialog';
+import Dropdown from '@/components/common/Dropdown';
 import IconAndText from '@/components/common/IconAndText';
+import { useDeleteTask } from '@/queries/tasks.queries';
+import { useTaskStore } from '@/store/useTaskStore';
 import { Task } from '@/types/tasks.types';
 import {
   formatFrequencyToKorean,
@@ -20,9 +31,31 @@ import TaskCommentList from './TaskCommentList';
 
 function TaskDetailContent({ task }: { task: Task }) {
   const [isExpanded, setIsExpanded] = useState(false);
-
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const { selectedTaskList, selectedDate } = useTaskStore();
+  const { setTaskDetailModalOpen } = useTaskStore();
+  const { mutate: deleteTask } = useDeleteTask();
   const handleExpand = () => {
     setIsExpanded(!isExpanded);
+  };
+
+  const handleClickDropdownUpdate = () => {
+    // console.log('update');
+  };
+
+  const handleClickDropdownDelete = () => {
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleClickDeleteConfirm = (taskId: number) => {
+    deleteTask({
+      groupId: selectedTaskList?.groupId ?? -1,
+      taskListId: selectedTaskList?.id ?? -1,
+      taskId,
+      date: selectedDate.toISOString(),
+    });
+    setIsDeleteDialogOpen(false);
+    setTaskDetailModalOpen(false);
   };
 
   return (
@@ -32,15 +65,37 @@ function TaskDetailContent({ task }: { task: Task }) {
       <article className="flex w-full flex-col gap-4">
         <div className="flex items-center justify-between">
           <h2 className="text-xl-bold">{task.name}</h2>
-          <Button
-            variant="ghost"
-            className={cn(
-              'size-8 rounded-full p-0',
-              'hover:bg-background-primary/80 active:bg-background-primary/60'
-            )}
+
+          <Dropdown
+            trigger={
+              <Button
+                variant="ghost"
+                className={cn(
+                  'size-8 rounded-full p-0',
+                  'hover:bg-background-primary/80',
+                  'active:bg-background-primary/60'
+                )}
+              >
+                <MoreVerticalIcon className="size-4 text-icon-primary" />
+              </Button>
+            }
+            dropdownStyle="-translate-x-20 w-28"
           >
-            <MoreVerticalIcon className="size-4 text-icon-primary" />
-          </Button>
+            <button
+              type="button"
+              className="h-[36px] text-md-regular text-primary"
+              onClick={() => handleClickDropdownUpdate()}
+            >
+              수정하기
+            </button>
+            <button
+              type="button"
+              className="h-[36px] text-md-regular text-status-danger"
+              onClick={() => handleClickDropdownDelete()}
+            >
+              삭제하기
+            </button>
+          </Dropdown>
         </div>
         <div className="flex items-center justify-between gap-2">
           <Avatar src={task.writer.image} userNickname={task.writer.nickname} />
@@ -89,6 +144,30 @@ function TaskDetailContent({ task }: { task: Task }) {
       </article>
       <TaskCommentForm taskId={task.id} />
       <TaskCommentList taskId={task.id} />
+      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <DialogContent className="w-80">
+          <DialogHeader>
+            <DialogTitle>댓글을 삭제하시겠습니까?</DialogTitle>
+            <DialogDescription>
+              삭제된 댓글은 복구할 수 없습니다.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="ghost"
+              onClick={() => setIsDeleteDialogOpen(false)}
+            >
+              취소
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() => handleClickDeleteConfirm(task.id ?? -1)}
+            >
+              삭제
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }

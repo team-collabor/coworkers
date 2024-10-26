@@ -113,7 +113,7 @@ export default function TaskCommentList({
                     </button>
                     <button
                       type="button"
-                      className="h-[36px] text-md-regular text-primary"
+                      className="h-[36px] text-md-regular text-status-danger"
                       onClick={() => handleClickDropdownDelete(comment.id)}
                     >
                       삭제하기

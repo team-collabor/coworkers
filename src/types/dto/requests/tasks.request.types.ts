@@ -24,3 +24,10 @@ export type AddTaskRequest = {
   weekDays?: number[];
   monthDay?: number;
 };
+
+export type DeleteTaskRequest = {
+  groupId: number;
+  taskListId: number;
+  taskId: number;
+  date?: string;
+};

@@ -1,5 +1,7 @@
+/* eslint-disable max-len */
 import {
   AddTaskRequest,
+  DeleteTaskRequest,
   GetTaskRequest,
   UpdateTaskStatusRequest,
 } from '@/types/dto/requests/tasks.request.types';
@@ -44,4 +46,11 @@ export const updateTaskStatus = async (params: UpdateTaskStatusRequest) => {
     },
   });
   return response.data;
+};
+
+export const deleteTask = async (params: DeleteTaskRequest) => {
+  await axiosInstance({
+    method: 'DELETE',
+    url: `/groups/${params.groupId}/task-lists/${params.taskListId}/tasks/${params.taskId}`,
+  });
 };
