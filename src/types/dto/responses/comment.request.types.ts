@@ -1,3 +1,5 @@
+import { Comment } from '@/types/comment.types';
+
 export type AddCommentResponse = Comment;
 
 export type GetCommentsResponse = Comment[];

@@ -12,10 +12,16 @@ import {
   GetCommentsRequest,
   UpdateCommentRequest,
 } from '@/types/dto/requests/comment.request.types';
+import {
+  AddCommentResponse,
+  DeleteCommentResponse,
+  GetCommentsResponse,
+  UpdateCommentResponse,
+} from '@/types/dto/responses/comment.request.types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const useGetComments = (params: GetCommentsRequest) => {
-  return useQuery({
+  return useQuery<GetCommentsResponse>({
     queryKey: commentsQueryKeys.comments(params.taskId),
     queryFn: () => getComments(params),
   });
@@ -24,7 +30,7 @@ export const useGetComments = (params: GetCommentsRequest) => {
 export const useAddComment = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
-  return useMutation({
+  return useMutation<AddCommentResponse, Error, AddCommentRequest>({
     mutationFn: (params: AddCommentRequest) => addComment(params),
     onSuccess: (_, params) => {
       queryClient.invalidateQueries({
@@ -44,7 +50,7 @@ export const useAddComment = () => {
 export const useUpdateComment = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
-  return useMutation({
+  return useMutation<UpdateCommentResponse, Error, UpdateCommentRequest>({
     mutationFn: (params: UpdateCommentRequest) => updateComment(params),
     onSuccess: (_, params) => {
       queryClient.invalidateQueries({
@@ -64,7 +70,7 @@ export const useUpdateComment = () => {
 export const useDeleteComment = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
-  return useMutation({
+  return useMutation<DeleteCommentResponse, Error, DeleteCommentRequest>({
     mutationFn: (params: DeleteCommentRequest) => deleteComment(params),
     onSuccess: (_, params) => {
       queryClient.invalidateQueries({

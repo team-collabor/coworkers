@@ -15,6 +15,7 @@ import {
   RepeatIcon,
 } from 'lucide-react';
 import { useState } from 'react';
+import TaskCommentList from './TaskCommentList';
 
 function TaskDetailContent({ task }: { task: Task }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -62,6 +63,7 @@ function TaskDetailContent({ task }: { task: Task }) {
         <div
           className={cn(
             'overflow-y-scroll break-keep',
+            'scrollbar-hide hover:scrollbar-default',
             'text-md-regular text-primary',
             {
               'max-h-[20rem]': !isExpanded,
@@ -139,6 +141,7 @@ function TaskDetailContent({ task }: { task: Task }) {
           {isExpanded ? '접기' : '펼치기'}
         </Button>
       </article>
+      <TaskCommentList taskId={task.id} />
     </section>
   );
 }
