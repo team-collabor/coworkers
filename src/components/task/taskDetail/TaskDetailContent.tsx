@@ -26,7 +26,9 @@ function TaskDetailContent({ task }: { task: Task }) {
   };
 
   return (
-    <section className={cn('flex h-full w-full max-w-[45rem] flex-col p-4')}>
+    <section
+      className={cn('flex h-full w-full max-w-[45rem] flex-col gap-7 p-4')}
+    >
       <article className="flex w-full flex-col gap-4">
         <div className="flex items-center justify-between">
           <h2 className="text-xl-bold">{task.name}</h2>

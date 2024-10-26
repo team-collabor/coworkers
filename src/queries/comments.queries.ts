@@ -76,6 +76,9 @@ export const useDeleteComment = () => {
       queryClient.invalidateQueries({
         queryKey: commentsQueryKeys.comments(params.taskId),
       });
+      toast({
+        title: '댓글을 삭제했습니다.',
+      });
     },
     onError: (error) => {
       toast({
