@@ -18,6 +18,10 @@ const TaskCommentList = forwardRef<HTMLDivElement, TaskCommentListProps>(
     const { data: comments } = useGetComments({ taskId });
     const { user } = useAuthStore();
 
+    const sortedComments = comments?.sort((a, b) => {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+
     return (
       <div
         ref={ref}
@@ -27,7 +31,7 @@ const TaskCommentList = forwardRef<HTMLDivElement, TaskCommentListProps>(
         )}
         {...props}
       >
-        {comments?.map((comment: Comment) => (
+        {sortedComments?.map((comment: Comment) => (
           <div key={comment.id} className="flex flex-col gap-2">
             <div
               className={cn(

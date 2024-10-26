@@ -15,6 +15,7 @@ import {
   RepeatIcon,
 } from 'lucide-react';
 import { useState } from 'react';
+import TaskCommentForm from './TaskCommentForm';
 import TaskCommentList from './TaskCommentList';
 
 function TaskDetailContent({ task }: { task: Task }) {
@@ -70,63 +71,6 @@ function TaskDetailContent({ task }: { task: Task }) {
             }
           )}
         >
-          {task.id}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
-          {task.description}
           {task.description}
         </div>
         <Button
@@ -141,6 +85,7 @@ function TaskDetailContent({ task }: { task: Task }) {
           {isExpanded ? '접기' : '펼치기'}
         </Button>
       </article>
+      <TaskCommentForm taskId={task.id} />
       <TaskCommentList taskId={task.id} />
     </section>
   );
