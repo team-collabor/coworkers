@@ -55,14 +55,16 @@ export function DrawerDialog({
             dialogClassName
           )}
         >
-          {(title || description) && (
-            <DialogHeader>
-              <DialogTitle>{title}</DialogTitle>
-              {description && (
-                <DialogDescription>{description}</DialogDescription>
-              )}
-            </DialogHeader>
-          )}
+          <DialogHeader
+            className={cn({
+              hidden: !title && !description,
+            })}
+          >
+            <DialogTitle>{title}</DialogTitle>
+            {description && (
+              <DialogDescription>{description}</DialogDescription>
+            )}
+          </DialogHeader>
           {children}
         </DialogContent>
       </Dialog>

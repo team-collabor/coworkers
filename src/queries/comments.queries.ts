@@ -56,6 +56,9 @@ export const useUpdateComment = () => {
       queryClient.invalidateQueries({
         queryKey: commentsQueryKeys.comments(params.taskId),
       });
+      toast({
+        title: '댓글을 수정했습니다.',
+      });
     },
     onError: (error) => {
       toast({

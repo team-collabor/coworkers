@@ -12,54 +12,63 @@ import { Divider } from '@/components/common/Divider';
 import Dropdown from '@/components/common/Dropdown';
 import { useDeleteComment, useGetComments } from '@/queries/comments.queries';
 import { useAuthStore } from '@/store/useAuthStore';
+import { useCommentStore } from '@/store/useCommentStore';
 import { Comment } from '@/types/comment.types';
 import formatDistanceToNowKor from '@/utils/dateTimeUtils/FormatDistanceToNow';
 import { cn } from '@/utils/tailwind/cn';
 import { MoreVerticalIcon } from 'lucide-react';
-import { forwardRef, useState } from 'react';
+import { Fragment, useState } from 'react';
+import TaskCommentUpdateForm from './TaskCommentUpdateForm';
 
 type TaskCommentListProps = {
   taskId: number;
 };
 
-const TaskCommentList = forwardRef<HTMLDivElement, TaskCommentListProps>(
-  ({ taskId, ...props }, ref) => {
-    const { data: comments } = useGetComments({ taskId });
-    const { user } = useAuthStore();
-    const { mutate: deleteComment } = useDeleteComment();
+export default function TaskCommentList({
+  taskId,
+  ...props
+}: TaskCommentListProps) {
+  const { data: comments } = useGetComments({ taskId });
+  const { user } = useAuthStore();
+  const { mutate: deleteComment } = useDeleteComment();
 
-    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-    const [selectedCommentId, setSelectedCommentId] = useState<number | null>(
-      null
-    );
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [selectedCommentIdToDelete, setSelectedCommentIdToDelete] = useState<
+    number | null
+  >(null);
+  const { selectedComment, setSelectedComment } = useCommentStore();
 
-    const sortedComments = comments?.sort((a, b) => {
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-    });
+  const sortedComments = comments?.sort((a, b) => {
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  });
 
-    const handleClickDropdownItem = (option: string, commentId: number) => {
-      if (option === '삭제하기') {
-        setIsDeleteDialogOpen(true);
-        setSelectedCommentId(commentId);
-      }
-    };
-    const handleClickDelete = (commentId: number) => {
-      deleteComment({ commentId, taskId });
-      setIsDeleteDialogOpen(false);
-      setSelectedCommentId(null);
-    };
+  const handleClickDropdownDelete = (commentId: number) => {
+    setIsDeleteDialogOpen(true);
+    setSelectedCommentIdToDelete(commentId);
+  };
 
-    return (
-      <div
-        ref={ref}
-        className={cn(
-          'flex w-full flex-col gap-4',
-          'w-[43rem] overflow-hidden'
-        )}
-        {...props}
-      >
-        {sortedComments?.map((comment: Comment) => (
-          <div key={comment.id} className="flex flex-col gap-3">
+  const handleClickDropdownUpdate = (comment: Comment) => {
+    setSelectedComment(comment);
+  };
+
+  const handleClickDeleteConfirm = (commentId: number) => {
+    deleteComment({ commentId, taskId });
+    setIsDeleteDialogOpen(false);
+    setSelectedCommentIdToDelete(null);
+  };
+
+  return (
+    <div
+      className={cn('flex w-full flex-col gap-4', 'w-[43rem] overflow-hidden')}
+      {...props}
+    >
+      {sortedComments?.map((comment: Comment) => (
+        <Fragment key={`${comment.id}-comment`}>
+          <div
+            className={cn('flex flex-col gap-3', {
+              hidden: selectedComment?.id === comment.id,
+            })}
+          >
             <div
               className={cn(
                 'flex items-center justify-between',
@@ -75,7 +84,6 @@ const TaskCommentList = forwardRef<HTMLDivElement, TaskCommentListProps>(
                 )}
               >
                 {comment.content.toString()}
-                {comment.id}
               </div>
               <div className="flex">
                 {comment.user.id === user?.id && (
@@ -99,18 +107,14 @@ const TaskCommentList = forwardRef<HTMLDivElement, TaskCommentListProps>(
                     <button
                       type="button"
                       className="h-[36px] text-md-regular text-primary"
-                      onClick={() =>
-                        handleClickDropdownItem('수정하기', comment.id)
-                      }
+                      onClick={() => handleClickDropdownUpdate(comment)}
                     >
                       수정하기
                     </button>
                     <button
                       type="button"
                       className="h-[36px] text-md-regular text-primary"
-                      onClick={() =>
-                        handleClickDropdownItem('삭제하기', comment.id)
-                      }
+                      onClick={() => handleClickDropdownDelete(comment.id)}
                     >
                       삭제하기
                     </button>
@@ -136,34 +140,41 @@ const TaskCommentList = forwardRef<HTMLDivElement, TaskCommentListProps>(
               className="border-icon-primary"
             />
           </div>
-        ))}
-        <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-          <DialogContent className="w-80">
-            <DialogHeader>
-              <DialogTitle>댓글을 삭제하시겠습니까?</DialogTitle>
-              <DialogDescription>
-                삭제된 댓글은 복구할 수 없습니다.
-              </DialogDescription>
-            </DialogHeader>
-            <DialogFooter>
-              <Button
-                variant="ghost"
-                onClick={() => setIsDeleteDialogOpen(false)}
-              >
-                취소
-              </Button>
-              <Button
-                variant="destructive"
-                onClick={() => handleClickDelete(selectedCommentId ?? -1)}
-              >
-                삭제
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      </div>
-    );
-  }
-);
-
-export default TaskCommentList;
+          <TaskCommentUpdateForm
+            key={`${comment.id}-update-form`}
+            taskId={taskId}
+            className={cn('hidden', {
+              flex: selectedComment?.id === comment.id,
+            })}
+          />
+        </Fragment>
+      ))}
+      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <DialogContent className="w-80">
+          <DialogHeader>
+            <DialogTitle>댓글을 삭제하시겠습니까?</DialogTitle>
+            <DialogDescription>
+              삭제된 댓글은 복구할 수 없습니다.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="ghost"
+              onClick={() => setIsDeleteDialogOpen(false)}
+            >
+              취소
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={() =>
+                handleClickDeleteConfirm(selectedCommentIdToDelete ?? -1)
+              }
+            >
+              삭제
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
