@@ -34,3 +34,8 @@ export const addTaskSchema = z.object({
   startDate: taskTimeSchema,
   weekDays: taskWeekDaysSchema,
 });
+
+export const updateTaskSchema = z.object({
+  name: taskTitleSchema,
+  description: taskDescriptionSchema,
+});

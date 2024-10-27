@@ -11,6 +11,16 @@ export type UpdateTaskStatusRequest = {
   taskListId: number;
   taskId: number;
   done: boolean;
+  startDate?: string;
+};
+
+export type UpdateTaskRequest = {
+  groupId: number;
+  taskListId: number;
+  taskId: number;
+  name?: string;
+  description?: string;
+  done?: boolean;
   date?: string;
 };
 

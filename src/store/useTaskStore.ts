@@ -7,18 +7,21 @@ export type TaskState = {
   selectedDate: Date;
   selectedTaskList: TaskList | null;
   taskDetailModalOpen: boolean;
+  isTaskUpdateFormShow: boolean;
 };
 
 export type TaskActions = {
   setSelectedDate: (date: Date) => void;
   setSelectedTaskList: (taskList: TaskList) => void;
   setTaskDetailModalOpen: (open: boolean) => void;
+  setIsTaskUpdateFormShow: (show: boolean) => void;
 };
 
 const initialState: TaskState = {
   selectedDate: new Date(),
   selectedTaskList: null,
   taskDetailModalOpen: false,
+  isTaskUpdateFormShow: false,
 };
 
 export const useTaskStore = create(
@@ -37,6 +40,11 @@ export const useTaskStore = create(
       setTaskDetailModalOpen: (open: boolean) => {
         set((state) => {
           state.taskDetailModalOpen = open;
+        });
+      },
+      setIsTaskUpdateFormShow: (show: boolean) => {
+        set((state) => {
+          state.isTaskUpdateFormShow = show;
         });
       },
     }))

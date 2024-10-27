@@ -4,6 +4,8 @@ export type GetTaskResponse = Task[];
 
 export type UpdateTaskStatusResponse = Task;
 
+export type UpdateTaskResponse = Task;
+
 export type AddTaskResponse = {
   id: number;
   name: string;

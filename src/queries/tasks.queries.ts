@@ -2,6 +2,7 @@ import {
   addTask,
   deleteTask,
   getTask,
+  updateTask,
   updateTaskStatus,
 } from '@/apis/tasks.api';
 import { useToast } from '@/hooks/useToast';
@@ -9,6 +10,7 @@ import {
   AddTaskRequest,
   DeleteTaskRequest,
   GetTaskRequest,
+  UpdateTaskRequest,
   UpdateTaskStatusRequest,
 } from '@/types/dto/requests/tasks.request.types';
 import { FrequencyType } from '@/types/tasks.types';
@@ -64,6 +66,33 @@ export const useAddTask = () => {
   });
 };
 
+export const useUpdateTask = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  return useMutation({
+    mutationFn: async (params: UpdateTaskRequest) => updateTask(params),
+    onSuccess: (_, params) => {
+      toast({
+        title: '할 일을 수정했습니다.',
+      });
+      queryClient.invalidateQueries({
+        queryKey: tasksQueryKeys.tasks({
+          groupId: params.groupId,
+          taskListId: params.taskListId,
+          date: formatDate(params.date ?? ''),
+        }),
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: '할 일 수정을 실패했습니다.',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
+};
+
 export const useUpdateTaskStatus = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -75,7 +104,7 @@ export const useUpdateTaskStatus = () => {
         queryKey: tasksQueryKeys.tasks({
           groupId: params.groupId,
           taskListId: params.taskListId,
-          date: formatDate(params.date ?? ''),
+          date: formatDate(params.startDate ?? ''),
         }),
       });
     },

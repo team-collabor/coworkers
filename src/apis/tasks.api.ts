@@ -3,11 +3,13 @@ import {
   AddTaskRequest,
   DeleteTaskRequest,
   GetTaskRequest,
+  UpdateTaskRequest,
   UpdateTaskStatusRequest,
 } from '@/types/dto/requests/tasks.request.types';
 import {
   AddTaskResponse,
   GetTaskResponse,
+  UpdateTaskResponse,
   UpdateTaskStatusResponse,
 } from '@/types/dto/responses/tasks.response.types';
 import _ from 'lodash';
@@ -43,6 +45,18 @@ export const updateTaskStatus = async (params: UpdateTaskStatusRequest) => {
 		/task-lists/${params.taskListId}/tasks/${params.taskId}`,
     data: {
       done: params.done,
+    },
+  });
+  return response.data;
+};
+
+export const updateTask = async (params: UpdateTaskRequest) => {
+  const response = await axiosInstance<UpdateTaskResponse>({
+    method: 'PATCH',
+    url: `/groups/${params.groupId}/task-lists/${params.taskListId}/tasks/${params.taskId}`,
+    data: {
+      name: params.name,
+      description: params.description,
     },
   });
   return response.data;

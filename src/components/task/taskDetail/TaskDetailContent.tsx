@@ -28,19 +28,24 @@ import {
 import { useState } from 'react';
 import TaskCommentForm from './TaskCommentForm';
 import TaskCommentList from './TaskCommentList';
+import TaskUpdateForm from './TaskUpdateForm';
 
 function TaskDetailContent({ task }: { task: Task }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const { selectedTaskList, selectedDate } = useTaskStore();
-  const { setTaskDetailModalOpen } = useTaskStore();
+  const {
+    selectedTaskList,
+    selectedDate,
+    isTaskUpdateFormShow,
+    setIsTaskUpdateFormShow,
+  } = useTaskStore();
   const { mutate: deleteTask } = useDeleteTask();
   const handleExpand = () => {
     setIsExpanded(!isExpanded);
   };
 
   const handleClickDropdownUpdate = () => {
-    // console.log('update');
+    setIsTaskUpdateFormShow(true);
   };
 
   const handleClickDropdownDelete = () => {
@@ -55,17 +60,20 @@ function TaskDetailContent({ task }: { task: Task }) {
       date: selectedDate.toISOString(),
     });
     setIsDeleteDialogOpen(false);
-    setTaskDetailModalOpen(false);
+    setIsTaskUpdateFormShow(false);
   };
 
   return (
     <section
       className={cn('flex h-full w-full max-w-[45rem] flex-col gap-7 p-4')}
     >
-      <article className="flex w-full flex-col gap-4">
+      <article
+        className={cn('flex w-full flex-col gap-4', {
+          hidden: isTaskUpdateFormShow,
+        })}
+      >
         <div className="flex items-center justify-between">
           <h2 className="text-xl-bold">{task.name}</h2>
-
           <Dropdown
             trigger={
               <Button
@@ -142,6 +150,10 @@ function TaskDetailContent({ task }: { task: Task }) {
           {isExpanded ? '접기' : '펼치기'}
         </Button>
       </article>
+      <TaskUpdateForm
+        className={cn({ hidden: !isTaskUpdateFormShow })}
+        task={task}
+      />
       <TaskCommentForm taskId={task.id} />
       <TaskCommentList taskId={task.id} />
       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
