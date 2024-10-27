@@ -123,6 +123,13 @@ export const useUpdateTaskStatus = () => {
           date: formatDate(params.startDate ?? ''),
         }),
       });
+      queryClient.invalidateQueries({
+        queryKey: tasksQueryKeys.taskDetail({
+          groupId: params.groupId,
+          taskListId: params.taskListId,
+          taskId: params.taskId,
+        }),
+      });
     },
     onError: (error) => {
       toast({

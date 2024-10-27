@@ -10,7 +10,11 @@ import {
 } from '@/components/common/Dialog';
 import Dropdown from '@/components/common/Dropdown';
 import IconAndText from '@/components/common/IconAndText';
-import { useDeleteTask, useTaskDetail } from '@/queries/tasks.queries';
+import {
+  useDeleteTask,
+  useTaskDetail,
+  useUpdateTaskStatus,
+} from '@/queries/tasks.queries';
 import { useTaskStore } from '@/store/useTaskStore';
 import { FrequencyType, Task } from '@/types/tasks.types';
 import {
@@ -47,6 +51,7 @@ function TaskDetailContent({ task }: { task: Task }) {
     taskId: task.id,
   });
   const { mutate: deleteTask } = useDeleteTask();
+  const { mutate: updateTaskStatus } = useUpdateTaskStatus();
 
   const handleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -123,22 +128,49 @@ function TaskDetailContent({ task }: { task: Task }) {
             {formatKoreanDate(taskDetail?.updatedAt ?? '')}
           </p>
         </div>
-        <div className="flex items-center justify-start gap-2">
-          <IconAndText
-            wrapperClassName="text-icon-primary"
-            textClassName="text-xs-regular"
-            icon={<CalendarIcon className="size-4" />}
-            text={formatKoreanDate(taskDetail?.date ?? '')}
-          />
-          <span className="text-icon-primary">|</span>
-          <IconAndText
-            wrapperClassName="text-icon-primary"
-            textClassName="text-xs-regular"
-            icon={<RepeatIcon className="size-4" />}
-            text={formatFrequencyToKorean(
-              taskDetail?.frequency ?? FrequencyType.Once
+        <div className="flex items-center justify-between">
+          <div className="flex items-center justify-start gap-2">
+            <IconAndText
+              wrapperClassName="text-icon-primary"
+              textClassName="text-xs-regular"
+              icon={<CalendarIcon className="size-4" />}
+              text={formatKoreanDate(taskDetail?.date ?? '')}
+            />
+            <span className="text-icon-primary">|</span>
+            <IconAndText
+              wrapperClassName="text-icon-primary"
+              textClassName="text-xs-regular"
+              icon={<RepeatIcon className="size-4" />}
+              text={formatFrequencyToKorean(
+                taskDetail?.frequency ?? FrequencyType.Once
+              )}
+            />
+          </div>
+          <Button
+            variant={taskDetail?.doneAt ? 'secondary' : 'outline'}
+            className={cn(
+              'h-8 border-[1px] border-icon-brand bg-transparent',
+              'text-lg-bold',
+              {
+                'bg-icon-inverse text-brand-primary': taskDetail?.doneAt,
+                'hover:bg-icon-inverse/90': taskDetail?.doneAt,
+                'bg-icon-brand': !taskDetail?.doneAt,
+                'hover:bg-interaction-hover active:bg-interaction-pressed':
+                  !taskDetail?.doneAt,
+                'focus:bg-interaction-focus': !taskDetail?.doneAt,
+              }
             )}
-          />
+            onClick={() => {
+              updateTaskStatus({
+                groupId: selectedTaskList?.groupId ?? -1,
+                taskListId: selectedTaskList?.id ?? -1,
+                taskId: task.id,
+                done: !taskDetail?.doneAt,
+              });
+            }}
+          >
+            {taskDetail?.doneAt ? '완료취소' : '완료하기'}
+          </Button>
         </div>
         <div
           className={cn(
