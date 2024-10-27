@@ -37,10 +37,6 @@ function TaskUpdateForm({ className, task }: TaskUpdateFormProps) {
     defaultValues: {
       name: task.name ?? '',
       description: task.description ?? '',
-      groupId: selectedTaskList?.groupId,
-      taskListId: selectedTaskList?.id,
-      taskId: task.id,
-      date: selectedDate.toISOString(),
     },
   });
 
@@ -49,6 +45,7 @@ function TaskUpdateForm({ className, task }: TaskUpdateFormProps) {
       data.groupId = selectedTaskList.groupId;
       data.taskListId = selectedTaskList.id;
       data.taskId = task.id;
+      data.date = selectedDate.toISOString();
     }
     updateTask(data);
   };
@@ -82,24 +79,6 @@ function TaskUpdateForm({ className, task }: TaskUpdateFormProps) {
           rows={8}
           {...methods.register('description')}
           errorMessage={methods.formState.errors.description?.message}
-        />
-        <input
-          type="number"
-          className="hidden"
-          {...methods.register('groupId')}
-          value={selectedTaskList?.groupId}
-        />
-        <input
-          type="number"
-          className="hidden"
-          {...methods.register('taskListId')}
-          value={selectedTaskList?.id}
-        />
-        <input
-          type="number"
-          className="hidden"
-          {...methods.register('taskId')}
-          value={task.id}
         />
         <div className="flex justify-end gap-4">
           <Button

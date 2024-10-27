@@ -21,7 +21,7 @@ const DatePickerInput = forwardRef<HTMLInputElement, DatePickerInputProps>(
           initialDate={initialDate}
           popoverContentClassName="border-[1px] border-green-400"
           onDateChange={(date) => {
-            formContext.setValue('startDate', date.toISOString());
+            formContext.setValue('startDate', date.toLocaleDateString('ko-KR'));
           }}
           ref={ref as React.LegacyRef<HTMLInputElement>}
         />

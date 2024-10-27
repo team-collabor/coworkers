@@ -155,7 +155,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
         {mode === 'input' && (
           <input
             type="text"
-            value={date?.toISOString()}
+            value={date?.toLocaleDateString('ko-KR')}
             className="hidden"
             ref={ref}
             suppressHydrationWarning

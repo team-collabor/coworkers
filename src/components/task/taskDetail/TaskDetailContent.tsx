@@ -10,9 +10,9 @@ import {
 } from '@/components/common/Dialog';
 import Dropdown from '@/components/common/Dropdown';
 import IconAndText from '@/components/common/IconAndText';
-import { useDeleteTask } from '@/queries/tasks.queries';
+import { useDeleteTask, useTaskDetail } from '@/queries/tasks.queries';
 import { useTaskStore } from '@/store/useTaskStore';
-import { Task } from '@/types/tasks.types';
+import { FrequencyType, Task } from '@/types/tasks.types';
 import {
   formatFrequencyToKorean,
   formatKoreanDate,
@@ -39,7 +39,13 @@ function TaskDetailContent({ task }: { task: Task }) {
     isTaskUpdateFormShow,
     setIsTaskUpdateFormShow,
   } = useTaskStore();
+  const { data: taskDetail } = useTaskDetail({
+    groupId: selectedTaskList?.groupId ?? -1,
+    taskListId: selectedTaskList?.id ?? -1,
+    taskId: task.id,
+  });
   const { mutate: deleteTask } = useDeleteTask();
+
   const handleExpand = () => {
     setIsExpanded(!isExpanded);
   };
@@ -57,7 +63,7 @@ function TaskDetailContent({ task }: { task: Task }) {
       groupId: selectedTaskList?.groupId ?? -1,
       taskListId: selectedTaskList?.id ?? -1,
       taskId,
-      date: selectedDate.toISOString(),
+      date: selectedDate.toLocaleDateString('ko-KR'),
     });
     setIsDeleteDialogOpen(false);
     setIsTaskUpdateFormShow(false);
@@ -73,7 +79,7 @@ function TaskDetailContent({ task }: { task: Task }) {
         })}
       >
         <div className="flex items-center justify-between">
-          <h2 className="text-xl-bold">{task.name}</h2>
+          <h2 className="text-xl-bold">{taskDetail?.name}</h2>
           <Dropdown
             trigger={
               <Button
@@ -106,9 +112,12 @@ function TaskDetailContent({ task }: { task: Task }) {
           </Dropdown>
         </div>
         <div className="flex items-center justify-between gap-2">
-          <Avatar src={task.writer.image} userNickname={task.writer.nickname} />
+          <Avatar
+            src={taskDetail?.writer.image ?? null}
+            userNickname={taskDetail?.writer.nickname}
+          />
           <p className="text-md-regular text-primary">
-            {formatKoreanDate(task.updatedAt)}
+            {formatKoreanDate(taskDetail?.updatedAt ?? '')}
           </p>
         </div>
         <div className="flex items-center justify-start gap-2">
@@ -116,14 +125,16 @@ function TaskDetailContent({ task }: { task: Task }) {
             wrapperClassName="text-icon-primary"
             textClassName="text-xs-regular"
             icon={<CalendarIcon className="size-4" />}
-            text={formatKoreanDate(task.date)}
+            text={formatKoreanDate(taskDetail?.date ?? '')}
           />
           <span className="text-icon-primary">|</span>
           <IconAndText
             wrapperClassName="text-icon-primary"
             textClassName="text-xs-regular"
             icon={<RepeatIcon className="size-4" />}
-            text={formatFrequencyToKorean(task.frequency)}
+            text={formatFrequencyToKorean(
+              taskDetail?.frequency ?? FrequencyType.Once
+            )}
           />
         </div>
         <div
@@ -136,7 +147,7 @@ function TaskDetailContent({ task }: { task: Task }) {
             }
           )}
         >
-          {task.description}
+          {taskDetail?.description}
         </div>
         <Button
           variant="outline"
@@ -152,10 +163,10 @@ function TaskDetailContent({ task }: { task: Task }) {
       </article>
       <TaskUpdateForm
         className={cn({ hidden: !isTaskUpdateFormShow })}
-        task={task}
+        task={taskDetail ?? task}
       />
-      <TaskCommentForm taskId={task.id} />
-      <TaskCommentList taskId={task.id} />
+      <TaskCommentForm taskId={taskDetail?.id ?? -1} />
+      <TaskCommentList taskId={taskDetail?.id ?? -1} />
       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
         <DialogContent className="w-80">
           <DialogHeader>

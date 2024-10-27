@@ -2,12 +2,14 @@
 import {
   AddTaskRequest,
   DeleteTaskRequest,
+  GetTaskDetailRequest,
   GetTaskRequest,
   UpdateTaskRequest,
   UpdateTaskStatusRequest,
 } from '@/types/dto/requests/tasks.request.types';
 import {
   AddTaskResponse,
+  GetTaskDetailResponse,
   GetTaskResponse,
   UpdateTaskResponse,
   UpdateTaskStatusResponse,
@@ -22,6 +24,14 @@ export const getTask = async (params: GetTaskRequest) => {
     params: {
       date: params.date,
     },
+  });
+  return response.data;
+};
+
+export const getTaskDetail = async (params: GetTaskDetailRequest) => {
+  const response = await axiosInstance<GetTaskDetailResponse>({
+    method: 'GET',
+    url: `/groups/${params.groupId}/task-lists/${params.taskListId}/tasks/${params.taskId}`,
   });
   return response.data;
 };

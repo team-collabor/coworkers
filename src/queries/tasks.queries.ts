@@ -2,6 +2,7 @@ import {
   addTask,
   deleteTask,
   getTask,
+  getTaskDetail,
   updateTask,
   updateTaskStatus,
 } from '@/apis/tasks.api';
@@ -9,6 +10,7 @@ import { useToast } from '@/hooks/useToast';
 import {
   AddTaskRequest,
   DeleteTaskRequest,
+  GetTaskDetailRequest,
   GetTaskRequest,
   UpdateTaskRequest,
   UpdateTaskStatusRequest,
@@ -23,6 +25,13 @@ export const useTasks = (params: GetTaskRequest) => {
     queryKey: tasksQueryKeys.tasks(params),
     queryFn: () => getTask(params),
     enabled: !!params.date && !!params.groupId && !!params.taskListId,
+  });
+};
+
+export const useTaskDetail = (params: GetTaskDetailRequest) => {
+  return useQuery({
+    queryKey: tasksQueryKeys.taskDetail(params),
+    queryFn: () => getTaskDetail(params),
   });
 };
 
@@ -80,6 +89,13 @@ export const useUpdateTask = () => {
           groupId: params.groupId,
           taskListId: params.taskListId,
           date: formatDate(params.date ?? ''),
+        }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: tasksQueryKeys.taskDetail({
+          groupId: params.groupId,
+          taskListId: params.taskListId,
+          taskId: params.taskId,
         }),
       });
     },
