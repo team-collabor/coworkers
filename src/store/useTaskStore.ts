@@ -8,6 +8,7 @@ export type TaskState = {
   selectedTaskList: TaskList | null;
   taskDetailModalOpen: boolean;
   isTaskUpdateFormShow: boolean;
+  isTaskDeleteDialogOpen: boolean;
 };
 
 export type TaskActions = {
@@ -15,6 +16,7 @@ export type TaskActions = {
   setSelectedTaskList: (taskList: TaskList) => void;
   setTaskDetailModalOpen: (open: boolean) => void;
   setIsTaskUpdateFormShow: (show: boolean) => void;
+  setIsTaskDeleteDialogOpen: (open: boolean) => void;
 };
 
 const initialState: TaskState = {
@@ -22,6 +24,7 @@ const initialState: TaskState = {
   selectedTaskList: null,
   taskDetailModalOpen: false,
   isTaskUpdateFormShow: false,
+  isTaskDeleteDialogOpen: false,
 };
 
 export const useTaskStore = create(
@@ -45,6 +48,11 @@ export const useTaskStore = create(
       setIsTaskUpdateFormShow: (show: boolean) => {
         set((state) => {
           state.isTaskUpdateFormShow = show;
+        });
+      },
+      setIsTaskDeleteDialogOpen: (open: boolean) => {
+        set((state) => {
+          state.isTaskDeleteDialogOpen = open;
         });
       },
     }))

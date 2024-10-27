@@ -32,12 +32,14 @@ import TaskUpdateForm from './TaskUpdateForm';
 
 function TaskDetailContent({ task }: { task: Task }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const {
     selectedTaskList,
     selectedDate,
     isTaskUpdateFormShow,
     setIsTaskUpdateFormShow,
+    isTaskDeleteDialogOpen,
+    setIsTaskDeleteDialogOpen,
+    setTaskDetailModalOpen,
   } = useTaskStore();
   const { data: taskDetail } = useTaskDetail({
     groupId: selectedTaskList?.groupId ?? -1,
@@ -55,7 +57,7 @@ function TaskDetailContent({ task }: { task: Task }) {
   };
 
   const handleClickDropdownDelete = () => {
-    setIsDeleteDialogOpen(true);
+    setIsTaskDeleteDialogOpen(true);
   };
 
   const handleClickDeleteConfirm = (taskId: number) => {
@@ -65,8 +67,9 @@ function TaskDetailContent({ task }: { task: Task }) {
       taskId,
       date: selectedDate.toLocaleDateString('ko-KR'),
     });
-    setIsDeleteDialogOpen(false);
+    setIsTaskDeleteDialogOpen(false);
     setIsTaskUpdateFormShow(false);
+    setTaskDetailModalOpen(false);
   };
 
   return (
@@ -167,18 +170,21 @@ function TaskDetailContent({ task }: { task: Task }) {
       />
       <TaskCommentForm taskId={taskDetail?.id ?? -1} />
       <TaskCommentList taskId={taskDetail?.id ?? -1} />
-      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+      <Dialog
+        open={isTaskDeleteDialogOpen}
+        onOpenChange={setIsTaskDeleteDialogOpen}
+      >
         <DialogContent className="w-80">
           <DialogHeader>
-            <DialogTitle>댓글을 삭제하시겠습니까?</DialogTitle>
+            <DialogTitle>할 일을 삭제하시겠습니까?</DialogTitle>
             <DialogDescription>
-              삭제된 댓글은 복구할 수 없습니다.
+              삭제된 할 일은 복구할 수 없습니다.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button
               variant="ghost"
-              onClick={() => setIsDeleteDialogOpen(false)}
+              onClick={() => setIsTaskDeleteDialogOpen(false)}
             >
               취소
             </Button>
