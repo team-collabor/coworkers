@@ -8,7 +8,7 @@ export type GetArticlesParams = {
 export type PostArticleParams = {
   title: string;
   content: string;
-  image?: string;
+  image?: string | null;
 };
 
 export type ArticleDetailParams = {
@@ -25,3 +25,4 @@ export type GetArticleCommentsParams = {
   cursor: number;
   articleId: number;
 };
+export type UpdateArticleParams = PostArticleParams;
