@@ -42,7 +42,14 @@ function ArticleContent({ boardId }: ArticleContentProps) {
   };
 
   const handleArticleEdit = () => {
-    setIsEditArticle(true);
+    if (userId === article?.writer.id) {
+      setIsEditArticle(true);
+    } else {
+      toast({
+        title: '자신의 게시글만 수정할 수 있습니다.',
+        variant: 'destructive',
+      });
+    }
   };
 
   const handleArticleDelete = async () => {
