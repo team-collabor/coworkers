@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import {
+  deleteArticle,
   deleteArticleComment,
   getArticleComments,
   getArticleDetail,
@@ -8,12 +9,14 @@ import {
   postArticle,
   postArticleComment,
   unlikeArticle,
+  updateArticle,
   updateArticleComment,
 } from '@/apis/article.api';
 import {
   GetArticlesParams,
   PostArticleCommentParams,
   PostArticleParams,
+  UpdateArticleParams,
 } from '@/types/dto/requests/article.request.types';
 // eslint-disable-next-line max-len
 import {
@@ -27,6 +30,8 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { articleQueryKeys } from './keys/article.keys';
+
+// article
 
 export const useBestArticlesQuery = (params: GetArticlesParams) => {
   return useQuery({
@@ -58,8 +63,17 @@ export const useAllArticlesQuery = (
 };
 
 export const usePostArticleMutation = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (article: PostArticleParams) => postArticle(article),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: articleQueryKeys.allArticles('recent', ''),
+      });
+      queryClient.invalidateQueries({
+        queryKey: articleQueryKeys.bestArticles(),
+      });
+    },
   });
 };
 
@@ -68,6 +82,40 @@ export const useGetArticleDetailQuery = (articleId: number) => {
     queryKey: articleQueryKeys.article(articleId),
     queryFn: () => getArticleDetail(articleId),
     enabled: !Number.isNaN(articleId),
+  });
+};
+
+export const useUpdateArticleMutation = (articleId: number) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: UpdateArticleParams) => updateArticle(articleId, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: articleQueryKeys.article(articleId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: articleQueryKeys.allArticles('recent', ''),
+      });
+      queryClient.invalidateQueries({
+        queryKey: articleQueryKeys.bestArticles(),
+      });
+    },
+  });
+};
+
+export const useDeleteArticleMutation = (articleId: number) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => deleteArticle(articleId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: articleQueryKeys.allArticles('recent', ''),
+      });
+      queryClient.invalidateQueries({
+        queryKey: articleQueryKeys.bestArticles(),
+      });
+    },
   });
 };
 
@@ -80,7 +128,7 @@ export const useLikeArticleMutation = () => {
         queryKey: articleQueryKeys.article(articleId),
       });
       queryClient.invalidateQueries({
-        queryKey: articleQueryKeys.allArticles(),
+        queryKey: articleQueryKeys.allArticles('recent', ''),
       });
       queryClient.invalidateQueries({
         queryKey: articleQueryKeys.bestArticles(),
@@ -98,7 +146,7 @@ export const useUnlikeArticleMutation = () => {
         queryKey: articleQueryKeys.article(articleId),
       });
       queryClient.invalidateQueries({
-        queryKey: articleQueryKeys.allArticles(),
+        queryKey: articleQueryKeys.allArticles('recent', ''),
       });
       queryClient.invalidateQueries({
         queryKey: articleQueryKeys.bestArticles(),
@@ -107,13 +155,18 @@ export const useUnlikeArticleMutation = () => {
   });
 };
 
+// article comment
+
 export const usePostArticleCommentMutation = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: PostArticleCommentParams) => postArticleComment(data),
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
-        queryKey: articleQueryKeys.articleComments(),
+        queryKey: articleQueryKeys.articleComments(variables.articleId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: articleQueryKeys.article(variables.articleId),
       });
     },
   });
@@ -124,7 +177,7 @@ export const useGetArticleCommentsQuery = (
   limit: number
 ) => {
   return useInfiniteQuery<ArticleCommentListResponse>({
-    queryKey: articleQueryKeys.articleComments(articleId, limit),
+    queryKey: articleQueryKeys.articleComments(articleId),
     queryFn: ({ pageParam = 0 }) =>
       getArticleComments({ limit, cursor: pageParam as number, articleId }),
     initialPageParam: 0,
@@ -133,19 +186,22 @@ export const useGetArticleCommentsQuery = (
   });
 };
 
-export const useDeleteArticleCommentMutation = () => {
+export const useDeleteArticleCommentMutation = (articleId: number) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (commentId: number) => deleteArticleComment(commentId),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: articleQueryKeys.articleComments(),
+        queryKey: articleQueryKeys.articleComments(articleId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: articleQueryKeys.article(articleId),
       });
     },
   });
 };
 
-export const useUpdateArticleCommentMutation = () => {
+export const useUpdateArticleCommentMutation = (articleId: number) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({
@@ -157,7 +213,7 @@ export const useUpdateArticleCommentMutation = () => {
     }) => updateArticleComment(commentId, content),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: articleQueryKeys.articleComments(),
+        queryKey: articleQueryKeys.articleComments(articleId),
       });
     },
   });
