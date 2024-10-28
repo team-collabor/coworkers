@@ -40,10 +40,6 @@ export default function TeamPage() {
       );
       if (member?.role === 'ADMIN') {
         setIsAdmin(true);
-
-        console.log('true');
-      } else {
-        console.log('false');
       }
     }
   }, [user, group]);
