@@ -7,6 +7,8 @@ import Button, {
   TextSize,
 } from '@/components/common/Button/Button';
 import Input from '@/components/common/Input';
+import { useImageValidation } from '@/hooks/useImageValidation';
+import { useToast } from '@/hooks/useToast';
 import { usePostArticleMutation } from '@/queries/article.queries';
 import { useUploadImageMutation } from '@/queries/uploadImage.query';
 
@@ -27,13 +29,15 @@ function AddBoard() {
     image: null,
   });
 
-  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+  const { validateImage } = useImageValidation();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [preview, setPreview] = useState<string>('');
 
   const router = useRouter();
+
+  const { toast } = useToast();
 
   const { mutateAsync: postArticleMutate, status: postArticleStatus } =
     usePostArticleMutation();
@@ -44,15 +48,16 @@ function AddBoard() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!articleValue.title || !articleValue.content) {
-      // toast만들면 교체 예정
-      // eslint-disable-next-line no-console
-      console.log('제목 또는 내용이 비어있습니다.');
+      toast({
+        title: '제목 또는 내용이 비어있습니다.',
+        variant: 'destructive',
+      });
       return;
     }
 
     const imageUrl = articleValue.image
       ? await uploadImageMutate(articleValue.image)
-      : undefined;
+      : null;
 
     await postArticleMutate({
       ...(imageUrl && { image: imageUrl }),
@@ -79,18 +84,8 @@ function AddBoard() {
     const { files } = e.target;
     if (!files) return;
     const file = files[0];
-    // 파일 사이즈제한 10MB
-    if (file.size > MAX_FILE_SIZE) {
-      // toast만들면 교체 예정
-      alert('파일 크기는 10MB를 초과할 수 없습니다.');
-      e.target.value = '';
-      return;
-    }
-    // 파일 이름에 한글 제한
-    const hasKorean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(file.name);
-    if (hasKorean) {
-      // toast만들면 교체 예정
-      alert('파일 이름에 한글을 사용할 수 없습니다.');
+
+    if (!validateImage(file)) {
       e.target.value = '';
       return;
     }
@@ -194,7 +189,6 @@ function AddBoard() {
               id="article-image"
               className="absolute inset-0 cursor-pointer opacity-0"
               name="image"
-              accept="image/jpeg, image/png, image/bmp, image/webp, image/jpg"
               ref={fileInputRef}
               onChange={handleImageChange}
             />
