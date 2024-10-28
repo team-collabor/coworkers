@@ -158,7 +158,7 @@ items-center justify-between rounded-xl bg-secondary px-6 "
 }
 
 export default function Members({ members }: MembersProps) {
-  const LIMIT = 1;
+  const LIMIT = 6;
   const [page, setPage] = useState(1);
   const offset = (page - 1) * LIMIT;
   return (
