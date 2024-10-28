@@ -8,8 +8,8 @@ export default function IconAndText({
 }: {
   icon: React.ReactNode;
   text: string;
-  wrapperClassName?: string;
-  textClassName?: string;
+  wrapperClassName?: React.HTMLAttributes<HTMLDivElement>['className'];
+  textClassName?: React.HTMLAttributes<HTMLSpanElement>['className'];
 }) {
   return (
     <div className={cn('flex items-center gap-1', wrapperClassName)}>

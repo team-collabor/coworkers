@@ -85,7 +85,7 @@ function AddTaskForm() {
         />
         <DatePickerInput
           label="시작 날짜 및 시간"
-          initialDate={new Date(selectedDate)}
+          initialDate={new Date(selectedDate.toLocaleDateString('ko-KR'))}
           {...methods.register('startDate')}
           errorMessage={methods.formState.errors.startDate?.message}
         />

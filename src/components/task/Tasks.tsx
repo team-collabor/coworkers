@@ -1,27 +1,23 @@
 import { useTeamQuery } from '@/queries/groups.queries';
 import { useTasks, useUpdateTaskStatus } from '@/queries/tasks.queries';
 import { useTaskStore } from '@/store/useTaskStore';
-import { FrequencyType, Task } from '@/types/tasks.types';
-import {
-  formatFrequencyToKorean,
-  formatKoreanDate,
-} from '@/utils/dateTimeUtils/FormatData';
+import { Task } from '@/types/tasks.types';
 import { cn } from '@/utils/tailwind/cn';
-import {
-  CalendarClockIcon,
-  Loader2,
-  MessageSquareIcon,
-  MoreVerticalIcon,
-  RepeatIcon,
-} from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/router';
-import { Button } from '../common/Button/ShadcnButton';
-import CheckableText from '../common/CheckableText';
+import { useState } from 'react';
+import TaskCard from './TaskCard';
 import TaskListSelector from './TaskListSelector';
+import TaskDetailModal from './taskDetail/TaskDetailModal';
 
 function Tasks() {
   const { id } = useRouter().query;
-  const { selectedDate, selectedTaskList } = useTaskStore();
+  const {
+    selectedDate,
+    selectedTaskList,
+    taskDetailModalOpen,
+    setTaskDetailModalOpen,
+  } = useTaskStore();
   const {
     data: team,
     isLoading: isTeamLoading,
@@ -30,9 +26,19 @@ function Tasks() {
   const { data: tasks, isFetched: isTasksFetched } = useTasks({
     groupId: Number(id),
     taskListId: selectedTaskList?.id ?? 0,
-    date: new Date(selectedDate).toISOString(),
+    date: new Date(selectedDate).toLocaleDateString('ko-KR'),
   });
   const { mutate: updateTaskStatus } = useUpdateTaskStatus();
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+
+  const handleCheckBoxChange = (taskId: number, done: boolean) => {
+    updateTaskStatus({
+      groupId: Number(id),
+      taskListId: selectedTaskList?.id ?? 0,
+      taskId,
+      done,
+    });
+  };
 
   if (isTeamLoading) {
     return (
@@ -83,75 +89,21 @@ function Tasks() {
         tasks &&
         tasks.length > 0 &&
         tasks.map((task: Task) => (
-          <div
-            className={cn(
-              'flex w-full flex-col items-start rounded-lg bg-secondary',
-              'gap-[0.625rem] px-[0.875rem] py-3'
-            )}
+          <TaskCard
             key={task.id}
-          >
-            <div className="flex w-full items-center justify-between">
-              <div className="flex w-full items-center justify-start gap-3">
-                <CheckableText
-                  isChecked={task.doneAt !== null}
-                  onChange={() => {
-                    updateTaskStatus({
-                      groupId: Number(id),
-                      taskListId: selectedTaskList?.id ?? 0,
-                      taskId: task.id,
-                      done: !task.doneAt,
-                      date: new Date(selectedDate).toLocaleDateString('ko-KR'),
-                    });
-                  }}
-                >
-                  {task.name}
-                </CheckableText>
-                <div
-                  className={cn(
-                    'text-sm-regular flex items-center gap-1 text-default'
-                  )}
-                >
-                  <MessageSquareIcon className="size-4 text-icon-primary" />
-                  {task.commentCount}
-                </div>
-              </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                className={cn(
-                  'rounded-full p-0',
-                  'hover:bg-tertiary active:bg-select'
-                )}
-                onClick={() => {}}
-              >
-                <MoreVerticalIcon className="size-4 text-icon-primary" />
-              </Button>
-            </div>
-            <div
-              className={cn(
-                'ml-2 flex items-center justify-center gap-[0.625rem]'
-              )}
-            >
-              <div className="flex items-center gap-1">
-                <CalendarClockIcon className="size-4 text-icon-primary" />
-                <span className="text-xs-regular text-default">
-                  {formatKoreanDate(task.date)}
-                </span>
-              </div>
-              {task.frequency !== FrequencyType.Once && (
-                <>
-                  <span className="text-xs-regular text-default">|</span>
-                  <div className="flex items-center gap-1">
-                    <RepeatIcon className="size-4 text-icon-primary" />
-                    <span className="text-xs-regular text-default">
-                      {formatFrequencyToKorean(task.frequency)}
-                    </span>
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
+            task={task}
+            onCheckBoxChange={handleCheckBoxChange}
+            onClick={() => {
+              setSelectedTask(task);
+              setTaskDetailModalOpen(true);
+            }}
+          />
         ))}
+      <TaskDetailModal
+        task={selectedTask}
+        open={taskDetailModalOpen}
+        setOpen={setTaskDetailModalOpen}
+      />
       {isTasksFetched && tasks && tasks.length === 0 && (
         <div
           className={cn(
