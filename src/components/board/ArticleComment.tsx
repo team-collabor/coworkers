@@ -24,20 +24,22 @@ type ArticleCommentProps = {
   comment: ListItem;
   isEditing: boolean;
   setEditingCommentId: (id: number | null) => void;
+  articleId: number;
 };
 
 function ArticleComment({
   comment,
   isEditing,
   setEditingCommentId,
+  articleId,
 }: ArticleCommentProps) {
   const userId = useAuthStore((state) => state.user?.id);
   const { toast } = useToast();
   const [editedContent, setEditedContent] = useState<string>(comment.content);
   const { mutateAsync: deleteArticleComment } =
-    useDeleteArticleCommentMutation();
+    useDeleteArticleCommentMutation(articleId);
   const { mutateAsync: updateArticleComment } =
-    useUpdateArticleCommentMutation();
+    useUpdateArticleCommentMutation(articleId);
 
   const handleCommentEdit = () => {
     setEditingCommentId(comment.id);
@@ -63,11 +65,15 @@ function ArticleComment({
   };
 
   const handleCommentCancel = () => {
+    setEditedContent(comment.content);
     setEditingCommentId(null);
   };
 
   return (
-    <div className="flex flex-col gap-6 rounded-lg bg-secondary px-6 py-5">
+    <div
+      className="relative flex flex-col gap-6 rounded-lg bg-secondary px-6 
+                py-5"
+    >
       <div className="flex items-start justify-between">
         <p className="w-[600px] whitespace-pre-wrap break-words">
           {isEditing ? (
@@ -113,6 +119,7 @@ function ArticleComment({
             </div>
           ) : (
             <Dropdown
+              dropdownStyle="absolute right-0"
               trigger={
                 <Image
                   src="/icons/kebab_Small.svg"

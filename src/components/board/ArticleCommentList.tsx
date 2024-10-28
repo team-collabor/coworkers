@@ -40,6 +40,7 @@ function ArticleCommentList({ boardId }: ArticleCommentListProps) {
               comment={comment}
               isEditing={comment.id === editingCommentId}
               setEditingCommentId={setEditingCommentId}
+              articleId={boardId}
             />
           </div>
         ))
