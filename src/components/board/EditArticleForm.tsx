@@ -33,7 +33,7 @@ function EditArticleForm({
     content: article.content,
     image: null,
   });
-  const [preview, setPreview] = useState<string>(article.image);
+  const [preview, setPreview] = useState<string | null>(article.image);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const { validateImage } = useImageValidation();
@@ -70,7 +70,7 @@ function EditArticleForm({
       fileInputRef.current.value = '';
     }
     setArticleValue({ ...articleValue, image: null });
-    setPreview('');
+    setPreview(null);
   };
 
   const handleArticleContentChange = (
