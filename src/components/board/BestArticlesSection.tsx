@@ -6,7 +6,7 @@ function BestArticlesSection() {
   const { data: bestArticles } = useBestArticlesQuery({
     page: 1,
     pageSize: 3,
-    orderBy: 'recent',
+    orderBy: 'like',
   });
 
   return (

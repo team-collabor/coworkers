@@ -8,26 +8,14 @@ import Button, {
   TextSize,
 } from '@/components/common/Button/Button';
 import Input from '@/components/common/Input';
+import { signInSchema } from '@/constants/formSchemas/authSchema';
 import { useSignIn } from '@/queries/auth.queries';
 import { useAuthStore } from '@/store/useAuthStore';
 import { SignInRequest } from '@/types/dto/requests/auth.request.types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-
-const schema = z.object({
-  email: z
-    .string()
-    .min(1, '이메일은 필수 입력입니다.')
-    .email('이메일 형식으로 작성해 주세요.'),
-  password: z
-    .string()
-    .min(1, '비밀번호는 필수 입력입니다.')
-    .min(8, '비밀번호는 최소 8자 이상이어야 합니다.'),
-});
 
 type SignInError = {
   response?: {
@@ -61,7 +49,7 @@ function SignInForm() {
       email: '',
       password: '',
     },
-    resolver: zodResolver(schema),
+    resolver: zodResolver(signInSchema),
   });
 
   const onSubmit = (data: SignInRequest) => {
@@ -120,12 +108,6 @@ function SignInForm() {
       >
         로그인
       </Button>
-      <div className="flex justify-center gap-2 text-lg-medium text-primary">
-        <p>아직 계정이 없으신가요?</p>
-        <Link className="text-interaction-focus underline" href="/signup">
-          가입하기
-        </Link>
-      </div>
     </form>
   );
 }

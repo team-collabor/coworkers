@@ -1,6 +1,7 @@
-import { Article } from '@/types/dto/responses/article.response.types';
+import { Article } from '@/types/article.types';
 import { formatDate } from '@/utils/dateTimeUtils/FormatData';
 import Image from 'next/image';
+import Link from 'next/link';
 
 type AllArticleCardProps = {
   article: Article;
@@ -8,11 +9,11 @@ type AllArticleCardProps = {
 
 function ArticleCard({ article }: AllArticleCardProps) {
   return (
-    <article
+    <Link
+      href={`/boards/${article.id}`}
       className=" relative flex h-[176px] w-full flex-col justify-between 
-  rounded-xl border border-solid border-tertiary bg-secondary
-  px-8 py-6
-  "
+      rounded-xl border border-solid border-tertiary bg-secondary
+      px-8 py-6"
     >
       <div className="flex items-center justify-between">
         <div
@@ -73,7 +74,7 @@ function ArticleCard({ article }: AllArticleCardProps) {
           </div>
         </div>
       </div>
-    </article>
+    </Link>
   );
 }
 

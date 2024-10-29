@@ -1,7 +1,7 @@
 import MEDIA_QUERY_BREAK_POINT from '@/constants/mediaQueryBreakPoint';
 import { useEffect, useState } from 'react';
 
-export default function useIsMobile() {
+export const useIsMobile = () => {
   const [isMobileView, setIsMobileView] = useState(false);
 
   useEffect(() => {
@@ -22,4 +22,4 @@ export default function useIsMobile() {
   }, []);
 
   return isMobileView;
-}
+};

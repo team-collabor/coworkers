@@ -1,5 +1,6 @@
-import { createContext, useCallback, useMemo, useState } from 'react';
+import { Context, createContext, useCallback, useMemo, useState } from 'react';
 
+import { useContextSelector } from '@/hooks/context/use-context-selector';
 import type { ModalRootProps } from '../ui/modal.root';
 
 export type TModalContext = {
@@ -8,6 +9,9 @@ export type TModalContext = {
 };
 
 export const ModalContext = createContext<TModalContext | undefined>(undefined);
+
+export const useModalContext = () =>
+  useContextSelector(ModalContext as Context<TModalContext>);
 
 export const useModalContextValue = ({
   open,
