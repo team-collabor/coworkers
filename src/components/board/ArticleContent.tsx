@@ -9,7 +9,7 @@ import {
 import { useAuthStore } from '@/store/useAuthStore';
 import { formatDate } from '@/utils/dateTimeUtils/FormatData';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Dropdown from '../common/Dropdown';
 import EditArticleForm from './EditArticleForm';
@@ -55,6 +55,7 @@ function ArticleContent({ boardId }: ArticleContentProps) {
   const handleArticleDelete = async () => {
     if (userId === article?.writer.id) {
       await deleteArticle();
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       router.push('/boards');
     } else {
       toast({
