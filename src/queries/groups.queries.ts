@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import {
   deleteGroup,
   getGroup,
@@ -68,19 +69,16 @@ export const useTaskListMutation = () => {
     mutationFn: (params: { groupId: number; name: string }) =>
       postTaskList(params.groupId, params.name),
     onSuccess: (_, params) => {
-      queryClient
-        .invalidateQueries({ queryKey: groupsQueryKeys.groups(params.groupId) })
-        .catch(() => {
-          // eslint-disable-next-line no-console
-          console.error('팀 다시 불러오기 오류');
-        });
+      queryClient.invalidateQueries({
+        queryKey: groupsQueryKeys.groups(params.groupId),
+      });
     },
   });
 };
 
 export const useTasksQuery = (params: { id: number; date: string }) => {
   return useQuery({
-    queryKey: groupTasksQueryKeys.inviteGroups(params.id),
+    queryKey: groupTasksQueryKeys.taskGroups(params.id),
     queryFn: () => getTasks(params.id, params.date),
     enabled: !!params.id && !!params.date,
   });
