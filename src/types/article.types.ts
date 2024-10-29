@@ -19,3 +19,15 @@ export type ArticleDetail = Article & {
   isLiked: boolean;
   content: string;
 };
+
+export type ArticleValue = {
+  title: string;
+  content: string;
+  image: File | null;
+};
+
+export type ArticlePayload = {
+  title: string;
+  content: string;
+  image?: string;
+};

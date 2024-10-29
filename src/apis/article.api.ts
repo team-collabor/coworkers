@@ -3,6 +3,7 @@ import {
   GetArticlesParams,
   PostArticleCommentParams,
   PostArticleParams,
+  UpdateArticleParams,
 } from '@/types/dto/requests/article.request.types';
 import {
   ArticleCommentListResponse,
@@ -12,6 +13,8 @@ import {
   PostArticleResponse,
 } from '@/types/dto/responses/article.response.types';
 import { axiosInstance } from './_axiosInstance';
+
+// article
 
 export const getArticles = async ({
   page,
@@ -61,6 +64,26 @@ export const unlikeArticle = async (articleId: number) => {
     url: `/articles/${articleId}/like`,
   });
 };
+
+export const updateArticle = async (
+  articleId: number,
+  data: UpdateArticleParams
+) => {
+  await axiosInstance({
+    method: 'PATCH',
+    url: `/articles/${articleId}`,
+    data,
+  });
+};
+
+export const deleteArticle = async (articleId: number) => {
+  await axiosInstance({
+    method: 'DELETE',
+    url: `/articles/${articleId}`,
+  });
+};
+
+// article comment
 
 export const postArticleComment = async (data: PostArticleCommentParams) => {
   const response = await axiosInstance<PostArticleCommentResponse>({

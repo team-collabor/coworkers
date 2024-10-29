@@ -4,11 +4,7 @@ export const articleQueryKeys = {
     orderBy,
     searchValue,
   ],
-  bestArticles: () => ['bestArticles'],
-  article: (articleId?: number) => ['article', articleId],
-  articleComments: (articleId?: number, limit?: number) => [
-    'articleComments',
-    articleId,
-    limit,
-  ],
+  bestArticles: () => ['BestArticles'],
+  article: (articleId: number) => ['article', articleId],
+  articleComments: (articleId: number) => ['articleComments', articleId],
 };
