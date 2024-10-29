@@ -1,4 +1,5 @@
 import { UnoptimizedImage } from '@/components/next';
+import { cn } from '@/utils/tailwind/cn';
 import { HTMLAttributes } from 'react';
 import ModalToggle from './modal.toggle';
 
@@ -14,15 +15,21 @@ export default function ModalContent({
 }: HTMLAttributes<HTMLDivElement> & {
   withToggle?: boolean;
 }) {
-  const defaultClassName = `
-  absolute bottom-0 w-screen 
-  sm:bottom-auto sm:w-max sm:top-1/2 sm:left-1/2 
-  sm:-translate-x-1/2 sm:-translate-y-1/2 
-  rounded-tl-xl rounded-tr-xl
-  sm: rounded-xl
-  bg-secondary`;
   return (
-    <div className={`${defaultClassName} ${className}`} {...rest}>
+    <div
+      className={cn(
+        'relative -top-16 left-1/2 -translate-x-1/2 -translate-y-full',
+        'h-full max-h-[calc(100vh-4rem)] w-full overflow-y-auto',
+        'rounded-tl-xl rounded-tr-xl',
+        'bg-secondary',
+        'sm:left-1/2 sm:top-[50vh]',
+        'sm:-translate-x-1/2 sm:-translate-y-[calc(50%-2rem)]',
+        'sm:h-auto sm:w-max',
+        'sm:rounded-xl',
+        className
+      )}
+      {...rest}
+    >
       {withToggle && (
         <ModalToggle className="absolute right-4 top-4 z-10">
           <UnoptimizedImage src="/icons/X.svg" alt="" width={24} height={24} />
