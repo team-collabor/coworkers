@@ -1,7 +1,7 @@
 import { useGetArticleCommentsQuery } from '@/queries/article.queries';
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import ArticleComment from './ArticleComment';
+import ArticleComment from './ArticleComments/ArticleComment';
 
 type ArticleCommentListProps = {
   boardId: number;

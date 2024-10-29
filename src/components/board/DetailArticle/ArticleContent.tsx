@@ -11,7 +11,8 @@ import { formatDate } from '@/utils/dateTimeUtils/FormatData';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import Dropdown from '../common/Dropdown';
+
+import Dropdown from '@/components/common/Dropdown';
 import EditArticleForm from './EditArticleForm';
 
 type ArticleContentProps = {
