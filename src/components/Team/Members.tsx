@@ -12,6 +12,8 @@ import { useIsMobile } from '@/hooks/useIsMobile';
 import { useToast } from '@/hooks/useToast';
 import { Member } from '@/types/dto/responses/group.response.types';
 import Image from 'next/image';
+import { useState } from 'react';
+import Pagination from './Pagination';
 
 interface MemberProps {
   member: Member;
@@ -156,14 +158,25 @@ items-center justify-between rounded-xl bg-secondary px-6 "
 }
 
 export default function Members({ members }: MembersProps) {
+  const LIMIT = 6;
+  const [page, setPage] = useState(1);
+  const offset = (page - 1) * LIMIT;
   return (
-    <div
-      className="mb-10 grid h-[10rem] grid-cols-3 gap-3
+    <div className="flex flex-col items-center justify-center">
+      <div
+        className="grid  w-full grid-cols-3 gap-3
     overflow-y-auto mob:grid-cols-2"
-    >
-      {members.map((member) => (
-        <MemberItem key={member.userId} member={member} />
-      ))}
+      >
+        {members.slice(offset, offset + LIMIT).map((member) => (
+          <MemberItem key={member.userId} member={member} />
+        ))}
+      </div>
+      <Pagination
+        total={members.length}
+        limit={LIMIT}
+        page={page}
+        setPage={setPage}
+      />
     </div>
   );
 }

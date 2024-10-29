@@ -9,43 +9,51 @@ import Button, {
   TextSize,
 } from '@/components/common/Button/Button';
 import DropDown from '@/components/common/Dropdown';
-import Input from '@/components/common/Input';
 import { Modal } from '@/components/modal';
 import TaskLists from '@/components/TaskList/TaskLists';
 import Members from '@/components/Team/Members';
-import CircularProgressChart from '@/components/Team/Progress';
+import Report from '@/components/Team/Report';
 import { useToast } from '@/hooks/useToast';
 import {
   useDeleteTeamMutation,
   useInviteGroupQuery,
-  useTaskListMutation,
-  useTasksQuery,
   useTeamQuery,
 } from '@/queries/groups.queries';
-
+import { useGetUser } from '@/queries/users.queries';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useRef } from 'react';
+import { useEffect, useState } from 'react';
 import WithOutTeam from '../withoutteam';
 
 export default function TeamPage() {
   const router = useRouter();
-  const today = new Date().toISOString().split('T')[0];
   const { id } = router.query;
-  const { data: group, isError } = useTeamQuery(Number(id));
+  const { data: group, isError, isFetched } = useTeamQuery(Number(id));
   const { data: inviteLink } = useInviteGroupQuery(Number(id));
-  const { data: tasks } = useTasksQuery({ id: Number(id), date: today });
+  const { data: user } = useGetUser();
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  const createTaskList = useTaskListMutation();
+  useEffect(() => {
+    if (user) {
+      const member = user.memberships.find(
+        (membership) => membership.groupId === group?.id
+      );
+      if (member?.role === 'ADMIN') {
+        setIsAdmin(true);
+      }
+    }
+  }, [user, group]);
+
   const deleteTeam = useDeleteTeamMutation();
-  const taskListNameRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
-  const TODAY_PROGRESS = tasks?.length
-    ? tasks.filter((task) => task.doneAt).length / tasks.length
-    : 0;
-  const TODAY_PROGRESS_PERCENT = Math.floor(TODAY_PROGRESS * 100);
-
+  if (!isFetched) {
+    return (
+      <div className="flex h-[50rem] items-center justify-center">
+        <p className="text-4xl">로딩 중 입니다....</p>
+      </div>
+    );
+  }
   if (isError || !group) {
     return <WithOutTeam />;
   }
@@ -96,39 +104,6 @@ export default function TeamPage() {
     });
   };
 
-  const handleCreateTask = () => {
-    const taskListName = taskListNameRef.current?.value.trim() || '';
-
-    if (taskListName) {
-      createTaskList.mutate(
-        { groupId: Number(id), name: taskListName },
-        {
-          onSuccess: () => {
-            toast({
-              title: '목록생성 완료',
-              description: '새 목록이 생성되었습니다',
-            });
-          },
-          onError: () => {
-            toast({
-              title: '목록생성 실패',
-              variant: 'destructive',
-            });
-          },
-        }
-      );
-      if (taskListNameRef.current) {
-        taskListNameRef.current.value = '';
-      }
-    } else {
-      toast({
-        title: '목록생성 실패',
-        description: '할 일 목록명을 입력해주세요.',
-        variant: 'destructive',
-      });
-    }
-  };
-
   return (
     <div className="flex w-full flex-col gap-5 px-20 pt-10 tab:px-5">
       <div
@@ -145,122 +120,41 @@ export default function TeamPage() {
             priority
           />
           <div className="h-[24px] w-[24px]">
-            <DropDown
-              dropdownStyle="transform translate-x-[-80%] z-20"
-              trigger={
-                <button type="button">
-                  <Image
-                    src="/icons/Gear.svg"
-                    alt="setting"
-                    width={24}
-                    height={24}
-                  />
+            {isAdmin && (
+              <DropDown
+                dropdownStyle="transform translate-x-[-80%] z-20"
+                trigger={
+                  <button type="button">
+                    <Image
+                      src="/icons/Gear.svg"
+                      alt="setting"
+                      width={24}
+                      height={24}
+                    />
+                  </button>
+                }
+              >
+                <button
+                  className="h-[35px] w-full "
+                  type="button"
+                  onClick={handleEditTeam}
+                >
+                  수정하기
                 </button>
-              }
-            >
-              <button
-                className="h-[35px] w-full "
-                type="button"
-                onClick={handleEditTeam}
-              >
-                수정하기
-              </button>
-              <button
-                className="h-[35px] w-full "
-                type="button"
-                onClick={handleDeleteTeam}
-              >
-                삭제하기
-              </button>
-            </DropDown>
+                <button
+                  className="h-[35px] w-full "
+                  type="button"
+                  onClick={handleDeleteTeam}
+                >
+                  삭제하기
+                </button>
+              </DropDown>
+            )}
           </div>
         </div>
-      </div>
-      <div className="flex justify-between">
-        <div className="flex gap-2">
-          <p className="text-lg-medium">할 일 목록</p>
-          <p className="text-lg-medium text-default">
-            ({group.taskLists.length}개)
-          </p>
-        </div>
-
-        <Modal>
-          <Modal.Toggle className="text-brand-primary">
-            + 새로운 목록 추가하기
-          </Modal.Toggle>
-          <Modal.Portal>
-            <Modal.Overlay />
-            <Modal.Content withToggle>
-              <div className="flex flex-col gap-5">
-                <Modal.Header>
-                  <Modal.Title>할 일 목록</Modal.Title>
-                </Modal.Header>
-                <Input
-                  id="task-list-name"
-                  wrapperClassName="w-[280px]"
-                  placeholder="목록 명을 입력해주세요"
-                  ref={taskListNameRef}
-                />
-                <Modal.Close>
-                  <Button
-                    buttonStyle={ButtonStyle.Box}
-                    textColor={TextColor.White}
-                    textSize={TextSize.Large}
-                    buttonWidth={ButtonWidth.Full}
-                    buttonBackgroundColor={ButtonBackgroundColor.Green}
-                    buttonBorderColor={ButtonBorderColor.Green}
-                    buttonPadding={ButtonPadding.Medium}
-                    onClick={handleCreateTask}
-                  >
-                    만들기
-                  </Button>
-                </Modal.Close>
-              </div>
-            </Modal.Content>
-          </Modal.Portal>
-        </Modal>
       </div>
       <TaskLists taskLists={group.taskLists} id={id!.toString()} />
-      <p className="text-lg-medium">리포트</p>
-      <div
-        className="flex h-[13.5625rem] items-center
-     justify-between rounded-xl bg-secondary px-5 mob:gap-5"
-      >
-        <CircularProgressChart value={TODAY_PROGRESS_PERCENT} />
-
-        <div className="flex w-[25rem] flex-col gap-5 tab:w-[17.5rem]">
-          <div
-            className="flex h-[4.78125rem] 
-           items-center justify-between rounded-xl bg-tertiary p-5"
-          >
-            <div className="flex flex-col gap-1">
-              <p className="text-xs-medium text-secondary ">오늘의 할 일</p>
-              <p className="text-2xl-bold text-brand-tertiary">
-                {tasks?.length}개
-              </p>
-            </div>
-            <Image src="../images/Todo.svg" alt="todo" width={40} height={40} />
-          </div>
-          <div
-            className="flex h-[4.78125rem]  items-center 
-          justify-between rounded-xl bg-tertiary p-5"
-          >
-            <div className="flex flex-col gap-1">
-              <p className="text-xs-medium text-secondary ">한 일</p>
-              <p className="text-2xl-bold text-brand-tertiary">
-                {tasks?.filter((task) => task.doneAt).length}개
-              </p>
-            </div>
-            <Image
-              src="/images/Done.svg"
-              alt="완료된 작업"
-              width={40}
-              height={40}
-              style={{ width: 'auto', height: 'auto' }}
-            />
-          </div>
-        </div>
-      </div>
+      {isAdmin && <Report id={Number(id)} />}
 
       <div className="flex justify-between">
         <div className="flex gap-2">

@@ -14,7 +14,11 @@ import {
   UpdateGroupRequest,
 } from '@/types/dto/requests/group.request.types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { groupsInviteQueryKeys, groupsQueryKeys } from './keys/groups.key';
+import {
+  groupsInviteQueryKeys,
+  groupsQueryKeys,
+  groupTasksQueryKeys,
+} from './keys/groups.key';
 
 export const useTeamQuery = (id: number) => {
   return useQuery({
@@ -76,7 +80,7 @@ export const useTaskListMutation = () => {
 
 export const useTasksQuery = (params: { id: number; date: string }) => {
   return useQuery({
-    queryKey: ['groupTask'],
+    queryKey: groupTasksQueryKeys.inviteGroups(params.id),
     queryFn: () => getTasks(params.id, params.date),
     enabled: !!params.id && !!params.date,
   });
