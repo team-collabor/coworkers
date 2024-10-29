@@ -36,10 +36,12 @@ function ArticleComment({
   const userId = useAuthStore((state) => state.user?.id);
   const { toast } = useToast();
   const [editedContent, setEditedContent] = useState<string>(comment.content);
-  const { mutateAsync: deleteArticleComment } =
-    useDeleteArticleCommentMutation(articleId);
-  const { mutateAsync: updateArticleComment } =
-    useUpdateArticleCommentMutation(articleId);
+  const { mutateAsync: deleteArticleComment } = useDeleteArticleCommentMutation(
+    { articleId }
+  );
+  const { mutateAsync: updateArticleComment } = useUpdateArticleCommentMutation(
+    { articleId }
+  );
 
   const handleCommentEdit = () => {
     setEditingCommentId(comment.id);
