@@ -19,6 +19,7 @@ import {
   UpdateArticleParams,
 } from '@/types/dto/requests/article.request.types';
 // eslint-disable-next-line max-len
+import { toast } from '@/hooks/useToast';
 import {
   ArticleCommentListResponse,
   ArticleListResponse,
@@ -100,6 +101,15 @@ export const useUpdateArticleMutation = (articleId: number) => {
       queryClient.invalidateQueries({
         queryKey: articleQueryKeys.bestArticles(),
       });
+      toast({
+        title: '게시글 수정에 성공하였습니다.',
+      });
+    },
+    onError: () => {
+      toast({
+        title: '게시글 수정에 실패하였습니다.',
+        variant: 'destructive',
+      });
     },
   });
 };
@@ -114,6 +124,15 @@ export const useDeleteArticleMutation = (articleId: number) => {
       });
       queryClient.invalidateQueries({
         queryKey: articleQueryKeys.bestArticles(),
+      });
+      toast({
+        title: '게시글 삭제에 성공하였습니다.',
+      });
+    },
+    onError: () => {
+      toast({
+        title: '게시글 삭제에 실패하였습니다.',
+        variant: 'destructive',
       });
     },
   });
@@ -186,7 +205,11 @@ export const useGetArticleCommentsQuery = (
   });
 };
 
-export const useDeleteArticleCommentMutation = (articleId: number) => {
+export const useDeleteArticleCommentMutation = ({
+  articleId,
+}: {
+  articleId: number;
+}) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (commentId: number) => deleteArticleComment(commentId),
@@ -201,7 +224,11 @@ export const useDeleteArticleCommentMutation = (articleId: number) => {
   });
 };
 
-export const useUpdateArticleCommentMutation = (articleId: number) => {
+export const useUpdateArticleCommentMutation = ({
+  articleId,
+}: {
+  articleId: number;
+}) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({
