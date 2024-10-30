@@ -1,9 +1,12 @@
+import { ASIDE_MENU } from '@/components/layouts/consts/_aside.menu';
 import { useToast } from '@/hooks/useToast';
 import { useDeleteTeamMutation } from '@/queries/groups.queries';
 import { useGetMemberships } from '@/queries/users.queries';
+import { cn } from '@/utils/tailwind/cn';
 import Link from 'next/link';
 import { useEffect } from 'react';
-import { MembershipItem } from './aside.membership.item';
+import { MembershipItem } from '../../membership/MembershipItem';
+import { Menu } from '../../menu';
 
 export default function AsideNav() {
   const { data: memberships, refetch } = useGetMemberships();
@@ -43,6 +46,20 @@ export default function AsideNav() {
         ))}
       <li className="hover:scale-105 hover:opacity-80">
         <Link href="/boards">자유게시판</Link>
+      </li>
+      <li className="p-4">
+        <Menu.Trigger menuId={ASIDE_MENU}>
+          <Link href="addteam">
+            <div
+              className={cn([
+                'flex items-center justify-center ',
+                'h-12 rounded-xl border border-solid border-slate-50',
+              ])}
+            >
+              팀 추가하기
+            </div>
+          </Link>
+        </Menu.Trigger>
       </li>
     </ul>
   );

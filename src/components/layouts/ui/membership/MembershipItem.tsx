@@ -4,8 +4,8 @@ import { Membership } from '@/types/users.types';
 import { cn } from '@/utils/tailwind/cn';
 import Link from 'next/link';
 import { memo } from 'react';
-import { Menu } from '../../menu';
-import { GroupDeleteModal } from './aside.delete.modal';
+import { GroupDeleteModal } from './GroupDeleteModal';
+import { Menu } from '../menu';
 
 export const MembershipItem = memo(
   ({

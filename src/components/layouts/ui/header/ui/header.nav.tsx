@@ -1,19 +1,42 @@
-/* eslint-disable max-len */
 import { GROUP_MENU } from '@/components/layouts/consts/_group.menu';
 import { UnoptimizedImage } from '@/components/next';
+import { useToast } from '@/hooks/useToast';
+import { useDeleteTeamMutation } from '@/queries/groups.queries';
 import { useGetMemberships } from '@/queries/users.queries';
+import { cn } from '@/utils/tailwind/cn';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { GroupAddButton } from '../../membership/GroupAddButton';
 import { Menu } from '../../menu';
+import { HeaderMenu } from './header.menu';
 
 export default function HeaderNav() {
   const [currentTop, setCurrentTop] = useState<string>('');
-  const { data: memberships } = useGetMemberships();
+  const { data: memberships, refetch } = useGetMemberships();
   useEffect(() => {
     if (memberships && memberships.length > 0) {
       setCurrentTop(memberships[0].group.name);
     }
   }, [memberships]);
+  const { mutate, isSuccess, isError } = useDeleteTeamMutation();
+  const { toast } = useToast();
+  const deleteGroup = (id: number) => mutate(id);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast({
+        title: '그룹 삭제 완료.',
+        description: '성공적으로 그룹이 삭제되었습니다.',
+      });
+      refetch();
+    }
+    if (isError) {
+      toast({
+        title: '그룹 삭제 실패.',
+        description: '그룹 삭제에 실패했습니다.',
+      });
+    }
+  }, [isError, isSuccess, refetch, toast]);
   return (
     <nav className="scrollbar-none mx-10 hidden h-full md:block">
       <ul
@@ -31,7 +54,11 @@ export default function HeaderNav() {
                 setCurrentTop(currentTop);
               }}
             >
-              <span className="max-w-32 overflow-hidden text-ellipsis whitespace-nowrap">
+              <span
+                className={cn([
+                  'max-w-32 overflow-hidden text-ellipsis whitespace-nowrap',
+                ])}
+              >
                 {currentTop}
               </span>
               <UnoptimizedImage
@@ -60,62 +87,31 @@ export default function HeaderNav() {
                     >
                       <button
                         type="button"
-                        className="grid max-w-56 grid-cols-[1fr_10fr_1fr] items-center gap-x-4 p-4 hover:bg-tertiary"
+                        className={cn([
+                          'grid grid-cols-[1fr_10fr_1fr] items-center',
+                          'max-w-56 gap-x-4 p-4',
+                          ' hover:bg-tertiary',
+                        ])}
                       >
                         <div className="size-12 bg-red-500" />
-                        <div className="overflow-hidden text-ellipsis text-start">
+                        <div
+                          className={cn([
+                            'overflow-hidden text-ellipsis text-start',
+                          ])}
+                        >
                           {m.group.name}
                         </div>
                       </button>
                     </Menu.Trigger>
                   </Link>
                   {m.role === 'ADMIN' ? (
-                    <>
-                      <Menu.Trigger menuId={`${GROUP_MENU}:${m.groupId}`}>
-                        <button type="button">
-                          <UnoptimizedImage
-                            className="justify-self-end"
-                            src="/icons/Kebab_large.svg"
-                            alt=""
-                            width={24}
-                            height={24}
-                          />
-                        </button>
-                      </Menu.Trigger>
-                      <Menu
-                        className="right-0 z-10"
-                        menuId={`${GROUP_MENU}:${m.groupId}`}
-                      >
-                        <div className="grid grid-flow-row auto-rows-fr">
-                          <button
-                            type="button"
-                            className="p-2 hover:bg-tertiary"
-                          >
-                            수정하기
-                          </button>
-                          <button
-                            type="button"
-                            className="p-2 hover:bg-tertiary"
-                          >
-                            삭제하기
-                          </button>
-                        </div>
-                      </Menu>
-                    </>
+                    <HeaderMenu membership={m} deleteGroup={deleteGroup} />
                   ) : (
                     <div />
                   )}
                 </li>
               ))}
-            <li className="p-4">
-              <Menu.Trigger menuId={GROUP_MENU}>
-                <Link href="addteam">
-                  <div className="flex h-12 items-center justify-center rounded-xl border border-solid border-slate-50">
-                    팀 추가하기
-                  </div>
-                </Link>
-              </Menu.Trigger>
-            </li>
+            <GroupAddButton />
           </ul>
         </Menu>
         <li className="hover:scale-105 hover:opacity-80">
