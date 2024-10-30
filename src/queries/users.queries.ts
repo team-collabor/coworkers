@@ -1,4 +1,5 @@
 import {
+  getHistory,
   getMemberships,
   getUser,
   resetPassword,
@@ -11,6 +12,7 @@ import {
   SendResetPasswordEmailRequest,
 } from '@/types/dto/requests/users.request.types';
 import {
+  GetHistoryResponse,
   GetMembershipsResponse,
   GetUserResponse,
 } from '@/types/dto/responses/users.response.types';
@@ -78,4 +80,14 @@ export const useResetPassword = () => {
       });
     },
   });
+};
+
+export const useGetHistory = () => {
+  const { user } = useAuthStore();
+  const { ...returns } = useQuery<GetHistoryResponse>({
+    queryKey: usersQueryKeys.history(),
+    queryFn: getHistory,
+    enabled: !!user,
+  });
+  return { ...returns };
 };

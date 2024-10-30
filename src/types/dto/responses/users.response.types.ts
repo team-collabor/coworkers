@@ -1,3 +1,4 @@
+import { TTaskDone } from '@/types/temp.types';
 import { Membership, User } from '@/types/users.types';
 
 export type GetUserResponse = User & { memberships: Membership[] };
@@ -10,4 +11,8 @@ export type SendResetPasswordEmailResponse = {
 
 export type ResetPasswordResponse = {
   message: string;
+};
+
+export type GetHistoryResponse = {
+  tasksDone: TTaskDone[];
 };
