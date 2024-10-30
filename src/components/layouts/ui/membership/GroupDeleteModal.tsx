@@ -39,7 +39,7 @@ export function GroupDeleteModal({
             <Modal.Summary>해당 그룹을 삭제하시겠어요?</Modal.Summary>
           </Modal.Header>
           <Modal.Body>
-            <div className="flex gap-x-4">
+            <div className="grid auto-cols-fr grid-flow-col gap-x-4">
               <Button
                 onClick={() => deleteGroup(groupId)}
                 buttonBackgroundColor={ButtonBackgroundColor.Red}
@@ -50,7 +50,7 @@ export function GroupDeleteModal({
                 textColor={TextColor.Gray}
                 textSize={TextSize.Large}
               >
-                삭제하기
+                <p>삭제하기</p>
               </Button>
               <Modal.Close>
                 <Button

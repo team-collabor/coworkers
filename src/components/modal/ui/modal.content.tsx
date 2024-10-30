@@ -1,6 +1,6 @@
 import { UnoptimizedImage } from '@/components/next';
 import { cn } from '@/utils/tailwind/cn';
-import { HTMLAttributes } from 'react';
+import { HTMLAttributes, useRef } from 'react';
 import ModalToggle from './modal.toggle';
 
 /**
@@ -15,17 +15,17 @@ export default function ModalContent({
 }: HTMLAttributes<HTMLDivElement> & {
   withToggle?: boolean;
 }) {
+  const ref = useRef(null);
+
   return (
     <div
+      ref={ref}
       className={cn(
-        'relative -top-16 left-1/2 -translate-x-1/2 -translate-y-full',
-        'h-full max-h-[calc(100vh-4rem)] w-full overflow-y-auto',
-        'rounded-tl-xl rounded-tr-xl',
-        'bg-secondary',
-        'sm:left-1/2 sm:top-[50vh]',
-        'sm:-translate-x-1/2 sm:-translate-y-[calc(50%-2rem)]',
-        'sm:h-auto sm:w-max',
-        'sm:rounded-xl',
+        'fixed bottom-0 left-1/2 -translate-x-1/2',
+        'max-h-[calc(100%-4rem)] w-full',
+        'overflow-y-auto bg-secondary',
+        'sm:bottom-[calc(50%-2rem)] sm:translate-y-1/2',
+        'sm:w-fit sm:min-w-max sm:rounded-xl',
         className
       )}
       {...rest}
@@ -35,8 +35,8 @@ export default function ModalContent({
           <UnoptimizedImage src="/icons/X.svg" alt="" width={24} height={24} />
         </ModalToggle>
       )}
-      <div className="relative p-4 pb-8">
-        <div className="relative px-8 pt-6">{children}</div>
+      <div className="p-4 pb-8">
+        <div className="px-8 pt-6">{children}</div>
       </div>
     </div>
   );
