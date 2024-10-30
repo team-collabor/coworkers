@@ -44,7 +44,7 @@ export default function HeaderNav() {
           <Link href="/addteam">팀 추가하기</Link>
         )}
         <Menu menuId={GROUP_MENU}>
-          <div className="relative h-[15.25rem] overflow-auto pb-20">
+          <ul className="relative h-[15.25rem] overflow-auto">
             {memberships &&
               memberships.map((m) => (
                 <li key={m.groupId} className="relative flex items-center">
@@ -58,14 +58,16 @@ export default function HeaderNav() {
                     >
                       <button
                         type="button"
-                        className="grid grid-cols-[1fr_2fr_auto] items-center gap-x-4 p-4 hover:bg-tertiary"
+                        className="grid max-w-56 grid-cols-[1fr_10fr_1fr] items-center gap-x-4 p-4 hover:bg-tertiary"
                       >
                         <div className="size-12 bg-red-500" />
-                        <div className="text-start">{m.group.name}</div>
+                        <div className="overflow-hidden text-ellipsis text-start">
+                          {m.group.name}
+                        </div>
                       </button>
                     </Menu.Trigger>
                   </Link>
-                  {m.role === 'ADMIN' && (
+                  {m.role === 'ADMIN' ? (
                     <>
                       <Menu.Trigger menuId={`${GROUP_MENU}:${m.groupId}`}>
                         <button type="button">
@@ -98,10 +100,21 @@ export default function HeaderNav() {
                         </div>
                       </Menu>
                     </>
+                  ) : (
+                    <div />
                   )}
                 </li>
               ))}
-          </div>
+            <li className="p-4">
+              <Menu.Trigger menuId={GROUP_MENU}>
+                <Link href="addteam">
+                  <div className="flex h-12 items-center justify-center rounded-xl border border-solid border-slate-50">
+                    팀 추가하기
+                  </div>
+                </Link>
+              </Menu.Trigger>
+            </li>
+          </ul>
         </Menu>
         <li className="hover:scale-105 hover:opacity-80">
           <Link href="/boards">자유게시판</Link>
