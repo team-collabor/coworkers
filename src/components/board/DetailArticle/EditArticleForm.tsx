@@ -1,10 +1,3 @@
-import { useImageValidation } from '@/hooks/useImageValidation';
-import { useToast } from '@/hooks/useToast';
-import { useUpdateArticleMutation } from '@/queries/article.queries';
-import { useUploadImageMutation } from '@/queries/uploadImage.query';
-import { ArticleDetail, ArticleValue } from '@/types/article.types';
-import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
 import Button, {
   ButtonBackgroundColor,
   ButtonBorderColor,
@@ -13,9 +6,16 @@ import Button, {
   ButtonWidth,
   TextColor,
   TextSize,
-} from '../common/Button/Button';
-import Input from '../common/Input';
-import TextArea from '../common/TextArea';
+} from '@/components/common/Button/Button';
+import Input from '@/components/common/Input';
+import TextArea from '@/components/common/TextArea';
+import { useImageValidation } from '@/hooks/useImageValidation';
+import { useToast } from '@/hooks/useToast';
+import { useUpdateArticleMutation } from '@/queries/article.queries';
+import { useUploadImageMutation } from '@/queries/uploadImage.query';
+import { ArticleDetail, ArticleValue } from '@/types/article.types';
+import Image from 'next/image';
+import { useEffect, useRef, useState } from 'react';
 
 type EditArticleFormProps = {
   setIsEditArticle: (isEditArticle: boolean) => void;

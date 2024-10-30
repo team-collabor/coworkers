@@ -1,6 +1,7 @@
-import ArticleCommentForm from '@/components/board/ArticleCommentForm';
-import ArticleCommentList from '@/components/board/ArticleCommentList';
-import ArticleContent from '@/components/board/ArticleContent';
+/* eslint-disable max-len */
+import ArticleCommentForm from '@/components/board/ArticleComments/ArticleCommentForm';
+import ArticleCommentList from '@/components/board/ArticleComments/ArticleCommentList';
+import ArticleContent from '@/components/board/DetailArticle/ArticleContent';
 import { useRouter } from 'next/router';
 
 function ArticleDetail() {
