@@ -25,13 +25,15 @@ export default function HeaderNav() {
         {memberships && memberships.length > 0 ? (
           <div className="flex items-center gap-x-2 hover:opacity-80">
             <Menu.Trigger
-              className="flex items-center gap-x-2"
+              className="grid grid-cols-[auto_1fr] items-center gap-x-2"
               menuId={GROUP_MENU}
               onEvent={() => {
                 setCurrentTop(currentTop);
               }}
             >
-              {currentTop}
+              <span className="max-w-32 overflow-hidden text-ellipsis whitespace-nowrap">
+                {currentTop}
+              </span>
               <UnoptimizedImage
                 src="/icons/Toggle.svg"
                 alt=""
