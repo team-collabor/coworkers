@@ -1,5 +1,6 @@
-import AllArticlesSection from '@/components/board/AllArticlesSection';
-import BestArticlesSection from '@/components/board/BestArticlesSection';
+/* eslint-disable max-len */
+import AllArticlesSection from '@/components/board/AllArticles/AllArticlesSection';
+import BestArticlesSection from '@/components/board/BestArticles/BestArticlesSection';
 import Button, {
   ButtonBackgroundColor,
   ButtonBorderColor,

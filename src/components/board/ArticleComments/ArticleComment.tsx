@@ -17,8 +17,8 @@ import Button, {
   ButtonWidth,
   TextColor,
   TextSize,
-} from '../common/Button/Button';
-import Dropdown from '../common/Dropdown';
+} from '../../common/Button/Button';
+import Dropdown from '../../common/Dropdown';
 
 type ArticleCommentProps = {
   comment: ListItem;

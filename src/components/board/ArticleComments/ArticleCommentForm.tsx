@@ -1,6 +1,3 @@
-import { useToast } from '@/hooks/useToast';
-import { usePostArticleCommentMutation } from '@/queries/article.queries';
-import React, { useState } from 'react';
 import Button, {
   ButtonBackgroundColor,
   ButtonBorderColor,
@@ -8,7 +5,10 @@ import Button, {
   ButtonStyle,
   TextColor,
   TextSize,
-} from '../common/Button/Button';
+} from '@/components/common/Button/Button';
+import { useToast } from '@/hooks/useToast';
+import { usePostArticleCommentMutation } from '@/queries/article.queries';
+import React, { useState } from 'react';
 
 type ArticleCommentFormProps = {
   boardId: number;

@@ -3,6 +3,7 @@ import {
   SendResetPasswordEmailRequest,
 } from '@/types/dto/requests/users.request.types';
 import {
+  GetHistoryResponse,
   GetMembershipsResponse,
   GetUserResponse,
   ResetPasswordResponse,
@@ -42,6 +43,14 @@ export const resetPassword = async (params: ResetPasswordRequest) => {
     method: 'PATCH',
     url: '/user/reset-password',
     data: params,
+  });
+  return response.data;
+};
+
+export const getHistory = async () => {
+  const response = await axiosInstance<GetHistoryResponse>({
+    method: 'GET',
+    url: '/user/history',
   });
   return response.data;
 };
