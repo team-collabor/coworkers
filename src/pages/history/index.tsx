@@ -2,7 +2,7 @@ import { UnoptimizedImage } from '@/components/next';
 import { useGetHistory } from '@/queries/users.queries';
 import { TTaskDone } from '@/types/temp.types';
 import { cn } from '@/utils/tailwind/cn';
-import { NoneHistory } from './NoneHistory';
+import { NoneHistory } from './ui/NoneHistory';
 
 const parseDate = (date: string) => {
   const [year, month, day] = date.match(/\d+/g)?.map(Number) as number[];
