@@ -1,6 +1,6 @@
 import { cn } from '@/utils/tailwind/cn';
 
-export function NoneHistory() {
+export default function NoneHistory() {
   return (
     <main
       className={cn([
