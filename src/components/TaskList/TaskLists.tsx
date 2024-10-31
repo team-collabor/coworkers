@@ -93,16 +93,6 @@ export default function TaskLists({ taskLists, id }: TaskListProps) {
     );
   };
 
-  if (taskLists.length === 0) {
-    return (
-      <div className="flex h-[9rem] items-center justify-center">
-        <span className="text-center text-lg-medium text-default">
-          아직 할 일 목록이 없습니다.
-        </span>
-      </div>
-    );
-  }
-
   return (
     <div className="flex flex-col gap-5">
       <div className="flex justify-between">
@@ -147,25 +137,32 @@ export default function TaskLists({ taskLists, id }: TaskListProps) {
           </Modal.Portal>
         </Modal>
       </div>
-
-      <div className="h-[200px]">
-        <VirtualScroll
-          itemHeight={40} // 각 TaskItem의 높이 (패딩과 마진을 고려하여 설정)
-          renderAhead={1} // 미리 렌더링할 항목 수
-        >
-          {taskLists.map((taskList, index) => (
-            <Link key={taskList.id} href={`/${id}/tasks`}>
-              <TaskItem
-                key={taskList.id}
-                taskList={taskList}
-                taskListColor={
-                  TASK_LIST_COLORS[index % TASK_LIST_COLORS.length]
-                }
-              />
-            </Link>
-          ))}
-        </VirtualScroll>
-      </div>
+      {taskLists.length === 0 ? (
+        <div className="flex h-[9rem] items-center justify-center">
+          <span className="text-center text-lg-medium text-default">
+            아직 할 일 목록이 없습니다.
+          </span>
+        </div>
+      ) : (
+        <div className="h-[200px]">
+          <VirtualScroll
+            itemHeight={40} // 각 TaskItem의 높이 (패딩과 마진을 고려하여 설정)
+            renderAhead={1} // 미리 렌더링할 항목 수
+          >
+            {taskLists.map((taskList, index) => (
+              <Link key={taskList.id} href={`/${id}/tasks`}>
+                <TaskItem
+                  key={taskList.id}
+                  taskList={taskList}
+                  taskListColor={
+                    TASK_LIST_COLORS[index % TASK_LIST_COLORS.length]
+                  }
+                />
+              </Link>
+            ))}
+          </VirtualScroll>
+        </div>
+      )}
     </div>
   );
 }
