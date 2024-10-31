@@ -24,14 +24,12 @@ function BestArticleCard({ article, className }: BestArticleCardProps) {
         <span className="text-lg-semibold text-white">Best</span>
       </div>
       <div className="mb-4 flex flex-col gap-3">
-        <div className="flex justify-between gap-2">
-          <div className="flex-1 overflow-hidden">
-            <p
-              className="line-clamp-2 break-words text-xl-medium leading-relaxed
-            text-secondary"
-            >
-              {article.title}
-            </p>
+        <div className="flex items-center justify-between gap-2">
+          <div
+            className="line-clamp-2 w-[15rem] break-words text-xl-medium 
+          leading-relaxed text-secondary"
+          >
+            {article.title}
           </div>
           <div className="h-[4.5rem] w-[4.5rem] flex-shrink-0">
             {article.image && (
