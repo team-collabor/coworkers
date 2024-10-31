@@ -41,9 +41,9 @@ function AllArticlesSection({ searchValue }: AllArticlesSectionProps) {
           <Dropdown
             trigger={
               <div
-                className="absolute right-0 flex w-[100px] cursor-pointer 
-                items-center justify-between
-              gap-[0.625rem] rounded-lg bg-tertiary px-[0.875rem] py-[0.625rem]"
+                className="absolute right-0 flex w-[8rem] cursor-pointer 
+                items-center justify-center gap-[0.625rem]
+              rounded-lg bg-tertiary px-[0.875rem] py-[0.625rem] mob:w-[6.5rem]"
               >
                 <p>{orderBy === 'recent' ? '최신순' : '좋아요순'}</p>
                 <Image
@@ -54,17 +54,18 @@ function AllArticlesSection({ searchValue }: AllArticlesSectionProps) {
                 />
               </div>
             }
-            dropdownStyle="w-[6.5rem] mt-1 z-10 absolute right-0 top-12"
+            dropdownStyle="w-[8rem] mob:w-[6.5rem] mt-1 z-10 absolute
+             right-0 top-12"
           >
             <button
-              className="h-[46px]"
+              className="h-[3rem] "
               type="button"
               onClick={() => setOrderBy('recent')}
             >
               최신순
             </button>
             <button
-              className="h-[46px]"
+              className="h-[3rem]"
               type="button"
               onClick={() => setOrderBy('like')}
             >
