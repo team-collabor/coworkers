@@ -85,8 +85,13 @@ function ArticleContent({ boardId }: ArticleContentProps) {
     <div className="relative flex flex-col gap-6 rounded-2xl bg-secondary p-6">
       {!isEditArticle ? (
         <>
-          <div className="flex justify-between">
-            <h1 className="text-2lg-medium text-secondary">{article.title}</h1>
+          <div className="flex justify-between gap-10">
+            <h1
+              className="w-full break-all text-2lg-medium leading-relaxed 
+            text-secondary"
+            >
+              {article.title}
+            </h1>
             <Dropdown
               dropdownStyle="absolute right-0"
               trigger={
@@ -149,8 +154,8 @@ function ArticleContent({ boardId }: ArticleContentProps) {
           </div>
           <div className="flex justify-between">
             <div
-              className="font-weight-400  py-[10px] text-base 
-            text-secondary"
+              className="font-weight-400  break-all py-[10px] 
+            text-base leading-relaxed text-secondary"
             >
               {article.content}
             </div>
