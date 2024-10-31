@@ -19,7 +19,7 @@ function BestArticleCard({ article, className }: BestArticleCardProps) {
     >
       <div className="absolute left-3 top-3 flex items-start gap-1">
         <div>
-          <Image src="/icons/best.svg" width={16} height={16} alt="bestIcon" />
+          <Image src="icons/Best.svg" width={16} height={16} alt="bestIcon" />
         </div>
         <span className="text-lg-semibold text-white">Best</span>
       </div>
@@ -54,7 +54,7 @@ function BestArticleCard({ article, className }: BestArticleCardProps) {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Image
-            src="/icons/member.svg"
+            src="/icons/Member.svg"
             width={32}
             height={32}
             alt="memberIcon"

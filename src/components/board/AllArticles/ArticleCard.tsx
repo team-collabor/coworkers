@@ -46,7 +46,7 @@ function ArticleCard({ article }: AllArticleCardProps) {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-8">
           <Image
-            src="/icons/member.svg"
+            src="/icons/Member.svg"
             width={32}
             height={32}
             alt="memberIcon"
