@@ -24,7 +24,7 @@ import VirtualScroll from './VirtualScroll';
 
 interface TaskListProps {
   taskLists: TaskList[];
-  id: string;
+  groupId: string;
 }
 
 interface TaskItemProps {
@@ -62,11 +62,11 @@ function TaskItem({ taskList, taskListColor }: TaskItemProps) {
           left={taskList.tasks.length}
         />
         <Dropdown
-          dropdownStyle="transform translate-x-[-80%] z-20"
+          dropdownStyle="transform translate-x-[-105%] translate-y-[-70%] z-20"
           trigger={
             <button
               type="button"
-              className="z-100 rounded-lg hover:bg-tertiary"
+              className="rounded-lg hover:bg-tertiary"
               onClick={(e) => e.stopPropagation()}
             >
               <Image
@@ -80,7 +80,7 @@ function TaskItem({ taskList, taskListColor }: TaskItemProps) {
           }
         >
           <button
-            className="h-[35px] w-full "
+            className=" h-[35px] w-full "
             type="button"
             onClick={handleTaskDelete}
           >
@@ -92,7 +92,7 @@ function TaskItem({ taskList, taskListColor }: TaskItemProps) {
   );
 }
 
-export default function TaskLists({ taskLists, id }: TaskListProps) {
+export default function TaskLists({ taskLists, groupId: id }: TaskListProps) {
   const TASK_LIST_COLORS = [
     'bg-point-purple',
     'bg-point-blue',
