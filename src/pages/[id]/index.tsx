@@ -20,6 +20,7 @@ import {
   useTeamQuery,
 } from '@/queries/groups.queries';
 import { useGetUser } from '@/queries/users.queries';
+import { Loader } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -50,7 +51,7 @@ export default function TeamPage() {
   if (!isFetched) {
     return (
       <div className="flex h-[50rem] items-center justify-center">
-        <p className="text-4xl">로딩 중 입니다....</p>
+        <Loader className="size-20 animate-spin text-icon-brand" />
       </div>
     );
   }
