@@ -10,11 +10,15 @@ import Button, {
 } from '@/components/common/Button/Button';
 import { Modal } from '@/components/modal';
 import { useToast } from '@/hooks/useToast';
-import { useTaskListMutation } from '@/queries/groups.queries';
+import {
+  useDeleteTaskList,
+  useTaskListMutation,
+} from '@/queries/taskList.queries';
 import { TaskList } from '@/types/tasklist.types';
 import Image from 'next/image';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
+import Dropdown from '../common/Dropdown';
 import Input from '../common/Input';
 import VirtualScroll from './VirtualScroll';
 
@@ -29,10 +33,23 @@ interface TaskItemProps {
 }
 
 function TaskItem({ taskList, taskListColor }: TaskItemProps) {
+  const router = useRouter();
+  const deleteTask = useDeleteTaskList();
+
+  const handleTaskClick = (e: React.MouseEvent) => {
+    router.push(`/${taskList.groupId}/tasks`);
+    e.stopPropagation();
+  };
+
+  const handleTaskDelete = () => {
+    deleteTask.mutate({ groupId: taskList.groupId, taskListId: taskList.id });
+  };
+
   return (
     <div
       className="relative mb-[10px] flex h-[40px] items-center 
      justify-between rounded-xl bg-secondary px-5"
+      onClick={handleTaskClick}
     >
       <div
         className={`absolute bottom-0 left-0 top-0 
@@ -44,13 +61,32 @@ function TaskItem({ taskList, taskListColor }: TaskItemProps) {
           count={taskList.tasks.filter((task) => task.doneAt).length}
           left={taskList.tasks.length}
         />
-        <Image
-          src="../icons/Kebab_large.svg"
-          alt="kebab"
-          width={16}
-          height={16}
-          style={{ width: 'auto', height: 'auto' }}
-        />
+        <Dropdown
+          dropdownStyle="transform translate-x-[-80%] z-20"
+          trigger={
+            <button
+              type="button"
+              className="z-100 rounded-lg hover:bg-tertiary"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Image
+                src="../icons/Kebab_large.svg"
+                alt="kebab"
+                width={16}
+                height={16}
+                style={{ width: 'auto', height: 'auto' }}
+              />
+            </button>
+          }
+        >
+          <button
+            className="h-[35px] w-full "
+            type="button"
+            onClick={handleTaskDelete}
+          >
+            삭제하기
+          </button>
+        </Dropdown>
       </div>
     </div>
   );
@@ -150,15 +186,13 @@ export default function TaskLists({ taskLists, id }: TaskListProps) {
             renderAhead={1} // 미리 렌더링할 항목 수
           >
             {taskLists.map((taskList, index) => (
-              <Link key={taskList.id} href={`/${id}/tasks`}>
-                <TaskItem
-                  key={taskList.id}
-                  taskList={taskList}
-                  taskListColor={
-                    TASK_LIST_COLORS[index % TASK_LIST_COLORS.length]
-                  }
-                />
-              </Link>
+              <TaskItem
+                key={taskList.id}
+                taskList={taskList}
+                taskListColor={
+                  TASK_LIST_COLORS[index % TASK_LIST_COLORS.length]
+                }
+              />
             ))}
           </VirtualScroll>
         </div>

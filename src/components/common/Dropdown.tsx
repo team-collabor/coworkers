@@ -86,7 +86,7 @@ export default function Dropdown({
   }, [closeDropdown, toggleDropdown]);
 
   return (
-    <div className="h-[24px] w-[24px]">
+    <div className="h-[24px] w-[24px]" onClick={(e) => e.stopPropagation()}>
       <div ref={triggerRef}>{trigger}</div>
       {isVisible && (
         <div

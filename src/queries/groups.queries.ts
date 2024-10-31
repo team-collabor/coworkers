@@ -6,14 +6,13 @@ import {
   patchGroup,
   postGroup,
   postInviteGroup,
-  postTaskList,
 } from '@/apis/groups.api';
 import {
   InviteGroupRequest,
   PostGroupRequest,
   UpdateGroupRequest,
 } from '@/types/dto/requests/group.request.types';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   groupsInviteQueryKeys,
   groupsQueryKeys,
@@ -62,25 +61,26 @@ export const useInviteGroupQuery = (id: number) => {
   });
 };
 
-export const useTaskListMutation = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (params: { groupId: number; name: string }) =>
-      postTaskList(params.groupId, params.name),
-    onSuccess: (_, params) => {
-      queryClient
-        .invalidateQueries({ queryKey: groupsQueryKeys.groups(params.groupId) })
-        .catch(() => {
-          // eslint-disable-next-line no-console
-          console.error('팀 다시 불러오기 오류');
-        });
-    },
-  });
-};
+// export const useTaskListMutation = () => {
+//   const queryClient = useQueryClient();
+//   return useMutation({
+//     mutationFn: (params: { groupId: number; name: string }) =>
+//       postTaskList(params.groupId, params.name),
+//     onSuccess: (_, params) => {
+//       queryClient
+//         .invalidateQueries(
+//  { queryKey: groupsQueryKeys.groups(params.groupId) })
+//         .catch(() => {
+//           // eslint-disable-next-line no-console
+//           console.error('팀 다시 불러오기 오류');
+//         });
+//     },
+//   });
+// };
 
 export const useTasksQuery = (params: { id: number; date: string }) => {
   return useQuery({
-    queryKey: groupTasksQueryKeys.inviteGroups(params.id),
+    queryKey: groupTasksQueryKeys.Groups(params.id),
     queryFn: () => getTasks(params.id, params.date),
     enabled: !!params.id && !!params.date,
   });

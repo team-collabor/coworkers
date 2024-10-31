@@ -153,8 +153,8 @@ export default function TeamPage() {
           </div>
         </div>
       </div>
-      <TaskLists taskLists={group.taskLists} id={id!.toString()} />
-      {isAdmin && <Report id={Number(id)} />}
+      <TaskLists taskLists={group.taskLists} groupId={id!.toString()} />
+      <Report id={Number(id)} />
 
       <div className="flex justify-between">
         <div className="flex gap-2">
