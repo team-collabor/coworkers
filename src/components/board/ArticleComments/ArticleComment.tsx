@@ -76,8 +76,8 @@ function ArticleComment({
       className="relative flex flex-col gap-6 rounded-lg bg-secondary px-6 
                 py-5"
     >
-      <div className="flex items-start justify-between">
-        <p className="w-[600px] whitespace-pre-wrap break-words">
+      <div className="flex items-start justify-between gap-10">
+        <p className="min-w-0 flex-1 whitespace-pre-wrap break-words">
           {isEditing ? (
             <textarea
               className="h-40 w-full resize-none rounded-xl bg-primary 
