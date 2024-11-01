@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import Button, {
   ButtonBackgroundColor,
   ButtonBorderColor,
@@ -49,9 +48,7 @@ export default function AttendTeam() {
         description: '로그인 후 이용해주세요.',
         variant: 'destructive',
       });
-      router
-        .replace('/signin')
-        .catch((error) => console.error('라우팅 오류:', error));
+      router.replace('/signin');
     } else {
       teamMutation.mutate(
         {
@@ -66,9 +63,7 @@ export default function AttendTeam() {
             });
           },
           onSuccess: () => {
-            router
-              .replace('/')
-              .catch((error) => console.error('라우팅 오류:', error));
+            router.replace('/');
           },
         }
       );

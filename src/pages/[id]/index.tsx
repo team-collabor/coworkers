@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import Button, {
   ButtonBackgroundColor,
   ButtonBorderColor,
@@ -70,8 +69,7 @@ export default function TeamPage() {
             description: '데이터가 클립보드에 복사되었습니다.',
           });
         })
-        .catch((err) => {
-          console.error('클립보드 복사 실패:', err);
+        .catch(() => {
           toast({
             title: '복사 실패',
             description: '데이터 복사를 실패하였습니다.',
@@ -82,27 +80,11 @@ export default function TeamPage() {
   };
 
   const handleEditTeam = () => {
-    router
-      .push(`${group.id}/editteam/`)
-      .catch((error) => console.error('라우팅 오류:', error));
+    router.push(`${group.id}/editteam/`);
   };
 
   const handleDeleteTeam = () => {
-    deleteTeam.mutate(Number(id), {
-      onSuccess: () => {
-        toast({
-          title: '팀 삭제 완료',
-          description: '팀이 삭제되었습니다',
-        });
-        router.push('/').catch((error) => console.error('라우팅 오류:', error));
-      },
-      onError: () => {
-        toast({
-          title: '팀 삭제 실패',
-          variant: 'destructive',
-        });
-      },
-    });
+    deleteTeam.mutate(Number(id));
   };
 
   return (

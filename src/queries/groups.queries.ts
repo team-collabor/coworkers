@@ -15,6 +15,7 @@ import {
   UpdateGroupRequest,
 } from '@/types/dto/requests/group.request.types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 import {
   groupsInviteQueryKeys,
   groupsQueryKeys,
@@ -37,8 +38,23 @@ export const usePatchTeamMutation = () => {
 };
 
 export const useDeleteTeamMutation = () => {
+  const router = useRouter();
+  const { toast } = useToast();
   return useMutation({
     mutationFn: (id: number) => deleteGroup(id),
+    onSuccess: () => {
+      toast({
+        title: '해당 팀을 삭제했습니다.',
+      });
+      router.push('/');
+    },
+    onError: (error) => {
+      toast({
+        title: '팀 삭제에 실패했습니다.',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
   });
 };
 
