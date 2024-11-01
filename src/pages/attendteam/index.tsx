@@ -9,6 +9,7 @@ import Button, {
   TextSize,
 } from '@/components/common/Button/Button';
 import Input from '@/components/common/Input';
+import { useRedirect } from '@/hooks/useRedirect';
 import { useToast } from '@/hooks/useToast';
 import { useInviteGroupMutation } from '@/queries/groups.queries';
 import { useAuthStore } from '@/store/useAuthStore';
@@ -26,9 +27,9 @@ type TeamLinkValues = z.infer<typeof teamSchema>;
 export default function AttendTeam() {
   const router = useRouter();
   const teamMutation = useInviteGroupMutation();
-
   const user = useAuthStore();
   const { toast } = useToast();
+  useRedirect();
 
   const {
     register,
