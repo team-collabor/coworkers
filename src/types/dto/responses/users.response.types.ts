@@ -16,3 +16,9 @@ export type ResetPasswordResponse = {
 export type GetHistoryResponse = {
   tasksDone: TTaskDone[];
 };
+
+export type UpdateUserImageResponse = { url: string };
+
+export type UpdateUserNicknameResponse = { message: string };
+
+export type UpdateUserPasswordResponse = { message: string };
