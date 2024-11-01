@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/utils/tailwind/cn';
 import { ButtonHTMLAttributes } from 'react';
 
 export enum ButtonStyle {
@@ -22,12 +22,14 @@ export enum ButtonWidth {
 export enum ButtonBackgroundColor {
   Green = 'green',
   White = 'white',
+  Gray = 'gray',
   Red = 'red',
   None = 'none',
 }
 export enum ButtonBorderColor {
   Green = 'green',
   Gray = 'gray',
+  LightGray = 'light-gray',
   None = 'none',
 }
 export enum ButtonPadding {
@@ -42,7 +44,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   buttonStyle: ButtonStyle;
   textColor: TextColor;
   textSize: TextSize;
-  buttonWidth: ButtonWidth;
+  buttonWidth?: ButtonWidth;
   buttonBackgroundColor: ButtonBackgroundColor;
   buttonBorderColor: ButtonBorderColor;
   buttonPadding: ButtonPadding;
@@ -66,7 +68,7 @@ function Button({
   return (
     <button
       type={type === 'button' ? 'button' : 'submit'}
-      className={clsx(
+      className={cn(
         'flex items-center justify-center break-keep border-[1px] border-solid',
         {
           // buttonStyle
@@ -79,6 +81,8 @@ function Button({
             active:bg-interaction-pressed disabled:bg-interaction-inactive`]:
             buttonBackgroundColor === ButtonBackgroundColor.Green,
           'bg-inverse': buttonBackgroundColor === ButtonBackgroundColor.White,
+          'bg-icon-primary':
+            buttonBackgroundColor === ButtonBackgroundColor.Gray,
           'bg-status-danger':
             buttonBackgroundColor === ButtonBackgroundColor.Red,
           'bg-transparent':
@@ -102,6 +106,9 @@ function Button({
           disabled:border-interaction-inactive`]:
             buttonBorderColor === ButtonBorderColor.Green,
           'border-primary': buttonBorderColor === ButtonBorderColor.Gray,
+          [`border-icon-primary hover:border-icon-inverse
+            active:border-tertiary`]:
+            buttonBorderColor === ButtonBorderColor.LightGray,
           'border-none': buttonBorderColor === ButtonBorderColor.None,
           // buttonPadding
           'px-5 py-3.5': buttonPadding === ButtonPadding.Large,

@@ -8,11 +8,12 @@ type Props = {
 export default function VirtualScroll({
   children,
   itemHeight,
-  renderAhead = 0,
+  renderAhead = 1,
 }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [scrollTop, setScrollTop] = useState<number>(0);
   const [viewportHeight, setViewportHeight] = useState<number>(0);
+  // 스크롤 영역의 높이
 
   const handleScroll = () => {
     if (scrollRef.current) {
@@ -20,16 +21,8 @@ export default function VirtualScroll({
     }
   };
 
-  useEffect(() => {
-    const ref = scrollRef.current;
-    if (ref) {
-      setViewportHeight(ref.clientHeight);
-      ref.addEventListener('scroll', handleScroll);
-      return () => ref.removeEventListener('scroll', handleScroll);
-    }
-  }, []);
-
   const containerHeight = itemHeight * React.Children.count(children);
+  // 전체 컨테이너 계산
 
   const startIndex = Math.max(
     Math.floor(scrollTop / itemHeight) - renderAhead,
@@ -47,6 +40,15 @@ export default function VirtualScroll({
   );
 
   const translateY = itemHeight * startIndex;
+
+  useEffect(() => {
+    const ref = scrollRef.current;
+    if (ref) {
+      setViewportHeight(ref.clientHeight);
+      ref.addEventListener('scroll', handleScroll);
+      return () => ref.removeEventListener('scroll', handleScroll);
+    }
+  }, []);
 
   return (
     <div className="h-full overflow-y-auto" ref={scrollRef}>
