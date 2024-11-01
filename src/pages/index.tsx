@@ -10,7 +10,8 @@ export default function Home() {
     `}
       >
         <div
-          className={`mb-[3.75rem] flex h-[67.5rem] w-screen flex-col
+          className={`mb-[3.75rem] flex 
+            h-[67.5rem] w-screen flex-col
              justify-between bg-trainLarge bg-cover bg-center
           bg-no-repeat pb-[7.59375rem] pt-[5.25rem] tab:mb-0 tab:h-[58.75rem]
          tab:bg-trainMedium tab:pb-[7.375rem]
@@ -51,7 +52,7 @@ export default function Home() {
             </h1>
           </div>
           <div className="flex justify-center">
-            <Link href="./signin">
+            <Link href="./mypage">
               <button
                 type="button"
                 className={`h-[2.8125rem] w-[23.3125rem] rounded-full
