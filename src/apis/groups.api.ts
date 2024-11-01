@@ -107,15 +107,27 @@ export const postTaskList = async (groupId: number, name: string) => {
 
 export async function getTasks(id: number, date: string) {
   try {
-    const response = await axiosInstance.get<Task[]>(`groups/${id}/tasks`, {
-      params: { date },
+    const response = await axiosInstance<Task[]>({
+      method: 'GET',
+      url: `groups/${id}/tasks`,
+      data: { date },
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    const body = response.data;
-    return body;
+    return response.data;
   } catch (error) {
     throw new Error('할 일을 불러오는 데 실패했습니다.');
+  }
+}
+
+export async function deleteMember(groupId: number, memberUserId: number) {
+  try {
+    await axiosInstance({
+      method: 'DELETE',
+      url: `groups/${groupId}/member/${memberUserId}`,
+    });
+  } catch (error) {
+    throw new Error('멤버 삭제에 실패했습니다.');
   }
 }

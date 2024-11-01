@@ -200,7 +200,7 @@ export default function TeamPage() {
           </Modal.Portal>
         </Modal>
       </div>
-      <Members members={group.members} />
+      <Members members={group.members} isAdmin={isAdmin} />
     </div>
   );
 }

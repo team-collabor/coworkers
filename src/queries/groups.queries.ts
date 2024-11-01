@@ -1,5 +1,6 @@
 import {
   deleteGroup,
+  deleteMember,
   getGroup,
   getInviteGroup,
   getTasks,
@@ -7,12 +8,13 @@ import {
   postGroup,
   postInviteGroup,
 } from '@/apis/groups.api';
+import { useToast } from '@/hooks/useToast';
 import {
   InviteGroupRequest,
   PostGroupRequest,
   UpdateGroupRequest,
 } from '@/types/dto/requests/group.request.types';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   groupsInviteQueryKeys,
   groupsQueryKeys,
@@ -61,27 +63,34 @@ export const useInviteGroupQuery = (id: number) => {
   });
 };
 
-// export const useTaskListMutation = () => {
-//   const queryClient = useQueryClient();
-//   return useMutation({
-//     mutationFn: (params: { groupId: number; name: string }) =>
-//       postTaskList(params.groupId, params.name),
-//     onSuccess: (_, params) => {
-//       queryClient
-//         .invalidateQueries(
-//  { queryKey: groupsQueryKeys.groups(params.groupId) })
-//         .catch(() => {
-//           // eslint-disable-next-line no-console
-//           console.error('팀 다시 불러오기 오류');
-//         });
-//     },
-//   });
-// };
-
 export const useTasksQuery = (params: { id: number; date: string }) => {
   return useQuery({
     queryKey: groupTasksQueryKeys.Groups(params.id),
     queryFn: () => getTasks(params.id, params.date),
     enabled: !!params.id && !!params.date,
+  });
+};
+
+export const useDeleteMember = () => {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (params: { groupId: number; memberUserId: number }) =>
+      deleteMember(params.groupId, params.memberUserId),
+    onSuccess: (_, params) => {
+      queryClient.invalidateQueries({
+        queryKey: groupsQueryKeys.groups(params.groupId),
+      });
+      toast({
+        title: '해당 멤버를 삭제했습니다.',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: '멤버 삭제할 수 없습니다.',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
   });
 };

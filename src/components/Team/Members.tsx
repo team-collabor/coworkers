@@ -13,18 +13,20 @@ import { useToast } from '@/hooks/useToast';
 import { Member } from '@/types/dto/responses/group.response.types';
 import Image from 'next/image';
 import { useState } from 'react';
+import MemberDropDown from './MemberDropDown';
 import Pagination from './Pagination';
 
-interface MemberProps {
+export interface MemberProps {
   member: Member;
+  isAdmin?: boolean;
 }
 interface MembersProps {
   members: Member[];
+  isAdmin: boolean;
 }
 
-function MemberItem({ member }: MemberProps) {
+function MemberItem({ member, isAdmin }: MemberProps) {
   const isMobileView = useIsMobile();
-
   const { toast } = useToast();
 
   const handleEmailCopy = () => {
@@ -70,12 +72,7 @@ function MemberItem({ member }: MemberProps) {
                 {member.userEmail}
               </span>
             </div>
-            <Image
-              src="/icons/Kebab_large.svg"
-              alt="kebab"
-              width={16}
-              height={16}
-            />
+            {isAdmin && <MemberDropDown member={member} />}
           </Modal.Toggle>
         ) : (
           <Modal.Toggle
@@ -95,13 +92,7 @@ items-center justify-between rounded-xl bg-secondary px-6 "
                 <span className="text-xs-regular">{member.userEmail}</span>
               </div>
             </div>
-
-            <Image
-              src="/icons/Kebab_large.svg"
-              alt="kebab"
-              width={16}
-              height={16}
-            />
+            {isAdmin && <MemberDropDown member={member} />}
           </Modal.Toggle>
         )}
 
@@ -157,7 +148,7 @@ items-center justify-between rounded-xl bg-secondary px-6 "
   );
 }
 
-export default function Members({ members }: MembersProps) {
+export default function Members({ members, isAdmin }: MembersProps) {
   const LIMIT = 6;
   const [page, setPage] = useState(1);
   const offset = (page - 1) * LIMIT;
@@ -168,7 +159,7 @@ export default function Members({ members }: MembersProps) {
     overflow-y-auto mob:grid-cols-2"
       >
         {members.slice(offset, offset + LIMIT).map((member) => (
-          <MemberItem key={member.userId} member={member} />
+          <MemberItem key={member.userId} member={member} isAdmin={isAdmin} />
         ))}
       </div>
       <Pagination
