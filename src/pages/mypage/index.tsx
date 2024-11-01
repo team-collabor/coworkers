@@ -1,3 +1,10 @@
+import {
+  deleteUser,
+  getUser,
+  updateUserImage,
+  updateUserNickname,
+  updateUserPassword,
+} from '@/apis/users.api';
 import Button, {
   ButtonBackgroundColor,
   ButtonBorderColor,
@@ -9,25 +16,129 @@ import Button, {
 } from '@/components/common/Button/Button';
 import Input from '@/components/common/Input';
 import { Modal } from '@/components/modal/index';
+import {
+  nicknameSchema,
+  passwordConfirmationSchema,
+  passwordSchema,
+} from '@/constants/formSchemas/authSchema';
+import { useAuthStore } from '@/store/useAuthStore';
+import { GetUserResponse } from '@/types/dto/responses/users.response.types';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { z } from 'zod';
 
 export default function MyPage() {
   const [isNicknameModalOpen, setIsNicknameModalOpen] = useState(false);
-  const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isWithdrawalModalOpen, setIsWithdrawalModalOpen] = useState(false);
 
+  const [userData, setUserData] = useState<GetUserResponse | null>(null);
+  const [nickname, setNickname] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const data = await getUser();
+        const storedImageUrl = localStorage.getItem('userImage') || data.image;
+        setUserData({ ...data, image: storedImageUrl });
+        setNickname(data.nickname || '');
+      } catch (error) {
+        alert('로그인이 필요합니다');
+        window.location.href = '/';
+      }
+    };
+    fetchUserData();
+  }, []);
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const uploadImage = async () => {
+      try {
+        const response = await updateUserImage({ image: file });
+        const imageUrl = `${response.url}?timestamp=${new Date().getTime()}`;
+
+        setUserData((prevUserData) => ({
+          ...prevUserData!,
+          image: imageUrl,
+        }));
+
+        // 최신 URL을 localStorage에 저장
+        localStorage.setItem('userImage', imageUrl);
+      } catch (error) {
+        alert('이미지 변경에 실패했습니다. 다시 시도해주세요.');
+      }
+    };
+    uploadImage();
+  };
+
+  const handleNicknameChange = async (event: React.FormEvent) => {
+    event.preventDefault();
+    // 닉네임 검증 로직 추가
+    try {
+      nicknameSchema.parse(nickname);
+
+      await updateUserNickname({ nickname });
+      setIsNicknameModalOpen(false);
+      alert('닉네임이 성공적으로 변경되었습니다.');
+
+      // Optionally refetch user data to show updated nickname
+      const updatedUserData = await getUser();
+      setUserData(updatedUserData);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        // Zod에서 발생한 검증 오류를 사용자에게 보여줍니다.
+        alert(error.errors.map((err) => err.message).join('\n'));
+      } else {
+        alert('닉네임 변경에 실패했습니다. 다시 시도해주세요.');
+      }
+    }
+  };
+
+  const handlePasswordChange = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    // 비밀번호 검증 로직
+    try {
+      passwordSchema.parse(password);
+      passwordConfirmationSchema.parse(confirmPassword);
+
+      if (password !== confirmPassword) {
+        throw new Error('비밀번호가 일치하지 않습니다.');
+      }
+
+      await updateUserPassword({
+        password,
+        passwordConfirmation: confirmPassword,
+      });
+      setIsPasswordModalOpen(false);
+      alert('비밀번호가 성공적으로 변경되었습니다.');
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        alert(error.errors.map((err) => err.message).join('\n'));
+      } else if (error instanceof Error) {
+        alert(
+          error.message || '비밀번호 변경에 실패했습니다. 다시 시도해주세요.'
+        );
+      } else {
+        alert('비밀번호 변경에 실패했습니다. 다시 시도해주세요.');
+      }
+    }
+  };
+
   const openModal = (modalType: string) => {
     if (modalType === 'nickname') setIsNicknameModalOpen(true);
-    if (modalType === 'email') setIsEmailModalOpen(true);
     if (modalType === 'password') setIsPasswordModalOpen(true);
     if (modalType === 'withdrawal') setIsWithdrawalModalOpen(true);
   };
 
   const closeModal = (modalType: string) => {
     if (modalType === 'nickname') setIsNicknameModalOpen(false);
-    if (modalType === 'email') setIsEmailModalOpen(false);
     if (modalType === 'password') setIsPasswordModalOpen(false);
     if (modalType === 'withdrawal') setIsWithdrawalModalOpen(false);
   };
@@ -36,13 +147,25 @@ export default function MyPage() {
     <div className="box-border flex w-screen justify-center overflow-x-hidden">
       <div className="mx-6 flex w-[49.5rem] flex-col pt-10">
         <p className="pb-6 text-xl font-bold leading-6">계정 설정</p>
-        <div className="relative h-16 w-16 hover:cursor-pointer">
+        <div
+          className="relative h-16 w-16 
+        border-0 hover:cursor-pointer"
+        >
           <Image
-            src="/icons/Member_xLarge.svg"
-            alt="Member"
+            src={userData?.image || '/icons/Member_xLarge.svg'} // 기본 이미지 설정
+            alt="MemberImage"
             fill
             style={{ objectFit: 'cover' }}
             priority
+            onClick={() => fileInputRef.current?.click()} // 이미지 클릭 시 input 트리거
+            className="rounded-full"
+          />
+          <input
+            type="file"
+            accept="image/*"
+            ref={fileInputRef}
+            style={{ display: 'none' }}
+            onChange={handleImageChange}
           />
         </div>
         <p className="mt-6 text-base font-bold">이름</p>
@@ -51,7 +174,7 @@ export default function MyPage() {
           justify-between rounded-xl border-[1px]
           border-primary bg-secondary px-4"
         >
-          <p className="text-base">정보 없음</p>
+          <p className="text-base">{userData?.nickname || '정보 없음'}</p>
           <Button
             buttonStyle={ButtonStyle.Box}
             buttonBackgroundColor={ButtonBackgroundColor.Green}
@@ -73,21 +196,7 @@ export default function MyPage() {
           justify-between rounded-xl border-[1px]
           border-primary bg-tertiary px-4"
         >
-          <p className="text-disabled">정보 없음</p>
-          <Button
-            buttonStyle={ButtonStyle.Box}
-            buttonBackgroundColor={ButtonBackgroundColor.Green}
-            buttonBorderColor={ButtonBorderColor.Green}
-            buttonWidth={ButtonWidth.Fit}
-            textColor={TextColor.White}
-            textSize={TextSize.Small}
-            buttonPadding={ButtonPadding.Small}
-            className="h-8"
-            type="button"
-            onClick={() => openModal('email')}
-          >
-            변경하기
-          </Button>
+          <p className="text-base">{userData?.email || '정보 없음'}</p>
         </div>
         <p className="text-base font-bold">비밀번호</p>
         <div
@@ -95,7 +204,7 @@ export default function MyPage() {
           justify-between rounded-xl border-[1px]
           border-primary bg-tertiary px-4"
         >
-          <p className="text-disabled">●●●●●●●●●</p>
+          <p className="text-disabled blur-sm">●●●●●●●●●</p>
           <Button
             buttonStyle={ButtonStyle.Box}
             buttonBackgroundColor={ButtonBackgroundColor.Green}
@@ -179,6 +288,15 @@ export default function MyPage() {
                   buttonPadding={ButtonPadding.Large}
                   type="button"
                   className="font-bold"
+                  onClick={async () => {
+                    try {
+                      await deleteUser(); // 탈퇴 API 호출
+                      useAuthStore.getState().clearAuth(); // 인증 상태 초기화
+                      window.location.href = '/'; // 홈 페이지로 리디렉션
+                    } catch (error) {
+                      alert('회원탈퇴에 실패했습니다. 다시 시도해주세요.');
+                    }
+                  }}
                 >
                   회원탈퇴
                 </Button>
@@ -195,18 +313,26 @@ export default function MyPage() {
                 <Modal.Title className="mb-2">비밀번호 변경하기</Modal.Title>
               </Modal.Header>
               <Modal.Summary className="flex flex-col justify-start">
-                <form className="flex flex-col gap-4 text-left" noValidate>
+                <form
+                  className="flex flex-col gap-4 text-left"
+                  onSubmit={handlePasswordChange}
+                  noValidate
+                >
                   <Input
                     type="password"
                     id="password-input"
                     label="새 비밀번호"
                     placeholder="새 비밀번호를 입력해주세요."
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                   <Input
                     type="password"
                     id="password-check-input"
                     label="새 비밀번호 확인"
                     placeholder="새 비밀번호를 다시 한 번 입력해주세요."
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                   />
 
                   <div className="flex justify-center gap-2">
@@ -245,58 +371,6 @@ export default function MyPage() {
           </Modal.Portal>
         </Modal>
 
-        <Modal open={isEmailModalOpen}>
-          <Modal.Portal>
-            <Modal.Overlay />
-            <Modal.Content className="font-pretendard text-sm font-bold">
-              <Modal.Header>
-                <Modal.Title className="mb-2">이메일 변경하기</Modal.Title>
-              </Modal.Header>
-              <Modal.Summary className="flex flex-col justify-start">
-                <form className="text-left" noValidate>
-                  <Input
-                    type="email"
-                    id="password-input"
-                    label="새로운 이메일"
-                    placeholder="새 이메일을 입력해주세요."
-                  />
-
-                  <div className="mt-6 flex justify-center gap-2">
-                    <Button
-                      buttonStyle={ButtonStyle.Box}
-                      buttonBackgroundColor={ButtonBackgroundColor.White}
-                      buttonBorderColor={ButtonBorderColor.Green}
-                      buttonWidth={ButtonWidth.Full}
-                      textColor={TextColor.Green}
-                      textSize={TextSize.Small}
-                      buttonPadding={ButtonPadding.Medium}
-                      type="button"
-                      onClick={() => closeModal('email')}
-                      className="text-brand-primary"
-                    >
-                      닫기
-                    </Button>
-
-                    <Button
-                      buttonStyle={ButtonStyle.Box}
-                      buttonBackgroundColor={ButtonBackgroundColor.Green}
-                      buttonBorderColor={ButtonBorderColor.Green}
-                      buttonWidth={ButtonWidth.Full}
-                      textColor={TextColor.White}
-                      textSize={TextSize.Small}
-                      buttonPadding={ButtonPadding.Medium}
-                      type="submit"
-                      className="text-white"
-                    >
-                      변경하기
-                    </Button>
-                  </div>
-                </form>
-              </Modal.Summary>
-            </Modal.Content>
-          </Modal.Portal>
-        </Modal>
-
         <Modal open={isNicknameModalOpen}>
           <Modal.Portal>
             <Modal.Overlay />
@@ -305,12 +379,18 @@ export default function MyPage() {
                 <Modal.Title className="mb-2">이름 변경하기</Modal.Title>
               </Modal.Header>
               <Modal.Summary className="flex flex-col justify-start">
-                <form className="text-left" noValidate>
+                <form
+                  className="text-left"
+                  onSubmit={handleNicknameChange}
+                  noValidate
+                >
                   <Input
                     type="text"
                     id="password-input"
                     label="새로운 이름"
                     placeholder="새 이름을 입력해주세요."
+                    value={nickname}
+                    onChange={(e) => setNickname(e.target.value)}
                   />
                   <div className="mt-6 flex justify-center gap-2">
                     <Button
