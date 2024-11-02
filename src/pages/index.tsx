@@ -26,8 +26,8 @@ export default function Home() {
           >
             <h1
               className={`flex items-center justify-center gap-6 
-              text-[3rem] tab:gap-4 tab:text-[2.5rem]
-              mob:gap-1 mob:text-[1.81rem]`}
+              text-center text-[3rem] tab:gap-4
+              tab:text-[2.5rem] mob:gap-1 mob:text-[1.81rem]`}
             >
               함께 만들어가는 투두 리스트
               <Image
@@ -35,8 +35,8 @@ export default function Home() {
                 alt="Fix"
                 height={56}
                 width={56}
-                className={`tab:h-[3rem] tab:w-[3rem] mob:h-7
-                mob:w-7
+                className={`tab:h-[3rem] tab:w-[3rem]
+                mob:h-7 mob:w-7
                 `}
               />
             </h1>
