@@ -16,6 +16,7 @@ import {
 import { useTaskStore } from '@/store/useTaskStore';
 import { formatKoreanDate } from '@/utils/dateTimeUtils/FormatData';
 import { cn } from '@/utils/tailwind/cn';
+import { ko } from 'date-fns/locale';
 
 type DatePickerProps = {
   mode: 'selector' | 'input';
@@ -146,6 +147,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
             <Calendar
               id="date-picker"
               mode="single"
+              locale={ko}
               selected={mode === 'input' ? date : new Date(selectedDate)}
               onSelect={(value) => handleSelectDate(value as Date)}
               defaultMonth={mode === 'input' ? date : new Date(selectedDate)}

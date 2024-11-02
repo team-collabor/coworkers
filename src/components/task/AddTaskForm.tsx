@@ -34,7 +34,7 @@ function AddTaskForm() {
     resolver: zodResolver(addTaskSchema),
     defaultValues: {
       name: '',
-      startDate: selectedDate.toISOString(),
+      startDate: selectedDate.toLocaleDateString('ko-KR'),
       frequencyType: FrequencyType.Once,
       description: '',
       weekDays: [],
@@ -59,6 +59,9 @@ function AddTaskForm() {
       data.groupId = selectedTaskList.groupId;
       data.taskListId = selectedTaskList.id;
     }
+    const startDate = new Date(data.startDate);
+    startDate.setHours(startDate.getHours() + 9);
+    data.startDate = startDate.toISOString();
     addTask(data);
   };
 
