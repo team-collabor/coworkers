@@ -9,10 +9,10 @@ export default function Home() {
   const handleCheckUser = async () => {
     try {
       await getUser();
-      router.push('./attendteam');
+      router.push('/attendteam');
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 401) {
-        router.push('./signin');
+        router.push('/signin');
       }
     }
   };
