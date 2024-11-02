@@ -12,8 +12,6 @@ export type ResetPasswordRequest = {
 
 export type UpdateUserImageRequest = { image: string };
 
-export type UpdateUserImageUploadRequest = { image: File };
-
 export type UpdateUserNicknameRequest = {
   nickname: string;
 };

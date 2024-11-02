@@ -19,8 +19,6 @@ export type GetHistoryResponse = {
 
 export type UserImageUpdateResponse = { message: string };
 
-export type UpdateUserImageUploadResponse = { url: string };
-
 export type UpdateUserNicknameResponse = { message: string };
 
 export type UpdateUserPasswordResponse = { message: string };
