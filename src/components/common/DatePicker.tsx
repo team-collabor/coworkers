@@ -1,3 +1,4 @@
+import { addDays, subDays } from 'date-fns';
 import {
   Calendar as CalendarIcon,
   CalendarSearchIcon,
@@ -57,13 +58,13 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
       setIsPopoverOpen(false);
     };
     const handlePrevDate = () => {
-      const yesterday = new Date(selectedDate);
-      yesterday.setDate(yesterday.getDate() - 1);
+      const yesterday = subDays(new Date(selectedDate), 1);
+      yesterday.setHours(0, 0, 0, 0);
       handleSelectDate(yesterday);
     };
     const handleNextDate = () => {
-      const tomorrow = new Date(selectedDate);
-      tomorrow.setDate(tomorrow.getDate() + 1);
+      const tomorrow = addDays(new Date(selectedDate), 1);
+      tomorrow.setHours(0, 0, 0, 0);
       handleSelectDate(tomorrow);
     };
 
