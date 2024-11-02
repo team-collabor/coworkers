@@ -1,10 +1,10 @@
+import { uploadImage } from '@/apis/uploadImage.api';
 import {
   deleteUser,
   getUser,
   updateUserImageUrl,
   updateUserNickname,
   updateUserPassword,
-  uploadUserImage,
 } from '@/apis/users.api';
 import Button, {
   ButtonBackgroundColor,
@@ -22,6 +22,7 @@ import {
   passwordConfirmationSchema,
   passwordSchema,
 } from '@/constants/formSchemas/authSchema';
+import { useToast } from '@/hooks/useToast';
 import { useAuthStore } from '@/store/useAuthStore';
 import { GetUserResponse } from '@/types/dto/responses/users.response.types';
 import Image from 'next/image';
@@ -29,6 +30,7 @@ import { useEffect, useRef, useState } from 'react';
 import { z } from 'zod';
 
 export default function MyPage() {
+  const { toast } = useToast();
   const [isNicknameModalOpen, setIsNicknameModalOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isWithdrawalModalOpen, setIsWithdrawalModalOpen] = useState(false);
@@ -44,16 +46,17 @@ export default function MyPage() {
     const fetchUserData = async () => {
       try {
         const data = await getUser();
-        const storedImageUrl = localStorage.getItem('userImage') || data.image;
-        setUserData({ ...data, image: storedImageUrl });
-        setNickname(data.nickname || '');
+        setUserData({ ...data });
       } catch (error) {
-        alert('로그인이 필요합니다');
+        toast({
+          title: '오류',
+          description: '로그인이 필요합니다',
+        });
         window.location.href = '/';
       }
     };
     fetchUserData();
-  }, []);
+  }, [toast]);
 
   const handleImageChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -62,45 +65,52 @@ export default function MyPage() {
     if (!file) return;
 
     try {
-      const uploadResponse = await uploadUserImage({ image: file });
-      const imageUrl: string = uploadResponse.url;
-
-      const updateResponse = await updateUserImageUrl({ image: imageUrl });
-      const updatedMessage = updateResponse.message;
+      const imageUrl: string = await uploadImage(file);
+      await updateUserImageUrl({ image: imageUrl });
 
       setUserData((prevUserData) => ({
         ...prevUserData!,
         image: imageUrl,
       }));
 
-      // 최신 URL을 localStorage에 저장
-      localStorage.setItem('userImage', imageUrl);
-
-      alert(updatedMessage);
+      toast({
+        title: '성공',
+        description: '이미지 변경에 성공했습니다.',
+      });
     } catch (error) {
-      alert('이미지 변경에 실패했습니다. 다시 시도해주세요.');
+      toast({
+        title: '오류',
+        description: '이미지 변경에 실패했습니다. 다시 시도해주세요.',
+      });
     }
   };
 
   const handleNicknameChange = async (event: React.FormEvent) => {
     event.preventDefault();
-    // 닉네임 검증 로직 추가
     try {
       nicknameSchema.parse(nickname);
 
       await updateUserNickname({ nickname });
       setIsNicknameModalOpen(false);
-      alert('닉네임이 성공적으로 변경되었습니다.');
 
-      // Optionally refetch user data to show updated nickname
+      toast({
+        title: '성공',
+        description: '닉네임이 성공적으로 변경되었습니다.',
+      });
+
       const updatedUserData = await getUser();
       setUserData(updatedUserData);
     } catch (error) {
       if (error instanceof z.ZodError) {
-        // Zod에서 발생한 검증 오류를 사용자에게 보여줍니다.
-        alert(error.errors.map((err) => err.message).join('\n'));
+        toast({
+          title: '검증 오류',
+          description: error.errors.map((err) => err.message).join('\n'),
+        });
       } else {
-        alert('닉네임 변경에 실패했습니다. 다시 시도해주세요.');
+        toast({
+          title: '오류',
+          description: '닉네임 변경에 실패했습니다. 다시 시도해주세요.',
+        });
       }
     }
   };
@@ -108,7 +118,6 @@ export default function MyPage() {
   const handlePasswordChange = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    // 비밀번호 검증 로직
     try {
       passwordSchema.parse(password);
       passwordConfirmationSchema.parse(confirmPassword);
@@ -122,17 +131,42 @@ export default function MyPage() {
         passwordConfirmation: confirmPassword,
       });
       setIsPasswordModalOpen(false);
-      alert('비밀번호가 성공적으로 변경되었습니다.');
+
+      toast({
+        title: '성공',
+        description: '비밀번호가 성공적으로 변경되었습니다.',
+      });
     } catch (error) {
       if (error instanceof z.ZodError) {
-        alert(error.errors.map((err) => err.message).join('\n'));
+        toast({
+          title: '검증 오류',
+          description: error.errors.map((err) => err.message).join('\n'),
+        });
       } else if (error instanceof Error) {
-        alert(
-          error.message || '비밀번호 변경에 실패했습니다. 다시 시도해주세요.'
-        );
+        toast({
+          title: '오류',
+          description:
+            error.message || '비밀번호 변경에 실패했습니다. 다시 시도해주세요.',
+        });
       } else {
-        alert('비밀번호 변경에 실패했습니다. 다시 시도해주세요.');
+        toast({
+          title: '오류',
+          description: '비밀번호 변경에 실패했습니다. 다시 시도해주세요.',
+        });
       }
+    }
+  };
+
+  const handleWithdrawal = async () => {
+    try {
+      await deleteUser();
+      useAuthStore.getState().clearAuth();
+      window.location.href = '/';
+    } catch (error) {
+      toast({
+        title: '오류',
+        description: '회원탈퇴에 실패했습니다. 다시 시도해주세요.',
+      });
     }
   };
 
@@ -292,15 +326,7 @@ export default function MyPage() {
                   buttonPadding={ButtonPadding.Large}
                   type="button"
                   className="font-bold"
-                  onClick={async () => {
-                    try {
-                      await deleteUser(); // 탈퇴 API 호출
-                      useAuthStore.getState().clearAuth(); // 인증 상태 초기화
-                      window.location.href = '/'; // 홈 페이지로 리디렉션
-                    } catch (error) {
-                      alert('회원탈퇴에 실패했습니다. 다시 시도해주세요.');
-                    }
-                  }}
+                  onClick={handleWithdrawal}
                 >
                   회원탈퇴
                 </Button>
