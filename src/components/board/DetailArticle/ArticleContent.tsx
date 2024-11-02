@@ -10,16 +10,21 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { formatDate } from '@/utils/dateTimeUtils/FormatData';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 
 import Dropdown from '@/components/common/Dropdown';
 import EditArticleForm from './EditArticleForm';
 
 type ArticleContentProps = {
   boardId: number;
+  isEditArticle: boolean;
+  setIsEditArticle: (isEditArticle: boolean) => void;
 };
 
-function ArticleContent({ boardId }: ArticleContentProps) {
+function ArticleContent({
+  boardId,
+  isEditArticle,
+  setIsEditArticle,
+}: ArticleContentProps) {
   const router = useRouter();
   const userId = useAuthStore((state) => state.user?.id);
   const {
@@ -30,7 +35,6 @@ function ArticleContent({ boardId }: ArticleContentProps) {
   const { mutateAsync: likeArticle } = useLikeArticleMutation();
   const { mutateAsync: unlikeArticle } = useUnlikeArticleMutation();
   const { mutateAsync: deleteArticle } = useDeleteArticleMutation(boardId);
-  const [isEditArticle, setIsEditArticle] = useState(false);
 
   const { toast } = useToast();
 
