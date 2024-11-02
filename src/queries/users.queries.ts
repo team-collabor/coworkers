@@ -20,7 +20,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { usersQueryKeys } from './keys/users.keys';
 
 export const useGetUser = () => {
-  const { user, setUser } = useAuthStore();
+  const { user, setUser, setMemberships } = useAuthStore();
   return useQuery<GetUserResponse>({
     queryKey: usersQueryKeys.user(),
     queryFn: getUser,
@@ -28,6 +28,7 @@ export const useGetUser = () => {
     enabled: !!user,
     select: (data) => {
       setUser(data);
+      setMemberships(data.memberships);
       return data;
     },
   });
