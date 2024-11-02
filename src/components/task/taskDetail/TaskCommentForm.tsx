@@ -35,7 +35,9 @@ function TaskCommentForm({ taskId }: { taskId: number }) {
   const handleKeyPress = (e: React.KeyboardEvent<HTMLFormElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      handleSubmit(onSubmit)();
+      if (watch('content')) {
+        handleSubmit(onSubmit)();
+      }
     }
   };
 
