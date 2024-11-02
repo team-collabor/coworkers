@@ -9,3 +9,14 @@ export type ResetPasswordRequest = {
   passwordConfirmation: string;
   token: string;
 };
+
+export type UpdateUserImageRequest = { image: string };
+
+export type UpdateUserNicknameRequest = {
+  nickname: string;
+};
+
+export type UpdateUserPasswordRequest = {
+  passwordConfirmation: string;
+  password: string;
+};
