@@ -3,6 +3,9 @@ import { Comment } from '@/types/comment.types';
 export type AddCommentRequest = {
   taskId: number;
   content: Comment['content'];
+  date: string;
+  groupId: number;
+  taskListId: number;
 };
 
 export type UpdateCommentRequest = {
@@ -14,6 +17,9 @@ export type UpdateCommentRequest = {
 export type DeleteCommentRequest = {
   taskId: number;
   commentId: number;
+  date: string;
+  groupId: number;
+  taskListId: number;
 };
 
 export type GetCommentsRequest = {
