@@ -46,7 +46,7 @@ export default function HeaderNav() {
         `}
       >
         {memberships && memberships.length > 0 ? (
-          <div className="flex items-center gap-x-2 hover:opacity-80">
+          <li className="flex items-center gap-x-2 hover:opacity-80">
             <Menu.Trigger
               className="grid grid-cols-[auto_1fr] items-center gap-x-2"
               menuId={GROUP_MENU}
@@ -68,9 +68,11 @@ export default function HeaderNav() {
                 height={32}
               />
             </Menu.Trigger>
-          </div>
+          </li>
         ) : (
-          <Link href="/addteam">팀 추가하기</Link>
+          <li>
+            <Link href="/addteam">팀 추가하기</Link>
+          </li>
         )}
         <Menu menuId={GROUP_MENU}>
           <ul className="relative h-[15.25rem] overflow-auto">
@@ -111,7 +113,9 @@ export default function HeaderNav() {
                   )}
                 </li>
               ))}
-            <GroupAddButton />
+            <li className="p-4">
+              <GroupAddButton menuId={GROUP_MENU} />
+            </li>
           </ul>
         </Menu>
         <li className="hover:scale-105 hover:opacity-80">
