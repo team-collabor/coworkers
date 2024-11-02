@@ -51,6 +51,7 @@ function AddTaskForm() {
       delete data.monthDay;
     } else if (data.frequencyType === FrequencyType.Monthly) {
       delete data.weekDays;
+      data.monthDay = new Date(methods.watch('startDate')).getDate();
     } else {
       delete data.weekDays;
       delete data.monthDay;
