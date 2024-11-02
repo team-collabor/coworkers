@@ -2,7 +2,6 @@ import {
   ResetPasswordRequest,
   SendResetPasswordEmailRequest,
   UpdateUserImageRequest,
-  UpdateUserImageUploadRequest,
   UpdateUserNicknameRequest,
   UpdateUserPasswordRequest,
 } from '@/types/dto/requests/users.request.types';
@@ -12,7 +11,6 @@ import {
   GetUserResponse,
   ResetPasswordResponse,
   SendResetPasswordEmailResponse,
-  UpdateUserImageUploadResponse,
   UpdateUserNicknameResponse,
   UpdateUserPasswordResponse,
   UserImageUpdateResponse,
@@ -70,25 +68,6 @@ export const deleteUser = async (): Promise<void> => {
   });
 };
 
-export const uploadUserImage = async (
-  params: UpdateUserImageUploadRequest
-): Promise<UpdateUserImageUploadResponse> => {
-  const formData = new FormData();
-  formData.append('image', params.image);
-
-  const imageResponse = await axiosInstance<UpdateUserImageUploadResponse>({
-    method: 'POST',
-    url: '/images/upload',
-    data: formData,
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
-
-  return imageResponse.data; // 이미지 URL 반환
-};
-
-// 사용자 이미지 URL을 업데이트하는 함수
 export const updateUserImageUrl = async (
   params: UpdateUserImageRequest
 ): Promise<UserImageUpdateResponse> => {
@@ -98,7 +77,7 @@ export const updateUserImageUrl = async (
     data: params,
   });
 
-  return response.data; // 업데이트 결과 반환
+  return response.data;
 };
 
 export const updateUserNickname = async (params: UpdateUserNicknameRequest) => {
