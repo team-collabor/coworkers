@@ -12,7 +12,7 @@ function ArticleDetail() {
   const { boardId } = router.query;
 
   return (
-    <div className="mt-20 flex w-full flex-col gap-10">
+    <div className="my-20 flex w-full flex-col gap-10 mob:my-10">
       <ArticleContent
         boardId={Number(boardId)}
         isEditArticle={isEditArticle}
