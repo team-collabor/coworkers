@@ -37,6 +37,7 @@ function Tasks() {
       taskListId: selectedTaskList?.id ?? 0,
       taskId,
       done,
+      startDate: new Date(selectedDate).toLocaleDateString('ko-KR'),
     });
   };
 
