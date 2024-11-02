@@ -11,6 +11,7 @@ import Button, {
 import { Modal } from '@/components/modal';
 import { useToast } from '@/hooks/useToast';
 import { useTaskListMutation } from '@/queries/groups.queries';
+import { useTaskStore } from '@/store/useTaskStore';
 import { TaskList } from '@/types/tasklist.types';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -66,6 +67,7 @@ export default function TaskLists({ taskLists, id }: TaskListProps) {
   const createTaskList = useTaskListMutation();
   const { toast } = useToast();
   const [taskListName, setTaskListName] = useState('');
+  const { setSelectedTaskList } = useTaskStore();
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -154,7 +156,13 @@ export default function TaskLists({ taskLists, id }: TaskListProps) {
           renderAhead={1} // 미리 렌더링할 항목 수
         >
           {taskLists.map((taskList, index) => (
-            <Link key={taskList.id} href={`/${id}/tasks`}>
+            <Link
+              key={taskList.id}
+              href={`/${id}/tasks`}
+              onClick={() => {
+                setSelectedTaskList(taskList);
+              }}
+            >
               <TaskItem
                 key={taskList.id}
                 taskList={taskList}
