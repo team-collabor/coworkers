@@ -153,6 +153,7 @@ function ArticleComment({
             alt="writerImage"
             width={32}
             height={32}
+            className="h-[2rem] w-[2rem] object-contain"
           />
           <p>{comment.writer.nickname}</p>
         </div>

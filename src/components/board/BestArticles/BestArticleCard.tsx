@@ -26,22 +26,20 @@ function BestArticleCard({ article, className }: BestArticleCardProps) {
       <div className="mb-4 flex flex-col gap-3">
         <div className="flex items-center justify-between gap-2">
           <div
-            className="line-clamp-2 w-[15rem] break-words text-xl-medium 
-          leading-relaxed text-secondary"
+            className="line-clamp-2 w-[15rem] self-start break-words 
+          text-xl-medium leading-relaxed text-secondary"
           >
             {article.title}
           </div>
           <div className="h-[4.5rem] w-[4.5rem] flex-shrink-0">
             {article.image && (
-              <div className="h-[4.5rem] w-[4.5rem] flex-shrink-0">
-                <Image
-                  src={article.image}
-                  width={72}
-                  height={72}
-                  alt="articleImage"
-                  className="object-cover"
-                />
-              </div>
+              <Image
+                src={article.image}
+                width={72}
+                height={72}
+                alt="articleImage"
+                className="h-[4.5rem] w-[4.5rem] object-contain"
+              />
             )}
           </div>
         </div>
@@ -51,12 +49,12 @@ function BestArticleCard({ article, className }: BestArticleCardProps) {
       </div>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Image
-            src="/icons/Member.svg"
-            width={32}
-            height={32}
-            alt="memberIcon"
-          />
+          <div
+            className="relative flex h-[32px] w-[32px] items-center 
+            justify-center"
+          >
+            <Image src="/icons/Member.svg" fill alt="memberIcon" />
+          </div>
           <span className="text-md-medium text-primary">
             {article.writer.nickname}
           </span>

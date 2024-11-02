@@ -184,6 +184,7 @@ function AddBoard() {
               alt="이미지 업로드"
               width={48}
               height={48}
+              className="h-[3rem] w-[3rem]"
             />
             <p className="text-lg-regular text-gray-400">이미지 등록</p>
 
