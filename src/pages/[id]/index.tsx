@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import Button, {
   ButtonBackgroundColor,
   ButtonBorderColor,
@@ -20,6 +19,7 @@ import {
   useTeamQuery,
 } from '@/queries/groups.queries';
 import { useGetUser } from '@/queries/users.queries';
+import { Loader } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -50,7 +50,7 @@ export default function TeamPage() {
   if (!isFetched) {
     return (
       <div className="flex h-[50rem] items-center justify-center">
-        <p className="text-4xl">로딩 중 입니다....</p>
+        <Loader className="size-20 animate-spin text-icon-brand" />
       </div>
     );
   }
@@ -69,8 +69,7 @@ export default function TeamPage() {
             description: '데이터가 클립보드에 복사되었습니다.',
           });
         })
-        .catch((err) => {
-          console.error('클립보드 복사 실패:', err);
+        .catch(() => {
           toast({
             title: '복사 실패',
             description: '데이터 복사를 실패하였습니다.',
@@ -81,27 +80,11 @@ export default function TeamPage() {
   };
 
   const handleEditTeam = () => {
-    router
-      .push(`${group.id}/editteam/`)
-      .catch((error) => console.error('라우팅 오류:', error));
+    router.push(`${group.id}/editteam/`);
   };
 
   const handleDeleteTeam = () => {
-    deleteTeam.mutate(Number(id), {
-      onSuccess: () => {
-        toast({
-          title: '팀 삭제 완료',
-          description: '팀이 삭제되었습니다',
-        });
-        router.push('/').catch((error) => console.error('라우팅 오류:', error));
-      },
-      onError: () => {
-        toast({
-          title: '팀 삭제 실패',
-          variant: 'destructive',
-        });
-      },
-    });
+    deleteTeam.mutate(Number(id));
   };
 
   return (
@@ -153,8 +136,8 @@ export default function TeamPage() {
           </div>
         </div>
       </div>
-      <TaskLists taskLists={group.taskLists} id={id!.toString()} />
-      {isAdmin && <Report id={Number(id)} />}
+      <TaskLists taskLists={group.taskLists} groupId={id!.toString()} />
+      <Report id={Number(id)} />
 
       <div className="flex justify-between">
         <div className="flex gap-2">
@@ -199,7 +182,7 @@ export default function TeamPage() {
           </Modal.Portal>
         </Modal>
       </div>
-      <Members members={group.members} />
+      <Members members={group.members} isAdmin={isAdmin} />
     </div>
   );
 }

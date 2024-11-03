@@ -1,19 +1,21 @@
 import {
   deleteGroup,
+  deleteMember,
   getGroup,
   getInviteGroup,
   getTasks,
   patchGroup,
   postGroup,
   postInviteGroup,
-  postTaskList,
 } from '@/apis/groups.api';
+import { useToast } from '@/hooks/useToast';
 import {
   InviteGroupRequest,
   PostGroupRequest,
   UpdateGroupRequest,
 } from '@/types/dto/requests/group.request.types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 import {
   groupsInviteQueryKeys,
   groupsQueryKeys,
@@ -36,8 +38,23 @@ export const usePatchTeamMutation = () => {
 };
 
 export const useDeleteTeamMutation = () => {
+  const router = useRouter();
+  const { toast } = useToast();
   return useMutation({
     mutationFn: (id: number) => deleteGroup(id),
+    onSuccess: () => {
+      toast({
+        title: '해당 팀을 삭제했습니다.',
+      });
+      router.push('/');
+    },
+    onError: (error) => {
+      toast({
+        title: '팀 삭제에 실패했습니다.',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
   });
 };
 
@@ -62,26 +79,34 @@ export const useInviteGroupQuery = (id: number) => {
   });
 };
 
-export const useTaskListMutation = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (params: { groupId: number; name: string }) =>
-      postTaskList(params.groupId, params.name),
-    onSuccess: (_, params) => {
-      queryClient
-        .invalidateQueries({ queryKey: groupsQueryKeys.groups(params.groupId) })
-        .catch(() => {
-          // eslint-disable-next-line no-console
-          console.error('팀 다시 불러오기 오류');
-        });
-    },
+export const useTasksQuery = (params: { id: number; date: string }) => {
+  return useQuery({
+    queryKey: groupTasksQueryKeys.Groups(params.id),
+    queryFn: () => getTasks(params.id, params.date),
+    enabled: !!params.id && !!params.date,
   });
 };
 
-export const useTasksQuery = (params: { id: number; date: string }) => {
-  return useQuery({
-    queryKey: groupTasksQueryKeys.inviteGroups(params.id),
-    queryFn: () => getTasks(params.id, params.date),
-    enabled: !!params.id && !!params.date,
+export const useDeleteMember = () => {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (params: { groupId: number; memberUserId: number }) =>
+      deleteMember(params.groupId, params.memberUserId),
+    onSuccess: (_, params) => {
+      queryClient.invalidateQueries({
+        queryKey: groupsQueryKeys.groups(params.groupId),
+      });
+      toast({
+        title: '해당 멤버를 삭제했습니다.',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: '멤버 삭제할 수 없습니다.',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
   });
 };

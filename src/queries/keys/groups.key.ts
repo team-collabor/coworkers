@@ -7,5 +7,5 @@ export const groupsInviteQueryKeys = {
 };
 
 export const groupTasksQueryKeys = {
-  inviteGroups: (id: number) => ['groupTask', id],
+  Groups: (id: number) => ['groupTask', id],
 };

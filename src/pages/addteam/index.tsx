@@ -9,6 +9,7 @@ import Button, {
 } from '@/components/common/Button/Button';
 import Input from '@/components/common/Input';
 import ProfileInput from '@/components/Team/ProfileInput';
+import { useRedirect } from '@/hooks/useRedirect';
 import { useTeamMutation } from '@/queries/groups.queries';
 import { useUploadImageMutation } from '@/queries/uploadImage.query';
 import { PostGroupRequest } from '@/types/dto/requests/group.request.types';
@@ -31,6 +32,7 @@ export default function AddTeam() {
   const router = useRouter();
   const teamMutation = useTeamMutation();
   const uploadImageMutation = useUploadImageMutation();
+  useRedirect();
 
   const {
     register,
