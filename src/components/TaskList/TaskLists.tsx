@@ -9,7 +9,6 @@ import Button, {
   TextSize,
 } from '@/components/common/Button/Button';
 import { Modal } from '@/components/modal';
-import { useToast } from '@/hooks/useToast';
 import {
   useDeleteTaskList,
   useTaskListMutation,
@@ -100,7 +99,6 @@ export default function TaskLists({ taskLists, groupId: id }: TaskListProps) {
     'bg-point-pink',
   ];
   const createTaskList = useTaskListMutation();
-  const { toast } = useToast();
   const [taskListName, setTaskListName] = useState('');
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,24 +107,7 @@ export default function TaskLists({ taskLists, groupId: id }: TaskListProps) {
   };
 
   const handleCreateTask = () => {
-    createTaskList.mutate(
-      { groupId: Number(id), name: taskListName },
-      {
-        onSuccess: () => {
-          toast({
-            title: '목록생성 완료',
-            description: '새 목록이 생성되었습니다',
-          });
-        },
-        onError: (err) => {
-          toast({
-            title: '목록생성 실패',
-            description: err.message,
-            variant: 'destructive',
-          });
-        },
-      }
-    );
+    createTaskList.mutate({ groupId: Number(id), name: taskListName });
   };
 
   return (
