@@ -24,10 +24,10 @@ function TaskListSelector({ taskLists }: TaskListSelectorProps) {
 
   useEffect(() => {
     // taskLists 배열이 비어있지 않은 경우에만 디폴트로 첫 번째 할 일 목록을 선택
-    if (taskLists.length > 0) {
+    if (taskLists.length > 0 && !selectedTaskList) {
       setSelectedTaskList(taskLists[0]);
     }
-  }, [taskLists, setSelectedTaskList]);
+  }, [taskLists, setSelectedTaskList, selectedTaskList]);
 
   return (
     <Carousel

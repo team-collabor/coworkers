@@ -1,6 +1,6 @@
-import { useTeamQuery } from '@/queries/groups.queries';
 import { useTasks, useUpdateTaskStatus } from '@/queries/tasks.queries';
 import { useTaskStore } from '@/store/useTaskStore';
+import { GetGroupResponse } from '@/types/dto/responses/group.response.types';
 import { Task } from '@/types/tasks.types';
 import { cn } from '@/utils/tailwind/cn';
 import { Loader2 } from 'lucide-react';
@@ -10,7 +10,13 @@ import TaskCard from './TaskCard';
 import TaskListSelector from './TaskListSelector';
 import TaskDetailModal from './taskDetail/TaskDetailModal';
 
-function Tasks() {
+type TasksProps = {
+  team: GetGroupResponse | undefined;
+  isTeamLoading: boolean;
+  isTeamFetched: boolean;
+};
+
+function Tasks({ team, isTeamLoading, isTeamFetched }: TasksProps) {
   const { id } = useRouter().query;
   const {
     selectedDate,
@@ -18,11 +24,6 @@ function Tasks() {
     taskDetailModalOpen,
     setTaskDetailModalOpen,
   } = useTaskStore();
-  const {
-    data: team,
-    isLoading: isTeamLoading,
-    isFetched: isTeamFetched,
-  } = useTeamQuery(Number(id));
   const { data: tasks, isFetched: isTasksFetched } = useTasks({
     groupId: Number(id),
     taskListId: selectedTaskList?.id ?? 0,
@@ -37,6 +38,7 @@ function Tasks() {
       taskListId: selectedTaskList?.id ?? 0,
       taskId,
       done,
+      startDate: new Date(selectedDate).toLocaleDateString('ko-KR'),
     });
   };
 

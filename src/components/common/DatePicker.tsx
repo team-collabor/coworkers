@@ -1,3 +1,4 @@
+import { addDays, subDays } from 'date-fns';
 import {
   Calendar as CalendarIcon,
   CalendarSearchIcon,
@@ -16,6 +17,7 @@ import {
 import { useTaskStore } from '@/store/useTaskStore';
 import { formatKoreanDate } from '@/utils/dateTimeUtils/FormatData';
 import { cn } from '@/utils/tailwind/cn';
+import { ko } from 'date-fns/locale';
 
 type DatePickerProps = {
   mode: 'selector' | 'input';
@@ -56,13 +58,13 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
       setIsPopoverOpen(false);
     };
     const handlePrevDate = () => {
-      const yesterday = new Date(selectedDate);
-      yesterday.setDate(yesterday.getDate() - 1);
+      const yesterday = subDays(new Date(selectedDate), 1);
+      yesterday.setHours(0, 0, 0, 0);
       handleSelectDate(yesterday);
     };
     const handleNextDate = () => {
-      const tomorrow = new Date(selectedDate);
-      tomorrow.setDate(tomorrow.getDate() + 1);
+      const tomorrow = addDays(new Date(selectedDate), 1);
+      tomorrow.setHours(0, 0, 0, 0);
       handleSelectDate(tomorrow);
     };
 
@@ -146,6 +148,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
             <Calendar
               id="date-picker"
               mode="single"
+              locale={ko}
               selected={mode === 'input' ? date : new Date(selectedDate)}
               onSelect={(value) => handleSelectDate(value as Date)}
               defaultMonth={mode === 'input' ? date : new Date(selectedDate)}

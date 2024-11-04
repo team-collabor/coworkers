@@ -19,6 +19,7 @@ import {
   UpdateCommentResponse,
 } from '@/types/dto/responses/comment.request.types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { tasksQueryKeys } from './keys/tasks.keys';
 
 export const useGetComments = (params: GetCommentsRequest) => {
   return useQuery<GetCommentsResponse>({
@@ -35,6 +36,13 @@ export const useAddComment = () => {
     onSuccess: (_, params) => {
       queryClient.invalidateQueries({
         queryKey: commentsQueryKeys.comments(params.taskId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: tasksQueryKeys.tasks({
+          groupId: params.groupId,
+          taskListId: params.taskListId,
+          date: params.date,
+        }),
       });
     },
     onError: (error) => {
@@ -78,6 +86,13 @@ export const useDeleteComment = () => {
     onSuccess: (_, params) => {
       queryClient.invalidateQueries({
         queryKey: commentsQueryKeys.comments(params.taskId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: tasksQueryKeys.tasks({
+          groupId: params.groupId,
+          taskListId: params.taskListId,
+          date: params.date,
+        }),
       });
       toast({
         title: '댓글을 삭제했습니다.',

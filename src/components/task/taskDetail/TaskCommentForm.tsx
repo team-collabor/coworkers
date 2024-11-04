@@ -5,12 +5,14 @@ import TextArea from '@/components/common/TextArea';
 import { commentSchema } from '@/constants/formSchemas/commentSchema';
 import { useAddComment } from '@/queries/comments.queries';
 import { useAuthStore } from '@/store/useAuthStore';
+import { useTaskStore } from '@/store/useTaskStore';
 import { cn } from '@/utils/tailwind/cn';
 import { ArrowUpIcon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 function TaskCommentForm({ taskId }: { taskId: number }) {
+  const { selectedDate, selectedTaskList } = useTaskStore();
   const { user } = useAuthStore();
   const { register, handleSubmit, watch, reset } = useForm({
     defaultValues: {
@@ -23,6 +25,9 @@ function TaskCommentForm({ taskId }: { taskId: number }) {
     addComment({
       taskId,
       content: comment.content,
+      date: selectedDate.toISOString(),
+      groupId: selectedTaskList?.groupId ?? -1,
+      taskListId: selectedTaskList?.id ?? -1,
     });
     reset();
   };
@@ -30,7 +35,9 @@ function TaskCommentForm({ taskId }: { taskId: number }) {
   const handleKeyPress = (e: React.KeyboardEvent<HTMLFormElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      handleSubmit(onSubmit)();
+      if (watch('content')) {
+        handleSubmit(onSubmit)();
+      }
     }
   };
 
