@@ -25,6 +25,7 @@ type SignUpError = {
 };
 
 function SignUpForm() {
+  const router = useRouter();
   const {
     signUp,
     isSuccess: isSignUpSuccess,
@@ -33,7 +34,6 @@ function SignUpForm() {
     variables: signUpVariables,
   } = useSignUp();
   const { login, isSuccess: isSignInSuccess, error: signInError } = useSignIn();
-  const router = useRouter();
 
   const {
     register,
@@ -66,7 +66,7 @@ function SignUpForm() {
 
     if (isSignInSuccess) {
       reset();
-      router.replace('/');
+      router.replace('/withoutteam');
     } else if (signInError) {
       reset();
       router.replace('/signin');
@@ -84,7 +84,6 @@ function SignUpForm() {
   return (
     <form
       className="flex w-full flex-col gap-7 font-pretendard"
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
       onSubmit={handleSubmit(onSubmit)}
       noValidate
     >
