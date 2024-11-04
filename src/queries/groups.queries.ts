@@ -56,11 +56,15 @@ export const usePatchTeamMutation = () => {
 };
 
 export const useDeleteTeamMutation = () => {
+  const queryClient = useQueryClient();
   const router = useRouter();
   const { toast } = useToast();
   return useMutation({
     mutationFn: (id: number) => deleteGroup(id),
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: usersQueryKeys.memberships(),
+      });
       toast({
         title: '해당 팀을 삭제했습니다.',
       });

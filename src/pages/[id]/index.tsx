@@ -7,6 +7,14 @@ import Button, {
   TextColor,
   TextSize,
 } from '@/components/common/Button/Button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/common/Dialog';
 import DropDown from '@/components/common/Dropdown';
 import { Modal } from '@/components/modal';
 import TaskLists from '@/components/TaskList/TaskLists';
@@ -19,6 +27,7 @@ import {
   useTeamQuery,
 } from '@/queries/groups.queries';
 import { useGetUser } from '@/queries/users.queries';
+
 import { Loader } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -32,6 +41,7 @@ export default function TeamPage() {
   const { data: inviteLink } = useInviteGroupQuery(Number(id));
   const { data: user } = useGetUser();
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isDeleteTeamModal, setIsDeleteTeamModal] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -83,8 +93,12 @@ export default function TeamPage() {
     router.push(`${group.id}/editteam/`);
   };
 
+  const handleDeleteModal = () => {
+    setIsDeleteTeamModal(true);
+  };
   const handleDeleteTeam = () => {
     deleteTeam.mutate(Number(id));
+    setIsDeleteTeamModal(false);
   };
 
   return (
@@ -127,7 +141,7 @@ export default function TeamPage() {
                 <button
                   className="h-[35px] w-full "
                   type="button"
-                  onClick={handleDeleteTeam}
+                  onClick={handleDeleteModal}
                 >
                   삭제하기
                 </button>
@@ -138,7 +152,6 @@ export default function TeamPage() {
       </div>
       <TaskLists taskLists={group.taskLists} groupId={id!.toString()} />
       <Report id={Number(id)} />
-
       <div className="flex justify-between">
         <div className="flex gap-2">
           <p className="text-lg-medium">멤버</p>
@@ -183,6 +196,45 @@ export default function TeamPage() {
         </Modal>
       </div>
       <Members members={group.members} isAdmin={isAdmin} />
+      <Dialog open={isDeleteTeamModal} onOpenChange={setIsDeleteTeamModal}>
+        <DialogContent className="fixed w-80">
+          <DialogHeader className="items-center ">
+            <DialogTitle className="items-center"> {group.name} </DialogTitle>
+            팀을 삭제하시겠어요?
+            <DialogDescription>
+              삭제된 할 팀은 복구할 수 없습니다.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              buttonStyle={ButtonStyle.Box}
+              textColor={TextColor.Gray}
+              textSize={TextSize.Large}
+              buttonWidth={ButtonWidth.Full}
+              buttonBackgroundColor={ButtonBackgroundColor.White}
+              buttonBorderColor={ButtonBorderColor.LightGray}
+              buttonPadding={ButtonPadding.Medium}
+              onClick={() => {
+                setIsDeleteTeamModal(false);
+              }}
+            >
+              닫기
+            </Button>
+            <Button
+              buttonStyle={ButtonStyle.Box}
+              textColor={TextColor.White}
+              textSize={TextSize.Large}
+              buttonWidth={ButtonWidth.Full}
+              buttonBackgroundColor={ButtonBackgroundColor.Red}
+              buttonBorderColor={ButtonBorderColor.None}
+              buttonPadding={ButtonPadding.Medium}
+              onClick={handleDeleteTeam}
+            >
+              팀 삭제
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
