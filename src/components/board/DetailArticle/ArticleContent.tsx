@@ -10,16 +10,21 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { formatDate } from '@/utils/dateTimeUtils/FormatData';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 
 import Dropdown from '@/components/common/Dropdown';
 import EditArticleForm from './EditArticleForm';
 
 type ArticleContentProps = {
   boardId: number;
+  isEditArticle: boolean;
+  setIsEditArticle: (isEditArticle: boolean) => void;
 };
 
-function ArticleContent({ boardId }: ArticleContentProps) {
+function ArticleContent({
+  boardId,
+  isEditArticle,
+  setIsEditArticle,
+}: ArticleContentProps) {
   const router = useRouter();
   const userId = useAuthStore((state) => state.user?.id);
   const {
@@ -30,7 +35,6 @@ function ArticleContent({ boardId }: ArticleContentProps) {
   const { mutateAsync: likeArticle } = useLikeArticleMutation();
   const { mutateAsync: unlikeArticle } = useUnlikeArticleMutation();
   const { mutateAsync: deleteArticle } = useDeleteArticleMutation(boardId);
-  const [isEditArticle, setIsEditArticle] = useState(false);
 
   const { toast } = useToast();
 
@@ -85,8 +89,13 @@ function ArticleContent({ boardId }: ArticleContentProps) {
     <div className="relative flex flex-col gap-6 rounded-2xl bg-secondary p-6">
       {!isEditArticle ? (
         <>
-          <div className="flex justify-between">
-            <h1 className="text-2lg-medium text-secondary">{article.title}</h1>
+          <div className="flex justify-between gap-10">
+            <h1
+              className="w-full break-all text-2lg-medium leading-relaxed 
+            text-secondary"
+            >
+              {article.title}
+            </h1>
             <Dropdown
               dropdownStyle="absolute right-0"
               trigger={
@@ -149,8 +158,8 @@ function ArticleContent({ boardId }: ArticleContentProps) {
           </div>
           <div className="flex justify-between">
             <div
-              className="font-weight-400  py-[10px] text-base 
-            text-secondary"
+              className="font-weight-400  break-all py-[10px] 
+            text-base leading-relaxed text-secondary"
             >
               {article.content}
             </div>

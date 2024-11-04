@@ -50,7 +50,7 @@ function Boards() {
           buttonWidth={ButtonWidth.Fit}
           buttonPadding={ButtonPadding.Large}
         >
-          <Image src="/icons/plus.svg" alt="plus" width={16} height={16} />
+          <Image src="/icons/Plus.svg" alt="plus" width={16} height={16} />
           <p>글쓰기</p>
         </Button>
       </Link>

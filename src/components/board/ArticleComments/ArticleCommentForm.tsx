@@ -44,7 +44,7 @@ function ArticleCommentForm({ boardId }: ArticleCommentFormProps) {
         onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
           setComment(e.target.value)
         }
-        className="h-[102px] resize-none rounded-xl border border-primary
+        className="h-[10rem] resize-none rounded-xl border border-primary
         bg-secondary px-6 py-4 outline-none"
       />
       <Button
