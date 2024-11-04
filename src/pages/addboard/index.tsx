@@ -114,7 +114,10 @@ function AddBoard() {
 
   return (
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    <form className="mt-20 flex w-full flex-col gap-10" onSubmit={handleSubmit}>
+    <form
+      className="flex w-full flex-col gap-10 py-20 mob:relative mob:pb-24"
+      onSubmit={handleSubmit}
+    >
       <div className="flex items-center justify-between">
         <h1 className="text-xl-bold text-primary">게시글 쓰기</h1>
         <Button
@@ -124,7 +127,7 @@ function AddBoard() {
           buttonBackgroundColor={ButtonBackgroundColor.Green}
           buttonBorderColor={ButtonBorderColor.None}
           buttonPadding={ButtonPadding.Large}
-          className="w-52 mob:fixed mob:bottom-5 mob:left-5 mob:right-5 
+          className="w-52 mob:absolute mob:bottom-5 mob:left-5 mob:right-5 
           mob:w-auto"
           type="submit"
           disabled={
@@ -168,7 +171,7 @@ function AddBoard() {
         <div className="flex gap-1 text-lg-medium">
           <h2 className="text-primary">이미지</h2>
         </div>
-        <div className="relative h-60 w-60">
+        <div className="relative h-60 w-60 mob:self-center">
           <label
             htmlFor="article-image"
             className={`absolute inset-0 flex cursor-pointer flex-col 
@@ -181,6 +184,7 @@ function AddBoard() {
               alt="이미지 업로드"
               width={48}
               height={48}
+              className="h-[3rem] w-[3rem]"
             />
             <p className="text-lg-regular text-gray-400">이미지 등록</p>
 

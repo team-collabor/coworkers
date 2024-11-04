@@ -19,31 +19,27 @@ function BestArticleCard({ article, className }: BestArticleCardProps) {
     >
       <div className="absolute left-3 top-3 flex items-start gap-1">
         <div>
-          <Image src="/icons/best.svg" width={16} height={16} alt="bestIcon" />
+          <Image src="icons/Best.svg" width={16} height={16} alt="bestIcon" />
         </div>
         <span className="text-lg-semibold text-white">Best</span>
       </div>
       <div className="mb-4 flex flex-col gap-3">
-        <div className="flex justify-between gap-2">
-          <div className="flex-1 overflow-hidden">
-            <p
-              className="line-clamp-2 break-words text-xl-medium leading-relaxed
-            text-secondary"
-            >
-              {article.title}
-            </p>
+        <div className="flex items-center justify-between gap-2">
+          <div
+            className="line-clamp-2 w-[15rem] self-start break-words 
+          text-xl-medium leading-relaxed text-secondary"
+          >
+            {article.title}
           </div>
           <div className="h-[4.5rem] w-[4.5rem] flex-shrink-0">
             {article.image && (
-              <div className="h-[4.5rem] w-[4.5rem] flex-shrink-0">
-                <Image
-                  src={article.image}
-                  width={72}
-                  height={72}
-                  alt="articleImage"
-                  className="object-cover"
-                />
-              </div>
+              <Image
+                src={article.image}
+                width={72}
+                height={72}
+                alt="articleImage"
+                className="h-[4.5rem] w-[4.5rem] object-contain"
+              />
             )}
           </div>
         </div>
@@ -53,12 +49,12 @@ function BestArticleCard({ article, className }: BestArticleCardProps) {
       </div>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Image
-            src="/icons/member.svg"
-            width={32}
-            height={32}
-            alt="memberIcon"
-          />
+          <div
+            className="relative flex h-[32px] w-[32px] items-center 
+            justify-center"
+          >
+            <Image src="/icons/Member.svg" fill alt="memberIcon" />
+          </div>
           <span className="text-md-medium text-primary">
             {article.writer.nickname}
           </span>
