@@ -1,10 +1,12 @@
 import { addUser, signIn } from '@/apis/auth.api';
+import { useToast } from '@/hooks/useToast';
 import { useAuthStore } from '@/store/useAuthStore';
 import {
   SignInRequest,
   SignUpRequest,
 } from '@/types/dto/requests/auth.request.types';
 import { useMutation } from '@tanstack/react-query';
+import { signIn as nextAuthSignIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { authQueryKeys } from './keys/auth.keys';
 
@@ -47,4 +49,21 @@ export const useSignIn = () => {
   };
 
   return { login, logout, ...returns };
+};
+
+export const useGoogleSignIn = () => {
+  const { toast } = useToast();
+  const { mutate: googleSignIn, ...returns } = useMutation({
+    mutationFn: async () => {
+      return nextAuthSignIn('google');
+    },
+    onSuccess: (res) => {
+      toast({
+        title: '구글 로그인 성공',
+        description: `${res?.ok}`,
+      });
+    },
+  });
+
+  return { googleSignIn, ...returns };
 };

@@ -35,3 +35,17 @@ export const refreshAccessToken = async (refreshToken: string) => {
   );
   return response;
 };
+
+export const oAuthSignIn = async ({
+  provider,
+  data,
+}: {
+  provider: string;
+  data: Record<string, string>;
+}): Promise<SignInResponse> => {
+  const response = await axiosInstance.post<SignInResponse>(
+    `/auth/signIn/${provider}`,
+    data
+  );
+  return response.data;
+};
