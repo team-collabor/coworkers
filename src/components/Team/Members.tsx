@@ -131,7 +131,6 @@ items-center justify-between rounded-xl bg-secondary px-6 "
                   alt="user"
                   width={52}
                   height={52}
-                  style={{ width: 'auto', height: 'auto' }}
                 />
               </div>
               <div className="flex flex-col items-center gap-2">
