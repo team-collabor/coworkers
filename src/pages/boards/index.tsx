@@ -11,7 +11,6 @@ import Button, {
   TextSize,
 } from '@/components/common/Button/Button';
 import Input from '@/components/common/Input';
-import { useToast } from '@/hooks/useToast';
 import { useAuthStore } from '@/store/useAuthStore';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -20,7 +19,6 @@ import { useState } from 'react';
 function Boards() {
   const [inputValue, setInputValue] = useState('');
   const [searchValue, setSearchValue] = useState('');
-  const { toast } = useToast();
   const { user } = useAuthStore();
   const handleInputValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -29,13 +27,6 @@ function Boards() {
   const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       setSearchValue(inputValue);
-    }
-  };
-
-  const handleAddBoardClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (!user) {
-      e.preventDefault();
-      toast({ title: '로그인 후 이용해주세요.' });
     }
   };
 
@@ -50,21 +41,23 @@ function Boards() {
       />
       <BestArticlesSection />
       <AllArticlesSection searchValue={searchValue} />
-      <Link href="/addboard" onClick={handleAddBoardClick}>
-        <Button
-          className="fixed tab:bottom-20 tab:right-5 pc:bottom-10 pc:right-10"
-          buttonStyle={ButtonStyle.Floating}
-          buttonBackgroundColor={ButtonBackgroundColor.Green}
-          buttonBorderColor={ButtonBorderColor.None}
-          textColor={TextColor.White}
-          textSize={TextSize.Large}
-          buttonWidth={ButtonWidth.Fit}
-          buttonPadding={ButtonPadding.Large}
-        >
-          <Image src="/icons/Plus.svg" alt="plus" width={16} height={16} />
-          <p>글쓰기</p>
-        </Button>
-      </Link>
+      {user && (
+        <Link href="/addboard">
+          <Button
+            className="fixed tab:bottom-20 tab:right-5 pc:bottom-10 pc:right-10"
+            buttonStyle={ButtonStyle.Floating}
+            buttonBackgroundColor={ButtonBackgroundColor.Green}
+            buttonBorderColor={ButtonBorderColor.None}
+            textColor={TextColor.White}
+            textSize={TextSize.Large}
+            buttonWidth={ButtonWidth.Fit}
+            buttonPadding={ButtonPadding.Large}
+          >
+            <Image src="/icons/Plus.svg" alt="plus" width={16} height={16} />
+            <p>글쓰기</p>
+          </Button>
+        </Link>
+      )}
     </>
   );
 }
