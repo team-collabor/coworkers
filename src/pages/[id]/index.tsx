@@ -32,7 +32,7 @@ import { Loader } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import WithOutTeam from '../withoutteam';
+import NotFound from '../404';
 
 export default function TeamPage() {
   const router = useRouter();
@@ -41,6 +41,7 @@ export default function TeamPage() {
   const { data: inviteLink } = useInviteGroupQuery(Number(id));
   const { data: user } = useGetUser();
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isMember, setIsMember] = useState(false);
   const [isDeleteTeamModal, setIsDeleteTeamModal] = useState(false);
   useRedirect();
 
@@ -49,8 +50,11 @@ export default function TeamPage() {
       const member = user.memberships.find(
         (membership) => membership.groupId === group?.id
       );
-      if (member?.role === 'ADMIN') {
-        setIsAdmin(true);
+      if (member) {
+        setIsMember(true);
+        if (member.role === 'ADMIN') {
+          setIsAdmin(true);
+        }
       }
     }
   }, [user, group]);
@@ -66,7 +70,7 @@ export default function TeamPage() {
     );
   }
   if (isError || !group) {
-    return <WithOutTeam />;
+    return <NotFound />;
   }
 
   const handleInviteGroup = () => {
@@ -151,7 +155,11 @@ export default function TeamPage() {
           </div>
         </div>
       </div>
-      <TaskLists taskLists={group.taskLists} groupId={id!.toString()} />
+      <TaskLists
+        taskLists={group.taskLists}
+        groupId={id!.toString()}
+        isMember={isMember}
+      />
       <Report id={Number(id)} />
       <div className="flex justify-between">
         <div className="flex gap-2">
@@ -160,41 +168,42 @@ export default function TeamPage() {
             ({group.members.length}개)
           </p>
         </div>
-
-        <Modal>
-          <Modal.Toggle className="text-brand-primary">
-            + 새로운 멤버 초대하기
-          </Modal.Toggle>
-          <Modal.Portal>
-            <Modal.Overlay />
-            <Modal.Content withToggle>
-              <div className="flex flex-col gap-5">
-                <div>
-                  <Modal.Header>
-                    <Modal.Title>멤버 초대</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Summary>
-                    그룹에 참여할 수 있는 링크를 복사 합니다.
-                  </Modal.Summary>
+        {isMember && (
+          <Modal>
+            <Modal.Toggle className="text-brand-primary">
+              + 새로운 멤버 초대하기
+            </Modal.Toggle>
+            <Modal.Portal>
+              <Modal.Overlay />
+              <Modal.Content withToggle>
+                <div className="flex flex-col gap-5">
+                  <div>
+                    <Modal.Header>
+                      <Modal.Title>멤버 초대</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Summary>
+                      그룹에 참여할 수 있는 링크를 복사 합니다.
+                    </Modal.Summary>
+                  </div>
+                  <Modal.Close>
+                    <Button
+                      buttonStyle={ButtonStyle.Box}
+                      textColor={TextColor.White}
+                      textSize={TextSize.Large}
+                      buttonWidth={ButtonWidth.Full}
+                      buttonBackgroundColor={ButtonBackgroundColor.Green}
+                      buttonBorderColor={ButtonBorderColor.Green}
+                      buttonPadding={ButtonPadding.Medium}
+                      onClick={handleInviteGroup}
+                    >
+                      링크 복사하기
+                    </Button>
+                  </Modal.Close>
                 </div>
-                <Modal.Close>
-                  <Button
-                    buttonStyle={ButtonStyle.Box}
-                    textColor={TextColor.White}
-                    textSize={TextSize.Large}
-                    buttonWidth={ButtonWidth.Full}
-                    buttonBackgroundColor={ButtonBackgroundColor.Green}
-                    buttonBorderColor={ButtonBorderColor.Green}
-                    buttonPadding={ButtonPadding.Medium}
-                    onClick={handleInviteGroup}
-                  >
-                    링크 복사하기
-                  </Button>
-                </Modal.Close>
-              </div>
-            </Modal.Content>
-          </Modal.Portal>
-        </Modal>
+              </Modal.Content>
+            </Modal.Portal>
+          </Modal>
+        )}
       </div>
       <Members members={group.members} isAdmin={isAdmin} />
       <Dialog open={isDeleteTeamModal} onOpenChange={setIsDeleteTeamModal}>
