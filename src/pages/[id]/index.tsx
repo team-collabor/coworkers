@@ -20,6 +20,7 @@ import { Modal } from '@/components/modal';
 import TaskLists from '@/components/TaskList/TaskLists';
 import Members from '@/components/Team/Members';
 import Report from '@/components/Team/Report';
+import { useRedirect } from '@/hooks/useRedirect';
 import { useToast } from '@/hooks/useToast';
 import {
   useDeleteTeamMutation,
@@ -27,7 +28,6 @@ import {
   useTeamQuery,
 } from '@/queries/groups.queries';
 import { useGetUser } from '@/queries/users.queries';
-
 import { Loader } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -42,6 +42,7 @@ export default function TeamPage() {
   const { data: user } = useGetUser();
   const [isAdmin, setIsAdmin] = useState(false);
   const [isDeleteTeamModal, setIsDeleteTeamModal] = useState(false);
+  useRedirect();
 
   useEffect(() => {
     if (user) {
