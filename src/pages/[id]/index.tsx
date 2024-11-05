@@ -198,8 +198,9 @@ export default function TeamPage() {
       <Members members={group.members} isAdmin={isAdmin} />
       <Dialog open={isDeleteTeamModal} onOpenChange={setIsDeleteTeamModal}>
         <DialogContent className="fixed w-80">
-          <DialogHeader className="items-center ">
-            <DialogTitle className="items-center"> {group.name} </DialogTitle>
+          <DialogHeader className="items-center gap-1 ">
+            <Image src="/icons/Alert.svg" alt="alert" width={25} height={25} />
+            <DialogTitle> {group.name} </DialogTitle>
             팀을 삭제하시겠어요?
             <DialogDescription>
               삭제된 할 팀은 복구할 수 없습니다.
@@ -211,8 +212,8 @@ export default function TeamPage() {
               textColor={TextColor.Gray}
               textSize={TextSize.Large}
               buttonWidth={ButtonWidth.Full}
-              buttonBackgroundColor={ButtonBackgroundColor.White}
-              buttonBorderColor={ButtonBorderColor.LightGray}
+              buttonBackgroundColor={ButtonBackgroundColor.Green}
+              buttonBorderColor={ButtonBorderColor.Green}
               buttonPadding={ButtonPadding.Medium}
               onClick={() => {
                 setIsDeleteTeamModal(false);
@@ -222,7 +223,7 @@ export default function TeamPage() {
             </Button>
             <Button
               buttonStyle={ButtonStyle.Box}
-              textColor={TextColor.White}
+              textColor={TextColor.Gray}
               textSize={TextSize.Large}
               buttonWidth={ButtonWidth.Full}
               buttonBackgroundColor={ButtonBackgroundColor.Red}

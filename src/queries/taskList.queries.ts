@@ -7,8 +7,17 @@ export const useTaskListMutation = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (params: { groupId: number; name: string }) =>
-      postTaskList(params.groupId, params.name),
+    mutationFn: (params: { groupId: number; name: string }) => {
+      if (!params.name.trim()) {
+        toast({
+          title: '목록생성 실패',
+          description: '할일 목록명을 작성해주세요.',
+          variant: 'destructive',
+        });
+        return Promise.reject(new Error('할일 목록명을 작성해주세요.'));
+      }
+      return postTaskList(params.groupId, params.name);
+    },
     onSuccess: (_, params) => {
       queryClient.invalidateQueries({
         queryKey: groupsQueryKeys.groups(params.groupId),
