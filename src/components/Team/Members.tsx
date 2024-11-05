@@ -7,10 +7,17 @@ import Button, {
   TextColor,
   TextSize,
 } from '@/components/common/Button/Button';
-import { Modal } from '@/components/modal';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+} from '@/components/common/Dialog';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { useToast } from '@/hooks/useToast';
 import { Member } from '@/types/dto/responses/group.response.types';
+import { DialogTitle } from '@radix-ui/react-dialog';
 import Image from 'next/image';
 import { useState } from 'react';
 import MemberDropDown from './MemberDropDown';
@@ -28,6 +35,7 @@ interface MembersProps {
 function MemberItem({ member, isAdmin }: MemberProps) {
   const isMobileView = useIsMobile();
   const { toast } = useToast();
+  const [isMemberModal, setIsMemberModal] = useState(false);
 
   const handleEmailCopy = () => {
     navigator.clipboard
@@ -43,18 +51,25 @@ function MemberItem({ member, isAdmin }: MemberProps) {
           variant: 'destructive',
         });
       });
+    setIsMemberModal(false);
   };
 
   return (
     <div>
-      <Modal>
-        {isMobileView ? (
-          <Modal.Toggle
-            className="flex h-[74px] w-full items-center justify-between 
+      {isMobileView ? (
+        <div
+          className="flex h-[74px] w-full items-center justify-between 
     rounded-xl bg-secondary px-6 "
-          >
-            <div className="flex w-full flex-col items-start gap-1">
-              <div className="flex w-full items-center gap-2">
+          onClick={() => {
+            setIsMemberModal(true);
+          }}
+        >
+          <div className="flex w-full flex-col items-start gap-1">
+            <div className="flex w-full items-center gap-2">
+              <div
+                className="flex h-[24px] w-[24px] items-center
+             overflow-hidden rounded-full border-2 border-primary "
+              >
                 <Image
                   src={
                     member.userImage ? member.userImage : '/icons/Member.svg'
@@ -64,22 +79,26 @@ function MemberItem({ member, isAdmin }: MemberProps) {
                   height={24}
                   style={{ width: '24px', height: '24px' }}
                 />
-                <span className="truncate text-md-medium">
-                  {member.userName}
-                </span>
               </div>
-              <span className="truncate text-xs-regular">
-                {member.userEmail}
-              </span>
+              <span className="truncate text-md-medium">{member.userName}</span>
             </div>
-            {isAdmin && <MemberDropDown member={member} />}
-          </Modal.Toggle>
-        ) : (
-          <Modal.Toggle
-            className="flex h-[74px] w-full
+            <span className="truncate text-xs-regular">{member.userEmail}</span>
+          </div>
+          {isAdmin && <MemberDropDown member={member} />}
+        </div>
+      ) : (
+        <div
+          className="flex h-[74px] w-full
 items-center justify-between rounded-xl bg-secondary px-6 "
-          >
-            <div className="flex gap-4 mob:items-center">
+          onClick={() => {
+            setIsMemberModal(true);
+          }}
+        >
+          <div className="flex gap-4 mob:items-center">
+            <div
+              className="flex h-[32px] w-[32px] items-center
+             overflow-hidden rounded-full border-2 border-primary "
+            >
               <Image
                 src={member.userImage ? member.userImage : '/icons/Member.svg'}
                 alt="user"
@@ -87,63 +106,63 @@ items-center justify-between rounded-xl bg-secondary px-6 "
                 height={32}
                 style={{ width: 'auto', height: 'auto' }}
               />
-              <div className="flex flex-col items-start gap-1">
-                <span className="text-md-medium">{member.userName}</span>
-                <span className="text-xs-regular">{member.userEmail}</span>
+            </div>
+            <div className="flex flex-col items-start gap-1">
+              <span className="text-md-medium">{member.userName}</span>
+              <span className="text-xs-regular">{member.userEmail}</span>
+            </div>
+          </div>
+          {isAdmin && <MemberDropDown member={member} />}
+        </div>
+      )}
+
+      <Dialog open={isMemberModal} onOpenChange={setIsMemberModal}>
+        <DialogContent className="w-90 fixed">
+          <DialogHeader className="items-center">
+            <div className="flex w-[20rem] flex-col items-center gap-5">
+              <div
+                className="flex h-[52px] w-[52px] items-center
+             overflow-hidden rounded-full border-2 border-primary "
+              >
+                <Image
+                  src={
+                    member.userImage ? member.userImage : '/icons/Member.svg'
+                  }
+                  alt="user"
+                  width={52}
+                  height={52}
+                  style={{ width: 'auto', height: 'auto' }}
+                />
+              </div>
+              <div className="flex flex-col items-center gap-2">
+                <DialogTitle className="truncate text-lg-medium ">
+                  {member.userName}
+                </DialogTitle>
+                <span className="truncate text-md-regular ">
+                  {member.userEmail}
+                </span>
+                <DialogDescription>
+                  멤버의 이메일을 복사할 수 있습니다.
+                </DialogDescription>
               </div>
             </div>
-            {isAdmin && <MemberDropDown member={member} />}
-          </Modal.Toggle>
-        )}
-
-        <Modal.Portal>
-          <Modal.Overlay />
-          <Modal.Content withToggle>
-            <div className="flex flex-col gap-5">
-              <Modal.Header>
-                <Modal.Title>
-                  <div className="flex w-[20rem] flex-col items-center gap-5">
-                    <Image
-                      src={
-                        member.userImage
-                          ? member.userImage
-                          : '/icons/Member.svg'
-                      }
-                      alt="user"
-                      width={52}
-                      height={52}
-                      style={{ width: 'auto', height: 'auto' }}
-                    />
-                    <div className="flex flex-col items-center gap-2">
-                      <span className="truncate text-lg-medium ">
-                        {member.userName}
-                      </span>
-                      <span className="truncate text-md-regular ">
-                        {member.userEmail}
-                      </span>
-                    </div>
-                  </div>
-                </Modal.Title>
-              </Modal.Header>
-
-              <Modal.Close>
-                <Button
-                  buttonStyle={ButtonStyle.Box}
-                  textColor={TextColor.White}
-                  textSize={TextSize.Large}
-                  buttonWidth={ButtonWidth.Full}
-                  buttonBackgroundColor={ButtonBackgroundColor.Green}
-                  buttonBorderColor={ButtonBorderColor.Green}
-                  buttonPadding={ButtonPadding.Medium}
-                  onClick={handleEmailCopy}
-                >
-                  이메일 복사하기
-                </Button>
-              </Modal.Close>
-            </div>
-          </Modal.Content>
-        </Modal.Portal>
-      </Modal>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              buttonStyle={ButtonStyle.Box}
+              textColor={TextColor.White}
+              textSize={TextSize.Large}
+              buttonWidth={ButtonWidth.Full}
+              buttonBackgroundColor={ButtonBackgroundColor.Green}
+              buttonBorderColor={ButtonBorderColor.Green}
+              buttonPadding={ButtonPadding.Medium}
+              onClick={handleEmailCopy}
+            >
+              이메일 복사하기
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
