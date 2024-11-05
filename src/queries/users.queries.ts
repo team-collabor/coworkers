@@ -20,16 +20,13 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { usersQueryKeys } from './keys/users.keys';
 
 export const useGetUser = () => {
-
   const { setUser } = useAuthStore();
-
   return useQuery<GetUserResponse>({
     queryKey: usersQueryKeys.user(),
     queryFn: getUser,
     refetchInterval: 1000 * 50,
     select: (data) => {
       setUser(data);
-      setMemberships(data.memberships);
       return data;
     },
     retry: 1,
