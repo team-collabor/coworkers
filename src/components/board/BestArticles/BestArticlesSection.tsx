@@ -1,5 +1,6 @@
 import { useBestArticlesQuery } from '@/queries/article.queries';
 import clsx from 'clsx';
+
 import ArticleCardSkeleton from '../Skeleton/ArticleCardSkeleton';
 import BestArticleCard from './BestArticleCard';
 
@@ -18,7 +19,15 @@ function BestArticlesSection() {
       <h1 className="self-start text-xl-bold">베스트 게시글</h1>
       <div className="flex w-full items-start justify-between gap-3">
         {isLoading
-          ? [1, 2, 3].map((index) => <ArticleCardSkeleton key={index} />)
+          ? [1, 2, 3].map((index) => (
+              <ArticleCardSkeleton
+                key={index}
+                className={clsx({
+                  'hidden tab:block mob:hidden pc:block': index === 1,
+                  'hidden pc:block': index === 2,
+                })}
+              />
+            ))
           : bestArticles?.list.map((article, index) => (
               <BestArticleCard
                 key={article.id}
