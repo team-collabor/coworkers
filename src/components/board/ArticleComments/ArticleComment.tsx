@@ -134,6 +134,7 @@ function ArticleComment({
                   alt="kebab"
                   width={24}
                   height={24}
+                  className="cursor-pointer"
                 />
               }
             >
