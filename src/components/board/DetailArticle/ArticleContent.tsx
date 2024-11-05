@@ -12,6 +12,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 import Dropdown from '@/components/common/Dropdown';
+import ArticleContentSkeleton from '../Skeleton/ArticleContentSkeleton';
 import EditArticleForm from './EditArticleForm';
 
 type ArticleContentProps = {
@@ -70,19 +71,15 @@ function ArticleContent({
     }
   };
 
-  // 추후에 수정 보완할 예정
-  if (isLoading) {
-    return <div>loading</div>;
-  }
-
   if (isError) {
     toast({
       title: '게시글을 불러오는데 실패했습니다.',
       variant: 'destructive',
     });
   }
-  if (!article) {
-    return <div>데이터가 없습니다.</div>;
+
+  if (isLoading || !article) {
+    return <ArticleContentSkeleton />;
   }
 
   return (
@@ -104,6 +101,7 @@ function ArticleContent({
                   alt="kebab"
                   width={24}
                   height={24}
+                  className="cursor-pointer"
                 />
               }
             >
