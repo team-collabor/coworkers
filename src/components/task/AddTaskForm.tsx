@@ -34,7 +34,7 @@ function AddTaskForm() {
     resolver: zodResolver(addTaskSchema),
     defaultValues: {
       name: '',
-      startDate: selectedDate.toISOString(),
+      startDate: selectedDate.toLocaleDateString('ko-KR'),
       frequencyType: FrequencyType.Once,
       description: '',
       weekDays: [],
@@ -51,6 +51,7 @@ function AddTaskForm() {
       delete data.monthDay;
     } else if (data.frequencyType === FrequencyType.Monthly) {
       delete data.weekDays;
+      data.monthDay = new Date(methods.watch('startDate')).getDate();
     } else {
       delete data.weekDays;
       delete data.monthDay;
@@ -59,6 +60,9 @@ function AddTaskForm() {
       data.groupId = selectedTaskList.groupId;
       data.taskListId = selectedTaskList.id;
     }
+    const startDate = new Date(data.startDate);
+    startDate.setHours(startDate.getHours() + 9);
+    data.startDate = startDate.toISOString();
     addTask(data);
   };
 

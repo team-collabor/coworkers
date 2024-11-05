@@ -18,6 +18,7 @@ import {
 import { FrequencyType } from '@/types/tasks.types';
 import { formatDate } from '@/utils/dateTimeUtils/FormatData';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { groupsQueryKeys } from './keys/groups.key';
 import { tasksQueryKeys } from './keys/tasks.keys';
 
 export const useTasks = (params: GetTaskRequest) => {
@@ -53,7 +54,7 @@ export const useAddTask = () => {
       return rest;
     },
     mutationFn: async (params: AddTaskRequest) => addTask(params),
-    onSuccess: (_, params) => {
+    onSuccess: (res, params) => {
       toast({
         title: '할 일을 추가했습니다.',
       });
@@ -63,6 +64,16 @@ export const useAddTask = () => {
           taskListId: params.taskListId,
           date: formatDate(params.startDate),
         }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: tasksQueryKeys.taskDetail({
+          groupId: params.groupId,
+          taskListId: params.taskListId,
+          taskId: res.id,
+        }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: groupsQueryKeys.groups(params.groupId),
       });
     },
     onError: (error) => {
@@ -98,6 +109,9 @@ export const useUpdateTask = () => {
           taskId: params.taskId,
         }),
       });
+      queryClient.invalidateQueries({
+        queryKey: groupsQueryKeys.groups(params.groupId),
+      });
     },
     onError: (error) => {
       toast({
@@ -130,6 +144,9 @@ export const useUpdateTaskStatus = () => {
           taskId: params.taskId,
         }),
       });
+      queryClient.invalidateQueries({
+        queryKey: groupsQueryKeys.groups(params.groupId),
+      });
     },
     onError: (error) => {
       toast({
@@ -156,6 +173,9 @@ export const useDeleteTask = () => {
           taskListId: params.taskListId,
           date: formatDate(params.date ?? ''),
         }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: groupsQueryKeys.groups(params.groupId),
       });
     },
     onError: (error) => {

@@ -9,6 +9,7 @@ import Button, {
   TextSize,
 } from '@/components/common/Button/Button';
 import { Modal } from '@/components/modal';
+import { useTaskStore } from '@/store/useTaskStore';
 import {
   useDeleteTaskList,
   useTaskListMutation,
@@ -34,8 +35,10 @@ interface TaskItemProps {
 function TaskItem({ taskList, taskListColor }: TaskItemProps) {
   const router = useRouter();
   const deleteTask = useDeleteTaskList();
+  const { setSelectedTaskList } = useTaskStore();
 
   const handleTaskClick = (e: React.MouseEvent) => {
+    setSelectedTaskList(taskList);
     router.push(`/${taskList.groupId}/tasks`);
     e.stopPropagation();
   };
