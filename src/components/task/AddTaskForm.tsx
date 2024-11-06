@@ -34,7 +34,9 @@ function AddTaskForm() {
     resolver: zodResolver(addTaskSchema),
     defaultValues: {
       name: '',
-      startDate: selectedDate.toLocaleDateString('ko-KR'),
+      startDate: new Date(
+        selectedDate.getTime() + 9 * 60 * 60 * 1000
+      ).toISOString(),
       frequencyType: FrequencyType.Once,
       description: '',
       weekDays: [],
@@ -89,7 +91,7 @@ function AddTaskForm() {
         />
         <DatePickerInput
           label="시작 날짜 및 시간"
-          initialDate={new Date(selectedDate.toLocaleDateString('ko-KR'))}
+          initialDate={new Date(selectedDate.getTime() + 9 * 60 * 60 * 1000)}
           {...methods.register('startDate')}
           errorMessage={methods.formState.errors.startDate?.message}
         />
