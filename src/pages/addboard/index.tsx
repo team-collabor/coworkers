@@ -11,6 +11,7 @@ import { useImageValidation } from '@/hooks/useImageValidation';
 import { useToast } from '@/hooks/useToast';
 import { usePostArticleMutation } from '@/queries/article.queries';
 import { useUploadImageMutation } from '@/queries/uploadImage.query';
+import { useAuthStore } from '@/store/useAuthStore';
 
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -36,6 +37,8 @@ function AddBoard() {
   const [preview, setPreview] = useState<string>('');
 
   const router = useRouter();
+
+  const { user } = useAuthStore();
 
   const { toast } = useToast();
 
@@ -100,6 +103,12 @@ function AddBoard() {
     setArticleValue({ ...articleValue, image: null });
     setPreview('');
   };
+
+  useEffect(() => {
+    if (!user) {
+      router.replace('/boards');
+    }
+  }, [user, router, toast]);
 
   useEffect(() => {
     if (!articleValue.image) return;

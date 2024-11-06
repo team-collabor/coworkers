@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import Dropdown from '../../common/Dropdown';
+import ArticleCardSkeleton from '../Skeleton/ArticleCardSkeleton';
 import ArticleCard from './ArticleCard';
 
 type AllArticlesSectionProps = {
@@ -75,16 +76,16 @@ function AllArticlesSection({ searchValue }: AllArticlesSectionProps) {
         </div>
       </div>
       <div className="flex flex-col gap-5 pc:grid pc:grid-cols-2">
-        {allArticles?.map((article, index) => {
-          return (
-            <div
-              ref={index === allArticles.length - 1 ? ref : null}
-              key={article.id}
-            >
-              <ArticleCard article={article} />
-            </div>
-          );
-        })}
+        {isLoading
+          ? [1, 2, 3, 4].map((index) => <ArticleCardSkeleton key={index} />)
+          : allArticles?.map((article, index) => (
+              <div
+                ref={index === allArticles.length - 1 ? ref : null}
+                key={article.id}
+              >
+                <ArticleCard article={article} />
+              </div>
+            ))}
       </div>
       {allArticles.length === 0 && !isLoading && (
         <div className="text-center text-lg text-white">데이터가 없습니다.</div>

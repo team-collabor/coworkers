@@ -12,6 +12,8 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 import Dropdown from '@/components/common/Dropdown';
+import { cn } from '@/utils/tailwind/cn';
+import ArticleContentSkeleton from '../Skeleton/ArticleContentSkeleton';
 import EditArticleForm from './EditArticleForm';
 
 type ArticleContentProps = {
@@ -26,7 +28,7 @@ function ArticleContent({
   setIsEditArticle,
 }: ArticleContentProps) {
   const router = useRouter();
-  const userId = useAuthStore((state) => state.user?.id);
+  const { user } = useAuthStore();
   const {
     data: article,
     isLoading,
@@ -39,6 +41,9 @@ function ArticleContent({
   const { toast } = useToast();
 
   const handleLikeClick = async () => {
+    if (!user) {
+      return;
+    }
     if (article?.isLiked) {
       await unlikeArticle(boardId);
     } else {
@@ -47,7 +52,7 @@ function ArticleContent({
   };
 
   const handleArticleEdit = () => {
-    if (userId === article?.writer.id) {
+    if (user?.id === article?.writer.id) {
       setIsEditArticle(true);
     } else {
       toast({
@@ -58,7 +63,7 @@ function ArticleContent({
   };
 
   const handleArticleDelete = async () => {
-    if (userId === article?.writer.id) {
+    if (user?.id === article?.writer.id) {
       await deleteArticle();
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       router.push('/boards');
@@ -70,19 +75,15 @@ function ArticleContent({
     }
   };
 
-  // 추후에 수정 보완할 예정
-  if (isLoading) {
-    return <div>loading</div>;
-  }
-
   if (isError) {
     toast({
       title: '게시글을 불러오는데 실패했습니다.',
       variant: 'destructive',
     });
   }
-  if (!article) {
-    return <div>데이터가 없습니다.</div>;
+
+  if (isLoading || !article) {
+    return <ArticleContentSkeleton />;
   }
 
   return (
@@ -104,6 +105,7 @@ function ArticleContent({
                   alt="kebab"
                   width={24}
                   height={24}
+                  className="cursor-pointer"
                 />
               }
             >
@@ -138,7 +140,11 @@ function ArticleContent({
                 </p>
               </div>
               <div className="flex items-center gap-1">
-                <button type="button" onClick={handleLikeClick}>
+                <button
+                  type="button"
+                  onClick={handleLikeClick}
+                  className={cn('cursor-pointer', user || 'cursor-default')}
+                >
                   <Image
                     src={
                       article?.isLiked
@@ -156,7 +162,7 @@ function ArticleContent({
               </div>
             </div>
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between gap-3">
             <div
               className="font-weight-400  break-all py-[10px] 
             text-base leading-relaxed text-secondary"
