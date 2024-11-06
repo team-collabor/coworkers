@@ -59,18 +59,33 @@ function BestArticleCard({ article, className }: BestArticleCardProps) {
             {article.writer.nickname}
           </span>
         </div>
-        <div className="flex gap-1">
-          <div>
-            <Image
-              src="/icons/Heart.svg"
-              width={16}
-              height={16}
-              alt="likeIcon"
-            />
+        <div className="flex gap-2">
+          <div className="flex gap-1">
+            <div>
+              <Image
+                src="/icons/Comment.svg"
+                width={16}
+                height={16}
+                alt="commentIcon"
+              />
+            </div>
+            <span className="text-md-regular text-slate-400">
+              {article.commentCount}
+            </span>
           </div>
-          <span className="text-md-regular text-slate-400">
-            {article.likeCount}
-          </span>
+          <div className="flex gap-1">
+            <div>
+              <Image
+                src="/icons/Heart.svg"
+                width={16}
+                height={16}
+                alt="likeIcon"
+              />
+            </div>
+            <span className="text-md-regular text-slate-400">
+              {article.likeCount}
+            </span>
+          </div>
         </div>
       </div>
     </Link>
