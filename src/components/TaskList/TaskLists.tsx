@@ -61,7 +61,7 @@ function TaskItem({ taskList, taskListColor, isMember }: TaskItemProps) {
       />
       <span className="truncate text-md-medium">{taskList.name}</span>
       <div className="flex h-[1.5625rem] gap-1">
-        <div className="w-[3.5rem]">
+        <div className="w-[3.8rem]">
           <Badge
             count={taskList.tasks.filter((task) => task.doneAt).length}
             left={taskList.tasks.length}
