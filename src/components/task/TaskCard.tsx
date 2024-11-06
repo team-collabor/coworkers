@@ -27,12 +27,15 @@ const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
       setIsTaskUpdateFormShow,
       setIsTaskDeleteDialogOpen,
       setSelectedTask,
+      setTaskDetailModalOpen,
     } = useTaskStore();
 
     const handleClickDropdownUpdate = (
       e?: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
       e?.stopPropagation();
+      setSelectedTask(task);
+      setTaskDetailModalOpen(true);
       setIsTaskUpdateFormShow(true);
     };
 
