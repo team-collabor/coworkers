@@ -1,55 +1,53 @@
 import { ASIDE_MENU } from '@/components/layouts/consts/_aside.menu';
-import { UnoptimizedImage } from '@/components/next';
+import { useToast } from '@/hooks/useToast';
+import { useDeleteTeamMutation } from '@/queries/groups.queries';
 import { useGetMemberships } from '@/queries/users.queries';
 import Link from 'next/link';
-import { Menu } from '../../menu';
+import { useEffect } from 'react';
+import { GroupAddButton } from '../../membership/GroupAddButton';
+import { MembershipItem } from '../../membership/MembershipItem';
 
 export default function AsideNav() {
-  const { data: memberships } = useGetMemberships();
+  const { data: memberships, refetch } = useGetMemberships();
+  const { mutate, isPending, isSuccess, isError } = useDeleteTeamMutation();
+  const { toast } = useToast();
+  const deleteGroup = (id: number) => mutate(id);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast({
+        title: '그룹 삭제 완료.',
+        description: '성공적으로 그룹이 삭제되었습니다.',
+      });
+      refetch();
+    }
+    if (isError) {
+      toast({
+        title: '그룹 삭제 실패.',
+        description: '그룹 삭제에 실패했습니다.',
+      });
+    }
+  }, [isError, isSuccess, refetch, toast]);
+
   if (!memberships) {
     return null;
   }
   return (
     <ul
       className={`
-        relative flex translate-y-16 flex-col gap-y-6 
+        relative flex translate-y-16 flex-col gap-y-6
         p-4 text-md-medium text-primary
       `}
     >
-      {memberships.map((m) => {
-        return (
-          <li key={m.groupId} className="relative flex justify-between gap-x-4">
-            <button type="button" className="hover:scale-105 hover:opacity-80">
-              <span>{m.group.name}</span>
-            </button>
-            <Menu.Trigger menuId={`${ASIDE_MENU}:${m.groupId}`}>
-              <button type="button">
-                <UnoptimizedImage
-                  src="/icons/Kebab_large.svg"
-                  alt=""
-                  width={24}
-                  height={24}
-                />
-              </button>
-            </Menu.Trigger>
-            <Menu
-              className="right-0 z-10 -translate-y-8"
-              menuId={`${ASIDE_MENU}:${m.groupId}`}
-            >
-              <div className="grid grid-flow-row auto-rows-fr">
-                <button type="button" className="p-4 hover:bg-tertiary">
-                  수정하기
-                </button>
-                <button type="button" className="p-4 hover:bg-tertiary">
-                  삭제하기
-                </button>
-              </div>
-            </Menu>
-          </li>
-        );
-      })}
+      {!isPending &&
+        memberships.map((m) => (
+          <MembershipItem {...m} deleteGroup={deleteGroup} />
+        ))}
       <li className="hover:scale-105 hover:opacity-80">
         <Link href="/boards">자유게시판</Link>
+      </li>
+      <li>
+        <GroupAddButton menuId={ASIDE_MENU} />
       </li>
     </ul>
   );
