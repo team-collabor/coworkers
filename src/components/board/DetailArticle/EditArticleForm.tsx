@@ -13,6 +13,7 @@ import { useImageValidation } from '@/hooks/useImageValidation';
 import { useToast } from '@/hooks/useToast';
 import { useUpdateArticleMutation } from '@/queries/article.queries';
 import { useUploadImageMutation } from '@/queries/uploadImage.query';
+import { useBoardStore } from '@/store/useBoardStore';
 import { ArticleDetail, ArticleValue } from '@/types/article.types';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
@@ -33,6 +34,7 @@ function EditArticleForm({
     content: article.content,
     image: null,
   });
+  const { searchQuery, orderBy } = useBoardStore();
   const [preview, setPreview] = useState<string | null>(article.image);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
@@ -42,7 +44,7 @@ function EditArticleForm({
     useUploadImageMutation();
 
   const { mutateAsync: updateArticleMutate, status: updateArticleStatus } =
-    useUpdateArticleMutation(boardId);
+    useUpdateArticleMutation(boardId, searchQuery, orderBy);
 
   const handleArticleEditCancel = () => {
     setIsEditArticle(false);
