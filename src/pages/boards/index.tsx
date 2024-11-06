@@ -12,35 +12,66 @@ import Button, {
 } from '@/components/common/Button/Button';
 import Input from '@/components/common/Input';
 import { useAuthStore } from '@/store/useAuthStore';
+import { useBoardStore } from '@/store/useBoardStore';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 function Boards() {
-  const [inputValue, setInputValue] = useState('');
-  const [searchValue, setSearchValue] = useState('');
+  const router = useRouter();
+  const { searchValue, setSearchValue, setSearchQuery, setOrderBy } =
+    useBoardStore();
   const { user } = useAuthStore();
   const handleInputValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
+    setSearchValue(e.target.value);
   };
 
   const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      setSearchValue(inputValue);
+      setSearchQuery(searchValue);
+      router.replace(
+        {
+          query: {
+            ...router.query,
+            search: searchValue || undefined,
+          },
+        },
+        undefined,
+        { shallow: true }
+      );
     }
   };
+
+  useEffect(() => {
+    setSearchValue((router.query.search as string) || '');
+  }, [router.query.search, setSearchValue]);
+
+  useEffect(() => {
+    if (!router.query.orderBy && !router.query.search) {
+      setOrderBy('recent');
+      setSearchValue('');
+      setSearchQuery('');
+    }
+  }, [
+    router.query.orderBy,
+    router.query.search,
+    setOrderBy,
+    setSearchValue,
+    setSearchQuery,
+  ]);
 
   return (
     <>
       <h1 className="my-10 self-start text-2xl-bold ">자유게시판</h1>
       <Input
         placeholder="검색어를 입력해주세요."
-        value={inputValue}
+        value={searchValue}
         onChange={handleInputValueChange}
         onKeyDown={handleSearchKeyDown}
       />
       <BestArticlesSection />
-      <AllArticlesSection searchValue={searchValue} />
+      <AllArticlesSection />
       {user && (
         <Link href="/addboard">
           <Button
