@@ -41,7 +41,7 @@ export default function AsideNav() {
     >
       {!isPending &&
         memberships.map((m) => (
-          <MembershipItem {...m} deleteGroup={deleteGroup} />
+          <MembershipItem key={m.groupId} {...m} deleteGroup={deleteGroup} />
         ))}
       <li className="hover:scale-105 hover:opacity-80">
         <Link href="/boards">자유게시판</Link>

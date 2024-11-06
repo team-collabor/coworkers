@@ -18,7 +18,6 @@ function DeleteTaskModal() {
     setIsTaskDeleteDialogOpen,
     selectedDate,
     selectedTask,
-    setSelectedTask,
   } = useTaskStore();
   const { mutate: deleteTask } = useDeleteTask();
 
@@ -29,7 +28,6 @@ function DeleteTaskModal() {
       taskId: selectedTask?.id ?? -1,
       date: selectedDate.toLocaleDateString('ko-KR'),
     });
-    setSelectedTask(null);
     setIsTaskDeleteDialogOpen(false);
     setIsTaskUpdateFormShow(false);
   };
