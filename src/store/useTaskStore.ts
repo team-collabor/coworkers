@@ -39,7 +39,7 @@ export const useTaskStore = create(
           state.selectedDate = date;
         });
       },
-      setSelectedTask: (task: Task | null) => {
+      setSelectedTask: (task: Task) => {
         set((state) => {
           state.selectedTask = task;
         });
