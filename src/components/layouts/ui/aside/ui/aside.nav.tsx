@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useEffect } from 'react';
 import { GroupAddButton } from '../../membership/GroupAddButton';
 import { MembershipItem } from '../../membership/MembershipItem';
+import { Menu } from '../../menu';
 
 export default function AsideNav() {
   const { data: memberships, refetch } = useGetMemberships();
@@ -44,7 +45,9 @@ export default function AsideNav() {
           <MembershipItem {...m} deleteGroup={deleteGroup} />
         ))}
       <li className="hover:scale-105 hover:opacity-80">
-        <Link href="/boards">자유게시판</Link>
+        <Menu.Trigger menuId={ASIDE_MENU}>
+          <Link href="/boards">자유게시판</Link>
+        </Menu.Trigger>
       </li>
       <li>
         <GroupAddButton menuId={ASIDE_MENU} />

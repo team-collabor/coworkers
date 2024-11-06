@@ -4,8 +4,8 @@ import { Membership } from '@/types/users.types';
 import { cn } from '@/utils/tailwind/cn';
 import Link from 'next/link';
 import { memo } from 'react';
-import { GroupDeleteModal } from './GroupDeleteModal';
 import { Menu } from '../menu';
+import { GroupDeleteModal } from './GroupDeleteModal';
 
 export const MembershipItem = memo(
   ({
@@ -20,16 +20,18 @@ export const MembershipItem = memo(
         key={groupId}
         className={cn(['relative grid grid-cols-[auto_max-content] gap-x-4'])}
       >
-        <Link
-          href={`/${groupId}`}
-          type="button"
-          className={cn([
-            'overflow-hidden text-ellipsis whitespace-nowrap',
-            'hover:scale-105 hover:opacity-80',
-          ])}
-        >
-          {group.name}
-        </Link>
+        <Menu.Trigger menuId={ASIDE_MENU}>
+          <Link
+            href={`/${groupId}`}
+            type="button"
+            className={cn([
+              'overflow-hidden text-ellipsis whitespace-nowrap',
+              'hover:scale-105 hover:opacity-80',
+            ])}
+          >
+            {group.name}
+          </Link>
+        </Menu.Trigger>
         <Menu.Trigger menuId={`${ASIDE_MENU}:${groupId}`}>
           <button type="button">
             <UnoptimizedImage
