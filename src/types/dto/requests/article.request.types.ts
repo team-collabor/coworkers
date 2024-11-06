@@ -4,3 +4,25 @@ export type GetArticlesParams = {
   orderBy: string;
   keyword?: string;
 };
+
+export type PostArticleParams = {
+  title: string;
+  content: string;
+  image?: string | null;
+};
+
+export type ArticleDetailParams = {
+  articleId: number;
+};
+
+export type PostArticleCommentParams = {
+  articleId: number;
+  content: string;
+};
+
+export type GetArticleCommentsParams = {
+  limit: number;
+  cursor: number;
+  articleId: number;
+};
+export type UpdateArticleParams = PostArticleParams;

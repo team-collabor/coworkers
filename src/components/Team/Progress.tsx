@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import useIsMobile from '@/hooks/useIsMobile';
+import { useIsMobile } from '@/hooks/useIsMobile';
 import ChangingProgressProvider from '@/providers/ChangingProgressProvider';
 import {
   CircularProgressbarWithChildren,
@@ -12,7 +12,7 @@ interface CircularProgressProps {
   value?: number;
 }
 
-function CircularProgressChart({ value = 25 }: CircularProgressProps) {
+function CircularProgressChart({ value = 0 }: CircularProgressProps) {
   const isMobileView = useIsMobile();
   return (
     <div className="flex items-center gap-12">

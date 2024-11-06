@@ -43,7 +43,7 @@ export const useSignIn = () => {
 
   const logout = () => {
     clearAuth();
-    route.reload();
+    route.replace('/signin');
   };
 
   return { login, logout, ...returns };
