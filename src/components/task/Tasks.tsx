@@ -5,7 +5,6 @@ import { Task } from '@/types/tasks.types';
 import { cn } from '@/utils/tailwind/cn';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 import TaskCard from './TaskCard';
 import TaskListSelector from './TaskListSelector';
 import TaskDetailModal from './taskDetail/TaskDetailModal';
@@ -20,6 +19,8 @@ function Tasks({ team, isTeamLoading, isTeamFetched }: TasksProps) {
   const { id } = useRouter().query;
   const {
     selectedDate,
+    selectedTask,
+    setSelectedTask,
     selectedTaskList,
     taskDetailModalOpen,
     setTaskDetailModalOpen,
@@ -30,7 +31,6 @@ function Tasks({ team, isTeamLoading, isTeamFetched }: TasksProps) {
     date: new Date(selectedDate).toLocaleDateString('ko-KR'),
   });
   const { mutate: updateTaskStatus } = useUpdateTaskStatus();
-  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   const handleCheckBoxChange = (taskId: number, done: boolean) => {
     updateTaskStatus({
