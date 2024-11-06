@@ -1,6 +1,7 @@
 import { DatePicker } from '@/components/common/DatePicker';
 import AddTaskListModal from '@/components/task/AddTaskListModal';
 import AddTaskModal from '@/components/task/AddTaskModal';
+import DeleteTaskModal from '@/components/task/DeleteTaskModal';
 import Tasks from '@/components/task/Tasks';
 import { useTeamQuery } from '@/queries/groups.queries';
 import { useTaskStore } from '@/store/useTaskStore';
@@ -41,6 +42,7 @@ export default function TaskPage() {
         isTeamFetched={isTeamFetched}
       />
       {team?.taskLists.length !== 0 && <AddTaskModal />}
+      <DeleteTaskModal />
     </>
   );
 }
