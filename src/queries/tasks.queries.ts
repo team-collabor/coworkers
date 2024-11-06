@@ -18,7 +18,7 @@ import {
 import { FrequencyType, Task } from '@/types/tasks.types';
 import { formatDate } from '@/utils/dateTimeUtils/FormatData';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { groupsQueryKeys } from './keys/groups.key';
+import { groupsQueryKeys, groupTasksQueryKeys } from './keys/groups.key';
 import { tasksQueryKeys } from './keys/tasks.keys';
 
 export const useTasks = (params: GetTaskRequest) => {
@@ -195,6 +195,9 @@ export const useUpdateTaskStatus = () => {
       });
       queryClient.invalidateQueries({
         queryKey: groupsQueryKeys.groups(params.groupId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: groupTasksQueryKeys.Groups(params.groupId),
       });
     },
   });
