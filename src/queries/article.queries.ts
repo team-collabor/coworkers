@@ -187,6 +187,12 @@ export const usePostArticleCommentMutation = () => {
       queryClient.invalidateQueries({
         queryKey: articleQueryKeys.article(variables.articleId),
       });
+      queryClient.invalidateQueries({
+        queryKey: articleQueryKeys.allArticles('recent', ''),
+      });
+      queryClient.invalidateQueries({
+        queryKey: articleQueryKeys.bestArticles(),
+      });
     },
   });
 };
@@ -219,6 +225,12 @@ export const useDeleteArticleCommentMutation = ({
       });
       queryClient.invalidateQueries({
         queryKey: articleQueryKeys.article(articleId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: articleQueryKeys.allArticles('recent', ''),
+      });
+      queryClient.invalidateQueries({
+        queryKey: articleQueryKeys.bestArticles(),
       });
     },
   });
