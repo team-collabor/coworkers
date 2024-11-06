@@ -12,6 +12,7 @@ import { useToast } from '@/hooks/useToast';
 import { usePostArticleMutation } from '@/queries/article.queries';
 import { useUploadImageMutation } from '@/queries/uploadImage.query';
 import { useAuthStore } from '@/store/useAuthStore';
+import { useBoardStore } from '@/store/useBoardStore';
 
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -38,12 +39,14 @@ function AddBoard() {
 
   const router = useRouter();
 
+  const { searchQuery, orderBy } = useBoardStore();
+
   const { user } = useAuthStore();
 
   const { toast } = useToast();
 
   const { mutateAsync: postArticleMutate, status: postArticleStatus } =
-    usePostArticleMutation();
+    usePostArticleMutation(searchQuery, orderBy);
 
   const { mutateAsync: uploadImageMutate, status: uploadImageStatus } =
     useUploadImageMutation();
