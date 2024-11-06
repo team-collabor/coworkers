@@ -15,7 +15,7 @@ import {
   UpdateTaskRequest,
   UpdateTaskStatusRequest,
 } from '@/types/dto/requests/tasks.request.types';
-import { FrequencyType } from '@/types/tasks.types';
+import { FrequencyType, Task } from '@/types/tasks.types';
 import { formatDate } from '@/utils/dateTimeUtils/FormatData';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { groupsQueryKeys } from './keys/groups.key';
@@ -129,7 +129,56 @@ export const useUpdateTaskStatus = () => {
   return useMutation({
     mutationFn: async (params: UpdateTaskStatusRequest) =>
       updateTaskStatus(params),
-    onSuccess: (_, params) => {
+    onMutate: async (params) => {
+      await queryClient.cancelQueries({
+        queryKey: tasksQueryKeys.tasks({
+          groupId: params.groupId,
+          taskListId: params.taskListId,
+          date: formatDate(params.startDate ?? ''),
+        }),
+      });
+
+      const previousTasks = queryClient.getQueryData<Task[]>(
+        tasksQueryKeys.tasks({
+          groupId: params.groupId,
+          taskListId: params.taskListId,
+          date: formatDate(params.startDate ?? ''),
+        })
+      );
+
+      queryClient.setQueryData(
+        tasksQueryKeys.tasks({
+          groupId: params.groupId,
+          taskListId: params.taskListId,
+          date: formatDate(params.startDate ?? ''),
+        }),
+        (old: Task[]) => {
+          return old.map((task: Task) =>
+            task.id === params.taskId ? { ...task, doneAt: params.done } : task
+          );
+        }
+      );
+
+      return { previousTasks };
+    },
+    onError: (error, params, context) => {
+      if (context?.previousTasks) {
+        queryClient.setQueryData(
+          tasksQueryKeys.tasks({
+            groupId: params.groupId,
+            taskListId: params.taskListId,
+            date: formatDate(params.startDate ?? ''),
+          }),
+          context.previousTasks
+        );
+      }
+      toast({
+        title: '할 일 상태 수정을 실패했습니다.',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+    onSettled: (_, error, params) => {
       queryClient.invalidateQueries({
         queryKey: tasksQueryKeys.tasks({
           groupId: params.groupId,
@@ -146,13 +195,6 @@ export const useUpdateTaskStatus = () => {
       });
       queryClient.invalidateQueries({
         queryKey: groupsQueryKeys.groups(params.groupId),
-      });
-    },
-    onError: (error) => {
-      toast({
-        title: '할 일 상태 수정을 실패했습니다.',
-        description: error.message,
-        variant: 'destructive',
       });
     },
   });
