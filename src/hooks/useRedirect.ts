@@ -1,14 +1,19 @@
-import { useAuthStore } from '@/store/useAuthStore';
+import { useGetUser } from '@/queries/users.queries';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { useToast } from './useToast';
 
 export const useRedirect = () => {
-  const { user } = useAuthStore();
   const router = useRouter();
+  const { data, isLoading } = useGetUser();
+  const { toast } = useToast();
 
   useEffect(() => {
-    if (!user) {
+    if (!isLoading && !data) {
       router.push('/signin');
+      toast({
+        title: '로그인 후 접근이 가능한 페이지입니다.',
+      });
     }
-  }, [user, router]);
+  }, [data, isLoading, router, toast]);
 };
