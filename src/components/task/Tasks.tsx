@@ -28,7 +28,7 @@ function Tasks({ team, isTeamLoading, isTeamFetched }: TasksProps) {
   const { data: tasks, isFetched: isTasksFetched } = useTasks({
     groupId: Number(id),
     taskListId: selectedTaskList?.id ?? 0,
-    date: new Date(selectedDate).toLocaleDateString('ko-KR'),
+    date: new Date(selectedDate.getTime() + 9 * 60 * 60 * 1000).toISOString(),
   });
   const { mutate: updateTaskStatus } = useUpdateTaskStatus();
 
