@@ -18,7 +18,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           'overflow-auto break-keep tab:mx-6 mob:mx-[0.81rem]',
         ])}
       >
-        z{children}
+        {children}
       </main>
       <Toaster />
     </>
