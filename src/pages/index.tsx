@@ -1,13 +1,13 @@
-import { useGetUser } from '@/queries/users.queries';
+import { useAuthStore } from '@/store/useAuthStore';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 export default function Home() {
   const router = useRouter();
-  const { data } = useGetUser();
+  const { user } = useAuthStore();
 
   const handlePageChange = () => {
-    if (!data) {
+    if (!user) {
       router.push('/signin');
     } else {
       router.push('/withoutteam');
