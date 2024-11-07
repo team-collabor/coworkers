@@ -89,6 +89,9 @@ export const useTeamMutation = () => {
       queryClient.invalidateQueries({
         queryKey: usersQueryKeys.memberships(),
       });
+      queryClient.invalidateQueries({
+        queryKey: usersQueryKeys.user(),
+      });
       toast({
         title: '해당 팀을 생성했습니다.',
       });
