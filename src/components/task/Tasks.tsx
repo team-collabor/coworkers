@@ -51,7 +51,7 @@ function Tasks({ team, isTeamLoading, isTeamFetched }: TasksProps) {
           'text-center text-lg-medium text-tertiary'
         )}
       >
-        <Loader2 className={cn('size-8 animate-spin text-icon-brand')} />
+        <Loader2 className={cn('animate-spin size-8 text-icon-brand')} />
       </div>
     );
   }
