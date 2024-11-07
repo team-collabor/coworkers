@@ -15,7 +15,7 @@ export default function AsideMain() {
     <aside
       aria-label="menu-down"
       className={clsx(
-        'fixed inset-y-0 w-1/3 min-w-32 overflow-y-auto overflow-x-hidden  bg-tertiary',
+        'fixed inset-y-0 w-2/3 min-w-32 overflow-y-auto overflow-x-hidden  bg-tertiary',
         'z-40 transition-all duration-500 ease-in-out',
         {
           '-translate-x-full': !isOpen,
