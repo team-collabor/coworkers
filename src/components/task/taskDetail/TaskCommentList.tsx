@@ -73,7 +73,7 @@ export default function TaskCommentList({
       {sortedComments?.map((comment: Comment) => (
         <Fragment key={`${comment.id}-comment`}>
           <div
-            className={cn('flex flex-col gap-3', {
+            className={cn('flex flex-col gap-4', {
               hidden: selectedComment?.id === comment.id,
             })}
           >
