@@ -91,7 +91,7 @@ function TaskDetailContent({ task }: { task: Task }) {
 
   return (
     <section
-      className={cn('flex h-full w-full max-w-[45rem] flex-col gap-7 p-4')}
+      className={cn('flex h-full w-full max-w-[45rem] flex-col gap-7', 'p-4')}
     >
       <article
         className={cn('flex w-full flex-col gap-4', {
