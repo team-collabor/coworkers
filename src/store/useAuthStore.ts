@@ -54,6 +54,7 @@ export const useAuthStore = create(
             state.user = null;
             state.accessToken = null;
             state.refreshToken = null;
+            state.memberships = [];
           });
         },
         clearTokens: () => {

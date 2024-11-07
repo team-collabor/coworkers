@@ -29,7 +29,7 @@ export default function MemberDropDown({ member }: MemberProps) {
           />
         </button>
       }
-      dropdownStyle="transform translate-x-[-80%] z-20"
+      dropdownStyle="transform translate-x-[-80%] z-20 relative"
     >
       <button
         type="button"

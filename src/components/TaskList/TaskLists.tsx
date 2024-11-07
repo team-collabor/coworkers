@@ -59,12 +59,14 @@ function TaskItem({ taskList, taskListColor, isMember }: TaskItemProps) {
         className={`absolute bottom-0 left-0 top-0 
           z-0  w-[0.8rem] rounded-l-xl ${taskListColor}`}
       />
-      <span className="text-md-medium">{taskList.name}</span>
+      <span className="truncate text-md-medium">{taskList.name}</span>
       <div className="flex h-[1.5625rem] gap-1">
-        <Badge
-          count={taskList.tasks.filter((task) => task.doneAt).length}
-          left={taskList.tasks.length}
-        />
+        <div className="w-[3.8rem]">
+          <Badge
+            count={taskList.tasks.filter((task) => task.doneAt).length}
+            left={taskList.tasks.length}
+          />
+        </div>
         {isMember && (
           <Dropdown
             dropdownStyle="transform translate-x-[-105%]
@@ -72,7 +74,7 @@ function TaskItem({ taskList, taskListColor, isMember }: TaskItemProps) {
             trigger={
               <button
                 type="button"
-                className="rounded-lg hover:bg-tertiary"
+                className="w-[20px] rounded-lg hover:bg-tertiary"
                 onClick={(e) => e.stopPropagation()}
               >
                 <Image

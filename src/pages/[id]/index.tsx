@@ -32,7 +32,7 @@ import { Loader } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import NotFound from '../404';
+import WithOutTeam from '../withoutteam';
 
 export default function TeamPage() {
   const router = useRouter();
@@ -43,6 +43,8 @@ export default function TeamPage() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isMember, setIsMember] = useState(false);
   const [isDeleteTeamModal, setIsDeleteTeamModal] = useState(false);
+  const deleteTeam = useDeleteTeamMutation();
+  const { toast } = useToast();
   useRedirect();
 
   useEffect(() => {
@@ -54,23 +56,22 @@ export default function TeamPage() {
         setIsMember(true);
         if (member.role === 'ADMIN') {
           setIsAdmin(true);
+        } else {
+          setIsAdmin(false);
         }
       }
     }
-  }, [user, group]);
-
-  const deleteTeam = useDeleteTeamMutation();
-  const { toast } = useToast();
+  }, [user, group, isAdmin]);
 
   if (!isFetched) {
     return (
       <div className="flex h-[50rem] items-center justify-center">
-        <Loader className="size-20 animate-spin text-icon-brand" />
+        <Loader className="animate-spin size-20 text-icon-brand" />
       </div>
     );
   }
   if (isError || !group) {
-    return <NotFound />;
+    return <WithOutTeam />;
   }
 
   const handleInviteGroup = () => {
@@ -112,7 +113,18 @@ export default function TeamPage() {
         className="relative flex h-[4rem] items-center
      justify-start rounded-xl border border-primary bg-secondary pl-5 pr-20"
       >
-        <p className="truncate text-xl-bold">{group?.name}</p>
+        <div
+          className="flex h-[47px] min-w-[47px]
+         items-center overflow-hidden rounded-full border-2 border-primary"
+        >
+          <Image
+            src={group?.image || '/icons/BaseTeam_Icon.svg'}
+            alt="team-profile"
+            width={43}
+            height={43}
+          />
+        </div>
+        <p className="truncate pl-3 text-xl-bold">{group?.name}</p>
         <div className="absolute right-5 flex items-center gap-7">
           <Image
             src="/images/Thumbnail_team.svg"
@@ -216,7 +228,7 @@ export default function TeamPage() {
               삭제된 할 팀은 복구할 수 없습니다.
             </DialogDescription>
           </DialogHeader>
-          <DialogFooter>
+          <DialogFooter className="mob:gap-1">
             <Button
               buttonStyle={ButtonStyle.Box}
               textColor={TextColor.Gray}

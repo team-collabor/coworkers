@@ -9,6 +9,9 @@ function Drawer({
   return (
     <DrawerPrimitive.Root
       shouldScaleBackground={shouldScaleBackground}
+      open={props.open}
+      onOpenChange={props.onOpenChange}
+      repositionInputs={false}
       {...props}
     />
   );
@@ -43,14 +46,23 @@ const DrawerContent = forwardRef<
     <DrawerPrimitive.Content
       ref={ref}
       className={cn(
-        'fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col',
+        'fixed inset-x-0 bottom-0 z-50 mt-24',
+        'flex h-[32rem] flex-col',
         'rounded-t-xl border-none bg-secondary',
         className
       )}
       {...props}
     >
-      <div className={cn('bg-icon mx-auto mt-4 h-2 w-[100px] rounded-full')} />
-      {children}
+      <div
+        className={cn(
+          'bg-icon mx-auto mt-4 flex h-2 w-[100px]',
+          'items-center justify-center rounded-full',
+          'mb-4 bg-icon-primary/80'
+        )}
+      />
+      <div className="flex-1 overflow-y-auto p-4">
+        <div className="mx-auto max-w-md space-y-4">{children}</div>
+      </div>
     </DrawerPrimitive.Content>
   </DrawerPortal>
 ));

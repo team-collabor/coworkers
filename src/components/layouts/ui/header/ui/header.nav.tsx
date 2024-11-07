@@ -4,6 +4,8 @@ import { useToast } from '@/hooks/useToast';
 import { useDeleteTeamMutation } from '@/queries/groups.queries';
 import { useGetMemberships } from '@/queries/users.queries';
 import { cn } from '@/utils/tailwind/cn';
+import { ImageIcon } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { GroupAddButton } from '../../membership/GroupAddButton';
@@ -11,11 +13,20 @@ import { Menu } from '../../menu';
 import { HeaderMenu } from './header.menu';
 
 export default function HeaderNav() {
-  const [currentTop, setCurrentTop] = useState<string>('');
+  const [currentTop, setCurrentTop] = useState<{
+    name: string;
+    image: string | null;
+  }>({
+    name: '',
+    image: null,
+  });
   const { data: memberships, refetch } = useGetMemberships();
   useEffect(() => {
     if (memberships && memberships.length > 0) {
-      setCurrentTop(memberships[0].group.name);
+      setCurrentTop({
+        name: memberships[0].group.name,
+        image: memberships[0].group.image,
+      });
     }
   }, [memberships]);
   const { mutate, isSuccess, isError } = useDeleteTeamMutation();
@@ -48,18 +59,36 @@ export default function HeaderNav() {
         {memberships && memberships.length > 0 ? (
           <li className="flex items-center gap-x-2 hover:opacity-80">
             <Menu.Trigger
-              className="grid grid-cols-[auto_1fr] items-center gap-x-2"
+              className="grid grid-cols-[auto_1fr_auto] items-center gap-x-2"
               menuId={GROUP_MENU}
               onEvent={() => {
-                setCurrentTop(currentTop);
+                setCurrentTop({
+                  name: currentTop.name,
+                  image: currentTop.image,
+                });
               }}
             >
+              {currentTop.image ? (
+                <div
+                  className="relative size-6 rounded-full border-[2px] 
+                border-primary"
+                >
+                  <Image
+                    src={currentTop.image}
+                    alt=""
+                    fill
+                    className="rounded-full"
+                  />
+                </div>
+              ) : (
+                <ImageIcon width={24} height={24} />
+              )}
               <span
                 className={cn([
                   'max-w-32 overflow-hidden text-ellipsis whitespace-nowrap',
                 ])}
               >
-                {currentTop}
+                {currentTop.name}
               </span>
               <UnoptimizedImage
                 src="/icons/Toggle.svg"
@@ -84,7 +113,10 @@ export default function HeaderNav() {
                       className="flex"
                       menuId={GROUP_MENU}
                       onEvent={() => {
-                        setCurrentTop(m.group.name);
+                        setCurrentTop({
+                          name: m.group.name,
+                          image: m.group.image,
+                        });
                       }}
                     >
                       <button
@@ -95,7 +127,21 @@ export default function HeaderNav() {
                           ' hover:bg-tertiary',
                         ])}
                       >
-                        <div className="size-12 bg-red-500" />
+                        {m.group.image ? (
+                          <div
+                            className="relative size-6 rounded-full
+                           border-[2px] border-primary"
+                          >
+                            <Image
+                              src={m.group.image}
+                              alt=""
+                              fill
+                              className="rounded-full"
+                            />
+                          </div>
+                        ) : (
+                          <ImageIcon />
+                        )}
                         <div
                           className={cn([
                             'overflow-hidden text-ellipsis text-start',

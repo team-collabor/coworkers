@@ -19,7 +19,7 @@ export default function HeaderMain() {
           {user ? (
             <>
               <HeaderNav />
-              <HeaderProfile />
+              <HeaderProfile user={user} />
             </>
           ) : (
             <Link href="/signin" className="ml-auto hover:opacity-90">

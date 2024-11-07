@@ -88,6 +88,7 @@ export const useGetHistory = () => {
     queryKey: usersQueryKeys.history(),
     queryFn: getHistory,
     enabled: !!user,
+    refetchOnMount: 'always',
   });
   return { ...returns };
 };

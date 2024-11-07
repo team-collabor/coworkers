@@ -19,7 +19,7 @@ import { useToast } from '@/hooks/useToast';
 import { Member } from '@/types/dto/responses/group.response.types';
 import { DialogTitle } from '@radix-ui/react-dialog';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import MemberDropDown from './MemberDropDown';
 import Pagination from './Pagination';
 
@@ -167,22 +167,33 @@ items-center justify-between rounded-xl bg-secondary px-6 "
 }
 
 export default function Members({ members, isAdmin }: MembersProps) {
-  const LIMIT = 6;
+  const isMobileView = useIsMobile();
+  const [limit, setLimit] = useState(6);
   const [page, setPage] = useState(1);
-  const offset = (page - 1) * LIMIT;
+  const offset = (page - 1) * limit;
+  const pcContainerHeight = members.length <= 3 ? 'h-[5.5rem]' : 'h-[11rem]';
+  const mobContainerHeight = members.length <= 2 ? 'h-[5.5rem]' : 'h-[11rem]';
+
+  useEffect(() => {
+    if (isMobileView) {
+      setLimit(4);
+    } else {
+      setLimit(6);
+    }
+  }, [isMobileView]);
   return (
     <div className="flex flex-col items-center justify-center">
       <div
-        className="grid  w-full grid-cols-3 gap-3
-    overflow-y-auto mob:grid-cols-2"
+        className={`grid w-full grid-cols-3 gap-3 mob:grid-cols-2
+           ${isMobileView ? mobContainerHeight : pcContainerHeight}`}
       >
-        {members.slice(offset, offset + LIMIT).map((member) => (
+        {members.slice(offset, offset + limit).map((member) => (
           <MemberItem key={member.userId} member={member} isAdmin={isAdmin} />
         ))}
       </div>
       <Pagination
         total={members.length}
-        limit={LIMIT}
+        limit={limit}
         page={page}
         setPage={setPage}
       />

@@ -22,24 +22,16 @@ function ArticleCard({ article }: AllArticleCardProps) {
         >
           {article.title}
         </div>
-        <div className="flex items-start gap-3">
-          {article.image && (
-            <Image
-              src={article.image}
-              width={72}
-              height={72}
-              alt="articleImage"
-              className="h-[4.5rem] w-[4.5rem] object-contain"
-            />
-          )}
 
+        {article.image && (
           <Image
-            src="/icons/Kebab_small.svg"
-            alt="kebabIcon"
-            width={24}
-            height={24}
+            src={article.image}
+            width={72}
+            height={72}
+            alt="articleImage"
+            className="h-[4.5rem] w-[4.5rem] object-contain"
           />
-        </div>
+        )}
       </div>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-8">
@@ -62,7 +54,20 @@ function ArticleCard({ article }: AllArticleCardProps) {
             {formatDate(article.createdAt)}
           </div>
         </div>
-        <div>
+        <div className="flex gap-2">
+          <div className="flex gap-1">
+            <div>
+              <Image
+                src="/icons/Comment.svg"
+                width={16}
+                height={16}
+                alt="commentIcon"
+              />
+            </div>
+            <span className="text-md-regular text-slate-400">
+              {article.commentCount}
+            </span>
+          </div>
           <div className="flex gap-1">
             <div>
               <Image
