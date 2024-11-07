@@ -7,7 +7,7 @@ import React, {
   useState,
 } from 'react';
 
-interface DropdownProps {
+interface TaskCommentDropDownProps {
   children: React.ReactNode;
   trigger: React.ReactNode;
   dropdownStyle?: HTMLAttributes<HTMLDivElement>['className'];
@@ -45,11 +45,11 @@ interface ChildProps {
  *  </Dropdown>
  */
 
-export default function Dropdown({
+export default function TaskCommentDropDown({
   children,
   trigger,
   dropdownStyle,
-}: DropdownProps) {
+}: TaskCommentDropDownProps) {
   const [isVisible, setIsVisible] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
@@ -92,7 +92,7 @@ export default function Dropdown({
         <div
           ref={dropdownRef}
           className={`
-          absolute flex max-h-[12.5rem] w-[8.4375rem]
+          relative flex max-h-[12.5rem] w-[6.5rem]
           flex-col overflow-y-auto rounded-xl border border-solid
           border-primary border-opacity-10 bg-secondary p-2
           ${dropdownStyle}
