@@ -187,6 +187,16 @@ const config: Config = {
           transform: 'translateX(100%)',
         },
       },
+      bounce404: {
+        '0%, 100%': { transform: 'translateY(0px)' },
+        '20%': { transform: 'translateY(-30px)' },
+        '40%': { transform: 'translateY(0px)' },
+      },
+    },
+    animation: {
+      'bounce404-1': 'bounce404 1.5s ease-in-out infinite 0.1s',
+      'bounce404-2': 'bounce404 1.5s ease-in-out infinite 0.2s',
+      'bounce404-3': 'bounce404 1.5s ease-in-out infinite 0.3s',
     },
   },
   plugins: [require('tailwind-scrollbar-hide')],
