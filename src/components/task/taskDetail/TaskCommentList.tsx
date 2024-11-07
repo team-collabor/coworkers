@@ -67,7 +67,7 @@ export default function TaskCommentList({
 
   return (
     <div
-      className={cn('flex w-full flex-col gap-4', 'w-[43rem] overflow-hidden')}
+      className={cn('flex w-full flex-col gap-4', 'overflow-hidden')}
       {...props}
     >
       {sortedComments?.map((comment: Comment) => (

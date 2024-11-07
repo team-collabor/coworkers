@@ -6,6 +6,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/common/Dialog';
+import { useIsMobile } from '@/hooks/useIsMobile';
+import { cn } from '@/utils/tailwind/cn';
+import React from 'react';
 import {
   Drawer,
   DrawerClose,
@@ -15,10 +18,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from '@/components/common/Drawer';
-import { useIsMobile } from '@/hooks/useIsMobile';
-import { cn } from '@/utils/tailwind/cn';
-import React from 'react';
+} from './Drawer';
 
 type DrawerDialogProps = {
   open: boolean;

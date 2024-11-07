@@ -6,6 +6,8 @@ import { FrequencyType } from '@/types/tasks.types';
 import { formatFrequencyToKorean } from '@/utils/dateTimeUtils/FormatData';
 import { cn } from '@/utils/tailwind/cn';
 // eslint-disable-next-line import/no-extraneous-dependencies
+import { addNineHours } from '@/utils/dateTimeUtils/addNineHours';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { DevTool } from '@hookform/devtools';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
@@ -34,7 +36,7 @@ function AddTaskForm() {
     resolver: zodResolver(addTaskSchema),
     defaultValues: {
       name: '',
-      startDate: selectedDate.toLocaleDateString('ko-KR'),
+      startDate: addNineHours(selectedDate).toISOString(),
       frequencyType: FrequencyType.Once,
       description: '',
       weekDays: [],
@@ -89,7 +91,7 @@ function AddTaskForm() {
         />
         <DatePickerInput
           label="시작 날짜 및 시간"
-          initialDate={new Date(selectedDate.toLocaleDateString('ko-KR'))}
+          initialDate={addNineHours(selectedDate)}
           {...methods.register('startDate')}
           errorMessage={methods.formState.errors.startDate?.message}
         />

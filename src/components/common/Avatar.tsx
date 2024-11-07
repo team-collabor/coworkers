@@ -13,8 +13,9 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
     const imageSrc = src ?? '/icons/Member.svg';
     return (
       <div className={cn('flex items-center gap-3', className)} {...props}>
-        <div ref={ref} className={cn('rounded-full')}>
+        <div ref={ref}>
           <Image
+            className="rounded-full"
             src={imageSrc}
             alt="유저 프로필 이미지"
             width={40}

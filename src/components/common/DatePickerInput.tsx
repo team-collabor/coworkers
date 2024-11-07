@@ -1,3 +1,4 @@
+import { addNineHours } from '@/utils/dateTimeUtils/addNineHours';
 import { cn } from '@/utils/tailwind/cn';
 import { forwardRef } from 'react';
 import { useFormContext } from 'react-hook-form';
@@ -21,7 +22,7 @@ const DatePickerInput = forwardRef<HTMLInputElement, DatePickerInputProps>(
           initialDate={initialDate}
           popoverContentClassName="border-[1px] border-green-400"
           onDateChange={(date) => {
-            formContext.setValue('startDate', date.toLocaleDateString('ko-KR'));
+            formContext.setValue('startDate', addNineHours(date).toISOString());
           }}
           ref={ref as React.LegacyRef<HTMLInputElement>}
         />
@@ -38,7 +39,7 @@ const DatePickerInput = forwardRef<HTMLInputElement, DatePickerInputProps>(
           type="text"
           value={new Date(
             formContext.watch('startDate') as string
-          ).toLocaleDateString('ko-KR')}
+          ).toISOString()}
           className="hidden"
           ref={ref}
           suppressHydrationWarning

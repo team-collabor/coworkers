@@ -2,6 +2,7 @@ import { useTasks, useUpdateTaskStatus } from '@/queries/tasks.queries';
 import { useTaskStore } from '@/store/useTaskStore';
 import { GetGroupResponse } from '@/types/dto/responses/group.response.types';
 import { Task } from '@/types/tasks.types';
+import { addNineHours } from '@/utils/dateTimeUtils/addNineHours';
 import { cn } from '@/utils/tailwind/cn';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/router';
@@ -28,7 +29,7 @@ function Tasks({ team, isTeamLoading, isTeamFetched }: TasksProps) {
   const { data: tasks, isFetched: isTasksFetched } = useTasks({
     groupId: Number(id),
     taskListId: selectedTaskList?.id ?? 0,
-    date: new Date(selectedDate).toLocaleDateString('ko-KR'),
+    date: addNineHours(selectedDate).toISOString(),
   });
   const { mutate: updateTaskStatus } = useUpdateTaskStatus();
 
@@ -38,7 +39,7 @@ function Tasks({ team, isTeamLoading, isTeamFetched }: TasksProps) {
       taskListId: selectedTaskList?.id ?? 0,
       taskId,
       done,
-      startDate: new Date(selectedDate).toLocaleDateString('ko-KR'),
+      startDate: addNineHours(selectedDate).toISOString(),
     });
   };
 

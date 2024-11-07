@@ -15,6 +15,7 @@ import {
   PopoverTrigger,
 } from '@/components/common/Popover';
 import { useTaskStore } from '@/store/useTaskStore';
+import { addNineHours } from '@/utils/dateTimeUtils/addNineHours';
 import { formatKoreanDate } from '@/utils/dateTimeUtils/FormatData';
 import { cn } from '@/utils/tailwind/cn';
 import { ko } from 'date-fns/locale';
@@ -158,7 +159,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
         {mode === 'input' && (
           <input
             type="text"
-            value={date?.toLocaleDateString('ko-KR')}
+            value={addNineHours(date).toISOString()}
             className="hidden"
             ref={ref}
             suppressHydrationWarning
