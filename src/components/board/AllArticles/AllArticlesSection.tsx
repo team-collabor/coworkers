@@ -2,28 +2,67 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable import/no-extraneous-dependencies */
 import { useAllArticlesQuery } from '@/queries/article.queries';
+import { useBoardStore } from '@/store/useBoardStore';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import Dropdown from '../../common/Dropdown';
 import ArticleCardSkeleton from '../Skeleton/ArticleCardSkeleton';
 import ArticleCard from './ArticleCard';
 
-type AllArticlesSectionProps = {
-  searchValue: string;
-};
 type OrderByType = 'recent' | 'like';
 
-function AllArticlesSection({ searchValue }: AllArticlesSectionProps) {
-  const [orderBy, setOrderBy] = useState<OrderByType>('recent');
+function AllArticlesSection() {
+  const router = useRouter();
+  const { orderBy, setOrderBy, searchQuery } = useBoardStore();
+
   const PAGE_SIZE = 4;
   const { data, fetchNextPage, hasNextPage, isLoading } = useAllArticlesQuery(
     orderBy,
-    searchValue,
+    searchQuery,
     PAGE_SIZE
   );
 
   const { ref, inView } = useInView({ threshold: 0.8 });
+
+  const handleOrderByChange = (newOrderBy: OrderByType) => {
+    setOrderBy(newOrderBy);
+    router.replace(
+      {
+        query: {
+          ...router.query,
+          orderBy: newOrderBy,
+        },
+      },
+      undefined,
+      { shallow: true }
+    );
+  };
+
+  useEffect(() => {
+    if (router.isReady) {
+      const savedScrollPosition = sessionStorage.getItem(
+        'boardsScrollPosition'
+      );
+      if (savedScrollPosition) {
+        window.scrollTo(0, parseInt(savedScrollPosition, 10));
+      }
+    }
+  }, [router.isReady]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      sessionStorage.setItem('boardsScrollPosition', window.scrollY.toString());
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    setOrderBy((router.query.orderBy as OrderByType) || 'recent');
+  }, [router.query.orderBy, setOrderBy]);
 
   useEffect(() => {
     if (inView && hasNextPage) {
@@ -56,19 +95,19 @@ function AllArticlesSection({ searchValue }: AllArticlesSectionProps) {
               </div>
             }
             dropdownStyle="w-[8rem] mob:w-[6.5rem] mt-1 z-10 absolute
-             right-0 top-12"
+                          right-0 top-12"
           >
             <button
               className="h-[3rem] "
               type="button"
-              onClick={() => setOrderBy('recent')}
+              onClick={() => handleOrderByChange('recent')}
             >
               최신순
             </button>
             <button
               className="h-[3rem]"
               type="button"
-              onClick={() => setOrderBy('like')}
+              onClick={() => handleOrderByChange('like')}
             >
               좋아요순
             </button>

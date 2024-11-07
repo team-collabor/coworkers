@@ -12,6 +12,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 import Dropdown from '@/components/common/Dropdown';
+import { useBoardStore } from '@/store/useBoardStore';
 import { cn } from '@/utils/tailwind/cn';
 import ArticleContentSkeleton from '../Skeleton/ArticleContentSkeleton';
 import EditArticleForm from './EditArticleForm';
@@ -28,15 +29,26 @@ function ArticleContent({
   setIsEditArticle,
 }: ArticleContentProps) {
   const router = useRouter();
+  const { searchQuery, orderBy } = useBoardStore();
   const { user } = useAuthStore();
   const {
     data: article,
     isLoading,
     isError,
   } = useGetArticleDetailQuery(boardId);
-  const { mutateAsync: likeArticle } = useLikeArticleMutation();
-  const { mutateAsync: unlikeArticle } = useUnlikeArticleMutation();
-  const { mutateAsync: deleteArticle } = useDeleteArticleMutation(boardId);
+  const { mutateAsync: likeArticle } = useLikeArticleMutation(
+    searchQuery,
+    orderBy
+  );
+  const { mutateAsync: unlikeArticle } = useUnlikeArticleMutation(
+    searchQuery,
+    orderBy
+  );
+  const { mutateAsync: deleteArticle } = useDeleteArticleMutation(
+    boardId,
+    searchQuery,
+    orderBy
+  );
 
   const { toast } = useToast();
 

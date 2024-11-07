@@ -5,6 +5,7 @@ export type Writer = {
 };
 
 export type Article = {
+  commentCount: number;
   updatedAt: string;
   createdAt: string;
   likeCount: number;

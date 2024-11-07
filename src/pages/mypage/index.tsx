@@ -1,7 +1,6 @@
 import { uploadImage } from '@/apis/uploadImage.api';
 import {
   deleteUser,
-  getUser,
   updateUserImageUrl,
   updateUserNickname,
   updateUserPassword,
@@ -24,39 +23,43 @@ import {
 } from '@/constants/formSchemas/authSchema';
 import { useToast } from '@/hooks/useToast';
 import { useAuthStore } from '@/store/useAuthStore';
-import { GetUserResponse } from '@/types/dto/responses/users.response.types';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { z } from 'zod';
 
 export default function MyPage() {
+  const router = useRouter();
   const { toast } = useToast();
+  const { user, setUser, clearAuth } = useAuthStore();
   const [isNicknameModalOpen, setIsNicknameModalOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isWithdrawalModalOpen, setIsWithdrawalModalOpen] = useState(false);
-
-  const [userData, setUserData] = useState<GetUserResponse | null>(null);
   const [nickname, setNickname] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
-
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const data = await getUser();
-        setUserData({ ...data });
-      } catch (error) {
-        toast({
-          title: '오류',
-          description: '로그인이 필요합니다',
-        });
-        window.location.href = '/';
-      }
-    };
-    fetchUserData();
-  }, [toast]);
+    if (isLoading) return; // 로딩 중일 때는 리다이렉트 로직 실행 안 함
+
+    if (!user) {
+      toast({
+        title: '오류',
+        description: '로그인이 필요합니다',
+        variant: 'destructive',
+      });
+      router.push('/signin');
+    } else {
+      setNickname(user.nickname || '');
+    }
+  }, [user, toast, router, isLoading]);
+
+  useEffect(() => {
+    // `user` 상태를 로드하고 나면 로딩 상태 해제
+    setIsLoading(false);
+  }, [user]);
 
   const handleImageChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -67,12 +70,9 @@ export default function MyPage() {
     try {
       const imageUrl: string = await uploadImage(file);
       await updateUserImageUrl({ image: imageUrl });
-
-      setUserData((prevUserData) => ({
-        ...prevUserData!,
-        image: imageUrl,
-      }));
-
+      if (user) {
+        setUser({ ...user, image: imageUrl });
+      }
       toast({
         title: '성공',
         description: '이미지 변경에 성공했습니다.',
@@ -81,6 +81,7 @@ export default function MyPage() {
       toast({
         title: '오류',
         description: '이미지 변경에 실패했습니다. 다시 시도해주세요.',
+        variant: 'destructive',
       });
     }
   };
@@ -91,25 +92,30 @@ export default function MyPage() {
       nicknameSchema.parse(nickname);
 
       await updateUserNickname({ nickname });
+      if (user) {
+        setUser({
+          ...user,
+          nickname,
+        });
+      }
       setIsNicknameModalOpen(false);
 
       toast({
         title: '성공',
         description: '닉네임이 성공적으로 변경되었습니다.',
       });
-
-      const updatedUserData = await getUser();
-      setUserData(updatedUserData);
     } catch (error) {
       if (error instanceof z.ZodError) {
         toast({
           title: '검증 오류',
           description: error.errors.map((err) => err.message).join('\n'),
+          variant: 'destructive',
         });
       } else {
         toast({
           title: '오류',
           description: '닉네임 변경에 실패했습니다. 다시 시도해주세요.',
+          variant: 'destructive',
         });
       }
     }
@@ -141,17 +147,20 @@ export default function MyPage() {
         toast({
           title: '검증 오류',
           description: error.errors.map((err) => err.message).join('\n'),
+          variant: 'destructive',
         });
       } else if (error instanceof Error) {
         toast({
           title: '오류',
           description:
             error.message || '비밀번호 변경에 실패했습니다. 다시 시도해주세요.',
+          variant: 'destructive',
         });
       } else {
         toast({
           title: '오류',
           description: '비밀번호 변경에 실패했습니다. 다시 시도해주세요.',
+          variant: 'destructive',
         });
       }
     }
@@ -160,12 +169,13 @@ export default function MyPage() {
   const handleWithdrawal = async () => {
     try {
       await deleteUser();
-      useAuthStore.getState().clearAuth();
+      clearAuth();
       window.location.href = '/';
     } catch (error) {
       toast({
         title: '오류',
         description: '회원탈퇴에 실패했습니다. 다시 시도해주세요.',
+        variant: 'destructive',
       });
     }
   };
@@ -191,11 +201,21 @@ export default function MyPage() {
         border-0 hover:cursor-pointer"
         >
           <Image
-            src={userData?.image || '/icons/Member_xLarge.svg'}
+            src={user?.image || '/icons/Member_xLarge.svg'}
             alt="MemberImage"
             fill
-            className="cursor-pointer rounded-full object-cover 
-            transition-opacity duration-300 hover:opacity-80"
+            className="z-0 cursor-pointer rounded-full 
+    object-cover transition-opacity duration-300"
+            onClick={() => fileInputRef.current?.click()}
+          />
+          <Image
+            src="/icons/Edit.svg"
+            alt="Edit"
+            width={22}
+            height={22}
+            className="absolute bottom-0 right-0
+    cursor-pointer object-cover transition-opacity duration-300 
+    hover:opacity-80"
             onClick={() => fileInputRef.current?.click()}
           />
           <input
@@ -212,7 +232,7 @@ export default function MyPage() {
           justify-between rounded-xl border-[1px]
           border-primary bg-secondary px-4"
         >
-          <p className="text-base">{userData?.nickname || '정보 없음'}</p>
+          <p className="text-base">{user?.nickname || '정보 없음'}</p>
           <Button
             buttonStyle={ButtonStyle.Box}
             buttonBackgroundColor={ButtonBackgroundColor.Green}
@@ -234,7 +254,7 @@ export default function MyPage() {
           justify-between rounded-xl border-[1px]
           border-primary bg-tertiary px-4"
         >
-          <p className="text-base">{userData?.email || '정보 없음'}</p>
+          <p className="text-base">{user?.email || '정보 없음'}</p>
         </div>
         <p className="text-base font-bold">비밀번호</p>
         <div
@@ -294,7 +314,7 @@ export default function MyPage() {
                   회원탈퇴를 진행하시겠어요?
                 </Modal.Title>
               </Modal.Header>
-              <Modal.Summary className="px-5 text-sm">
+              <Modal.Summary className="w-[17.5rem] px-5 text-sm">
                 그룹장으로 있는 그룹은 자동으로 삭제되고,
                 {'\n'}
                 모든 그룹에서 나가집니다.
@@ -344,7 +364,7 @@ export default function MyPage() {
               </Modal.Header>
               <Modal.Summary className="flex flex-col justify-start">
                 <form
-                  className="flex flex-col gap-4 text-left"
+                  className="flex w-[17.5rem] flex-col gap-4 text-left"
                   onSubmit={handlePasswordChange}
                   noValidate
                 >
@@ -410,7 +430,7 @@ export default function MyPage() {
               </Modal.Header>
               <Modal.Summary className="flex flex-col justify-start">
                 <form
-                  className="text-left"
+                  className="w-[17.5rem] text-left"
                   onSubmit={handleNicknameChange}
                   noValidate
                 >
