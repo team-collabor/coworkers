@@ -46,7 +46,6 @@ const DrawerContent = forwardRef<
       ref={ref}
       className={cn(
         'fixed inset-x-0 bottom-0 z-50 mt-24 flex flex-col',
-        'h-[70vh] overflow-y-scroll',
         'rounded-t-xl border-none bg-secondary',
         className
       )}
@@ -60,7 +59,7 @@ const DrawerContent = forwardRef<
         )}
       />
       <div className="flex-1 overflow-y-auto p-4">
-        <div className="mx-auto max-w-md space-y-4">{children}</div>
+        <div className="mx-auto h-[70vh] max-w-md space-y-4">{children}</div>
       </div>
     </DrawerPrimitive.Content>
   </DrawerPortal>
