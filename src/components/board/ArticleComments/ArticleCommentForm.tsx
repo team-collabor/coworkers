@@ -8,6 +8,8 @@ import Button, {
 } from '@/components/common/Button/Button';
 import { useToast } from '@/hooks/useToast';
 import { usePostArticleCommentMutation } from '@/queries/article.queries';
+import { useAuthStore } from '@/store/useAuthStore';
+import { useBoardStore } from '@/store/useBoardStore';
 import React, { useState } from 'react';
 
 type ArticleCommentFormProps = {
@@ -16,7 +18,12 @@ type ArticleCommentFormProps = {
 
 function ArticleCommentForm({ boardId }: ArticleCommentFormProps) {
   const [comment, setComment] = useState<string>('');
-  const { mutateAsync: postArticleComment } = usePostArticleCommentMutation();
+  const { searchQuery, orderBy } = useBoardStore();
+  const { mutateAsync: postArticleComment } = usePostArticleCommentMutation(
+    searchQuery,
+    orderBy
+  );
+  const { user } = useAuthStore();
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -34,6 +41,17 @@ function ArticleCommentForm({ boardId }: ArticleCommentFormProps) {
     });
     setComment('');
   };
+
+  if (!user) {
+    return (
+      <div
+        className="h-[10rem] resize-none rounded-xl border border-primary
+    bg-secondary px-6 py-4 outline-none"
+      >
+        로그인 후 이용해주세요.
+      </div>
+    );
+  }
 
   return (
     // eslint-disable-next-line @typescript-eslint/no-misused-promises

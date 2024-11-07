@@ -2,10 +2,10 @@ import { useTasks, useUpdateTaskStatus } from '@/queries/tasks.queries';
 import { useTaskStore } from '@/store/useTaskStore';
 import { GetGroupResponse } from '@/types/dto/responses/group.response.types';
 import { Task } from '@/types/tasks.types';
+import { addNineHours } from '@/utils/dateTimeUtils/addNineHours';
 import { cn } from '@/utils/tailwind/cn';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 import TaskCard from './TaskCard';
 import TaskListSelector from './TaskListSelector';
 import TaskDetailModal from './taskDetail/TaskDetailModal';
@@ -20,6 +20,8 @@ function Tasks({ team, isTeamLoading, isTeamFetched }: TasksProps) {
   const { id } = useRouter().query;
   const {
     selectedDate,
+    selectedTask,
+    setSelectedTask,
     selectedTaskList,
     taskDetailModalOpen,
     setTaskDetailModalOpen,
@@ -27,10 +29,9 @@ function Tasks({ team, isTeamLoading, isTeamFetched }: TasksProps) {
   const { data: tasks, isFetched: isTasksFetched } = useTasks({
     groupId: Number(id),
     taskListId: selectedTaskList?.id ?? 0,
-    date: new Date(selectedDate).toLocaleDateString('ko-KR'),
+    date: addNineHours(selectedDate).toISOString(),
   });
   const { mutate: updateTaskStatus } = useUpdateTaskStatus();
-  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   const handleCheckBoxChange = (taskId: number, done: boolean) => {
     updateTaskStatus({
@@ -38,7 +39,7 @@ function Tasks({ team, isTeamLoading, isTeamFetched }: TasksProps) {
       taskListId: selectedTaskList?.id ?? 0,
       taskId,
       done,
-      startDate: new Date(selectedDate).toLocaleDateString('ko-KR'),
+      startDate: addNineHours(selectedDate).toISOString(),
     });
   };
 
@@ -50,7 +51,7 @@ function Tasks({ team, isTeamLoading, isTeamFetched }: TasksProps) {
           'text-center text-lg-medium text-tertiary'
         )}
       >
-        <Loader2 className={cn('size-8 animate-spin text-icon-brand')} />
+        <Loader2 className={cn('animate-spin size-8 text-icon-brand')} />
       </div>
     );
   }

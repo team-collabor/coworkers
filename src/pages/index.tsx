@@ -1,7 +1,19 @@
+import { useGetUser } from '@/queries/users.queries';
 import Image from 'next/image';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 export default function Home() {
+  const router = useRouter();
+  const { data } = useGetUser();
+
+  const handlePageChange = () => {
+    if (!data) {
+      router.push('/signin');
+    } else {
+      router.push('/withoutteam');
+    }
+  };
+
   return (
     <div>
       <div
@@ -26,8 +38,8 @@ export default function Home() {
           >
             <h1
               className={`flex items-center justify-center gap-6 
-              text-[3rem] tab:gap-4 tab:text-[2.5rem]
-              mob:gap-1 mob:text-[1.81rem]`}
+              text-center text-[3rem] tab:gap-4
+              tab:text-[2.5rem] mob:gap-1 mob:text-[1.81rem]`}
             >
               함께 만들어가는 투두 리스트
               <Image
@@ -35,8 +47,8 @@ export default function Home() {
                 alt="Fix"
                 height={56}
                 width={56}
-                className={`tab:h-[3rem] tab:w-[3rem] mob:h-7
-                mob:w-7
+                className={`tab:h-[3rem] tab:w-[3rem]
+                mob:h-7 mob:w-7
                 `}
               />
             </h1>
@@ -51,17 +63,16 @@ export default function Home() {
             </h1>
           </div>
           <div className="flex justify-center">
-            <Link href="./signin">
-              <button
-                type="button"
-                className={`h-[2.8125rem] w-[23.3125rem] rounded-full
+            <button
+              type="button"
+              className={`h-[2.8125rem] w-[23.3125rem] rounded-full
                 bg-gradient-to-r from-brand-primary to-brand-tertiary 
                 text-base font-bold mob:w-[21.4375rem]
                 `}
-              >
-                지금 시작하기
-              </button>
-            </Link>
+              onClick={handlePageChange}
+            >
+              지금 시작하기
+            </button>
           </div>
         </div>
 
@@ -188,7 +199,7 @@ export default function Home() {
           `}
           >
             <Image
-              src="images/Landing_mockup_comment.svg"
+              src="/images/Landing_mockup_comment.svg"
               alt="Invite"
               width={291}
               height={338}

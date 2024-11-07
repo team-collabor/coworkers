@@ -1,10 +1,12 @@
 import { TaskList } from '@/types/tasklist.types';
+import { Task } from '@/types/tasks.types';
 import { create } from 'zustand';
 import { combine } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
 export type TaskState = {
   selectedDate: Date;
+  selectedTask: Task | null;
   selectedTaskList: TaskList | null;
   taskDetailModalOpen: boolean;
   isTaskUpdateFormShow: boolean;
@@ -13,6 +15,7 @@ export type TaskState = {
 
 export type TaskActions = {
   setSelectedDate: (date: Date) => void;
+  setSelectedTask: (task: Task) => void;
   setSelectedTaskList: (taskList: TaskList) => void;
   setTaskDetailModalOpen: (open: boolean) => void;
   setIsTaskUpdateFormShow: (show: boolean) => void;
@@ -21,6 +24,7 @@ export type TaskActions = {
 
 const initialState: TaskState = {
   selectedDate: new Date(),
+  selectedTask: null,
   selectedTaskList: null,
   taskDetailModalOpen: false,
   isTaskUpdateFormShow: false,
@@ -33,6 +37,11 @@ export const useTaskStore = create(
       setSelectedDate: (date: Date) => {
         set((state) => {
           state.selectedDate = date;
+        });
+      },
+      setSelectedTask: (task: Task) => {
+        set((state) => {
+          state.selectedTask = task;
         });
       },
       setSelectedTaskList: (taskList: TaskList) => {

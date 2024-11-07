@@ -21,6 +21,7 @@ import {
   groupsQueryKeys,
   groupTasksQueryKeys,
 } from './keys/groups.key';
+import { usersQueryKeys } from './keys/users.keys';
 
 export const useTeamQuery = (id: number) => {
   return useQuery({
@@ -31,18 +32,39 @@ export const useTeamQuery = (id: number) => {
 };
 
 export const usePatchTeamMutation = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
   return useMutation({
     mutationFn: ({ id, name, image }: UpdateGroupRequest) =>
       patchGroup({ id, name, ...(image && { image }) }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: usersQueryKeys.memberships(),
+      });
+      toast({
+        title: '해당 팀을 수정했습니다.',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: '팀 수정을 실패했습니다.',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
   });
 };
 
 export const useDeleteTeamMutation = () => {
+  const queryClient = useQueryClient();
   const router = useRouter();
   const { toast } = useToast();
   return useMutation({
     mutationFn: (id: number) => deleteGroup(id),
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: usersQueryKeys.memberships(),
+      });
       toast({
         title: '해당 팀을 삭제했습니다.',
       });
@@ -59,15 +81,52 @@ export const useDeleteTeamMutation = () => {
 };
 
 export const useTeamMutation = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
   return useMutation({
     mutationFn: (params: PostGroupRequest) => postGroup(params),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: usersQueryKeys.memberships(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: usersQueryKeys.user(),
+      });
+      toast({
+        title: '해당 팀을 생성했습니다.',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: '팀 생성을 실패했습니다.',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
   });
 };
 
 export const useInviteGroupMutation = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
   return useMutation({
     mutationFn: ({ userEmail, token }: InviteGroupRequest) =>
       postInviteGroup({ userEmail, token }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: usersQueryKeys.memberships(),
+      });
+      toast({
+        title: '팀 참여 완료.',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: '팀 참여에 실패했습니다.',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
   });
 };
 

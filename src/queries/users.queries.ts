@@ -20,17 +20,16 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { usersQueryKeys } from './keys/users.keys';
 
 export const useGetUser = () => {
-  const { user, setUser, setMemberships } = useAuthStore();
+  const { setUser } = useAuthStore();
   return useQuery<GetUserResponse>({
     queryKey: usersQueryKeys.user(),
     queryFn: getUser,
     refetchInterval: 1000 * 50,
-    enabled: !!user,
     select: (data) => {
       setUser(data);
-      setMemberships(data.memberships);
       return data;
     },
+    retry: 1,
   });
 };
 
@@ -89,6 +88,7 @@ export const useGetHistory = () => {
     queryKey: usersQueryKeys.history(),
     queryFn: getHistory,
     enabled: !!user,
+    refetchOnMount: 'always',
   });
   return { ...returns };
 };

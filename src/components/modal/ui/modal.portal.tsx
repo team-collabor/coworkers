@@ -12,11 +12,7 @@ export default function ModalPortal({
   const { isOpen } = useContextSelector(ModalContext as Context<TModalContext>);
   const ref = useRef<HTMLDivElement>(null);
   const component = createPortal(
-    <div
-      ref={ref}
-      className={cn('fixed inset-x-0 sm:inset-0', className)}
-      {...rest}
-    >
+    <div ref={ref} className={cn('fixed inset-0', className)} {...rest}>
       {children}
     </div>,
     document.body

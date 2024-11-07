@@ -3,20 +3,17 @@
 import { USER_MENU } from '@/components/layouts/consts/_user.menu';
 import { UnoptimizedImage } from '@/components/next';
 import { useOAuthSignIn, useSignIn } from '@/queries/auth.queries';
-import { useAuthStore } from '@/store/useAuthStore';
+import { User } from '@/types/users.types';
 import { useRouter } from 'next/router';
 import { Menu } from '../../menu';
 
 const buttonSt = 'px-6 py-[14px] hover:bg-tertiary';
 
-export default function HeaderProfile() {
+export default function HeaderProfile({ user }: { user: User }) {
   const { push } = useRouter();
   const { logout } = useSignIn();
   const { oAuthLogout } = useOAuthSignIn();
-  const { user } = useAuthStore();
-  if (!user) {
-    return null;
-  }
+
   return (
     <>
       <Menu.Trigger
