@@ -69,8 +69,16 @@ export default function HeaderNav() {
               }}
             >
               {currentTop.image ? (
-                <div className="relative size-6">
-                  <Image src={currentTop.image} alt="" fill />
+                <div
+                  className="relative size-6 rounded-full border-[2px] 
+                border-primary"
+                >
+                  <Image
+                    src={currentTop.image}
+                    alt=""
+                    fill
+                    className="rounded-full"
+                  />
                 </div>
               ) : (
                 <ImageIcon width={24} height={24} />
@@ -120,8 +128,16 @@ export default function HeaderNav() {
                         ])}
                       >
                         {m.group.image ? (
-                          <div className="relative size-6">
-                            <Image src={m.group.image} alt="" fill />
+                          <div
+                            className="relative size-6 rounded-full
+                           border-[2px] border-primary"
+                          >
+                            <Image
+                              src={m.group.image}
+                              alt=""
+                              fill
+                              className="rounded-full"
+                            />
                           </div>
                         ) : (
                           <ImageIcon />
