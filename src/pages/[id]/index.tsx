@@ -56,10 +56,12 @@ export default function TeamPage() {
         setIsMember(true);
         if (member.role === 'ADMIN') {
           setIsAdmin(true);
+        } else {
+          setIsAdmin(false);
         }
       }
     }
-  }, [user, group]);
+  }, [user, group, isAdmin]);
 
   if (!isFetched) {
     return (
