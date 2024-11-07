@@ -10,6 +10,7 @@ import {
 } from '@/components/common/Dialog';
 import Dropdown from '@/components/common/Dropdown';
 import IconAndText from '@/components/common/IconAndText';
+import { TASK_DESCRIPTION_MAX_LENGTH } from '@/constants/task/task';
 import {
   useDeleteTask,
   useTaskDetail,
@@ -29,13 +30,16 @@ import {
   MoreVerticalIcon,
   RepeatIcon,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TaskCommentForm from './TaskCommentForm';
 import TaskCommentList from './TaskCommentList';
 import TaskUpdateForm from './TaskUpdateForm';
 
 function TaskDetailContent({ task }: { task: Task }) {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState<boolean>(
+    task.description?.length !== undefined &&
+      task.description.length < TASK_DESCRIPTION_MAX_LENGTH
+  );
   const {
     selectedTaskList,
     selectedDate,
@@ -43,6 +47,7 @@ function TaskDetailContent({ task }: { task: Task }) {
     setIsTaskUpdateFormShow,
     isTaskDeleteDialogOpen,
     setIsTaskDeleteDialogOpen,
+    taskDetailModalOpen,
     setTaskDetailModalOpen,
   } = useTaskStore();
   const { data: taskDetail } = useTaskDetail({
@@ -76,6 +81,12 @@ function TaskDetailContent({ task }: { task: Task }) {
     setIsTaskUpdateFormShow(false);
     setTaskDetailModalOpen(false);
   };
+
+  useEffect(() => {
+    if (!taskDetailModalOpen) {
+      setIsTaskUpdateFormShow(false);
+    }
+  }, [taskDetailModalOpen, setIsTaskUpdateFormShow]);
 
   return (
     <section
@@ -166,6 +177,7 @@ function TaskDetailContent({ task }: { task: Task }) {
                 taskListId: selectedTaskList?.id ?? -1,
                 taskId: task.id,
                 done: !taskDetail?.doneAt,
+                startDate: selectedDate.toLocaleDateString('ko-KR'),
               });
             }}
           >
@@ -178,23 +190,29 @@ function TaskDetailContent({ task }: { task: Task }) {
             'scrollbar-hide hover:scrollbar-default',
             'text-md-regular text-primary',
             {
-              'max-h-[20rem]': !isExpanded,
+              'max-h-[3.2rem]': !isExpanded,
+              'bg-gradient-to-b from-background-inverse to-transparent':
+                !isExpanded,
+              'bg-clip-text text-transparent': !isExpanded,
             }
           )}
         >
           {taskDetail?.description}
         </div>
-        <Button
-          variant="outline"
-          className={cn(
-            'h-8 w-full bg-icon-primary/20 text-xs-regular',
-            'hover:bg-icon-primary/80 active:bg-icon-primary/60'
+        {taskDetail?.description &&
+          taskDetail?.description.length > TASK_DESCRIPTION_MAX_LENGTH && (
+            <Button
+              variant="outline"
+              className={cn(
+                'h-8 w-full bg-icon-primary/20 text-xs-regular',
+                'hover:bg-icon-primary/80 active:bg-icon-primary/60'
+              )}
+              onClick={handleExpand}
+            >
+              {isExpanded ? <ChevronUpIcon /> : <ChevronDownIcon />}
+              {isExpanded ? '접기' : '펼치기'}
+            </Button>
           )}
-          onClick={handleExpand}
-        >
-          {isExpanded ? <ChevronUpIcon /> : <ChevronDownIcon />}
-          {isExpanded ? '접기' : '펼치기'}
-        </Button>
       </article>
       <TaskUpdateForm
         className={cn({ hidden: !isTaskUpdateFormShow })}

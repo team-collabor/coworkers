@@ -17,6 +17,10 @@ export const passwordSchema = z
   .regex(
     /^[A-Za-z0-9!@#$%^&*]+$/,
     '비밀번호는 숫자, 영문, 특수문자로만 가능합니다.'
+  )
+  .regex(
+    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/,
+    '비밀번호는 숫자, 영문, 특수문자가 포함되어야 합니다.'
   );
 
 export const passwordConfirmationSchema = z

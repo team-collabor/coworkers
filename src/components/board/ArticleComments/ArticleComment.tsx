@@ -7,6 +7,7 @@ import {
 import { useAuthStore } from '@/store/useAuthStore';
 import { ListItem } from '@/types/dto/responses/article.response.types';
 import { formatDate } from '@/utils/dateTimeUtils/FormatData';
+import { cn } from '@/utils/tailwind/cn';
 import Image from 'next/image';
 import { useState } from 'react';
 import Button, {
@@ -73,11 +74,16 @@ function ArticleComment({
 
   return (
     <div
-      className="relative flex flex-col gap-6 rounded-lg bg-secondary px-6 
+      className="relative flex flex-col gap-10 rounded-lg bg-secondary px-6 
                 py-5"
     >
-      <div className="flex items-start justify-between">
-        <p className="w-[600px] whitespace-pre-wrap break-words">
+      <div
+        className={cn(
+          'flex gap-6 ',
+          isEditing ? 'flex-col ' : 'items-start justify-center'
+        )}
+      >
+        <p className="min-w-0 flex-1 whitespace-pre-wrap break-words">
           {isEditing ? (
             <textarea
               className="h-40 w-full resize-none rounded-xl bg-primary 
@@ -91,7 +97,7 @@ function ArticleComment({
         </p>
         {userId === comment.writer.id &&
           (isEditing ? (
-            <div className="flex gap-2">
+            <div className="flex gap-2 self-end">
               <Button
                 type="button"
                 buttonStyle={ButtonStyle.Box}
@@ -128,6 +134,7 @@ function ArticleComment({
                   alt="kebab"
                   width={24}
                   height={24}
+                  className="cursor-pointer"
                 />
               }
             >
@@ -147,6 +154,7 @@ function ArticleComment({
             alt="writerImage"
             width={32}
             height={32}
+            className="h-[2rem] w-[2rem] object-contain"
           />
           <p>{comment.writer.nickname}</p>
         </div>

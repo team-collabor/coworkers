@@ -44,9 +44,7 @@ export default function HeaderProfile({ user }: { user: User }) {
           <div
             className={buttonSt}
             onClick={() => {
-              push('/').catch(() => {
-                // 계정 설정
-              });
+              push('/mypage');
             }}
           >
             계정 설정

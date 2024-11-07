@@ -10,18 +10,25 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { formatDate } from '@/utils/dateTimeUtils/FormatData';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 
 import Dropdown from '@/components/common/Dropdown';
+import { cn } from '@/utils/tailwind/cn';
+import ArticleContentSkeleton from '../Skeleton/ArticleContentSkeleton';
 import EditArticleForm from './EditArticleForm';
 
 type ArticleContentProps = {
   boardId: number;
+  isEditArticle: boolean;
+  setIsEditArticle: (isEditArticle: boolean) => void;
 };
 
-function ArticleContent({ boardId }: ArticleContentProps) {
+function ArticleContent({
+  boardId,
+  isEditArticle,
+  setIsEditArticle,
+}: ArticleContentProps) {
   const router = useRouter();
-  const userId = useAuthStore((state) => state.user?.id);
+  const { user } = useAuthStore();
   const {
     data: article,
     isLoading,
@@ -30,11 +37,13 @@ function ArticleContent({ boardId }: ArticleContentProps) {
   const { mutateAsync: likeArticle } = useLikeArticleMutation();
   const { mutateAsync: unlikeArticle } = useUnlikeArticleMutation();
   const { mutateAsync: deleteArticle } = useDeleteArticleMutation(boardId);
-  const [isEditArticle, setIsEditArticle] = useState(false);
 
   const { toast } = useToast();
 
   const handleLikeClick = async () => {
+    if (!user) {
+      return;
+    }
     if (article?.isLiked) {
       await unlikeArticle(boardId);
     } else {
@@ -43,7 +52,7 @@ function ArticleContent({ boardId }: ArticleContentProps) {
   };
 
   const handleArticleEdit = () => {
-    if (userId === article?.writer.id) {
+    if (user?.id === article?.writer.id) {
       setIsEditArticle(true);
     } else {
       toast({
@@ -54,7 +63,7 @@ function ArticleContent({ boardId }: ArticleContentProps) {
   };
 
   const handleArticleDelete = async () => {
-    if (userId === article?.writer.id) {
+    if (user?.id === article?.writer.id) {
       await deleteArticle();
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       router.push('/boards');
@@ -66,27 +75,28 @@ function ArticleContent({ boardId }: ArticleContentProps) {
     }
   };
 
-  // 추후에 수정 보완할 예정
-  if (isLoading) {
-    return <div>loading</div>;
-  }
-
   if (isError) {
     toast({
       title: '게시글을 불러오는데 실패했습니다.',
       variant: 'destructive',
     });
   }
-  if (!article) {
-    return <div>데이터가 없습니다.</div>;
+
+  if (isLoading || !article) {
+    return <ArticleContentSkeleton />;
   }
 
   return (
     <div className="relative flex flex-col gap-6 rounded-2xl bg-secondary p-6">
       {!isEditArticle ? (
         <>
-          <div className="flex justify-between">
-            <h1 className="text-2lg-medium text-secondary">{article.title}</h1>
+          <div className="flex justify-between gap-10">
+            <h1
+              className="w-full break-all text-2lg-medium leading-relaxed 
+            text-secondary"
+            >
+              {article.title}
+            </h1>
             <Dropdown
               dropdownStyle="absolute right-0"
               trigger={
@@ -95,6 +105,7 @@ function ArticleContent({ boardId }: ArticleContentProps) {
                   alt="kebab"
                   width={24}
                   height={24}
+                  className="cursor-pointer"
                 />
               }
             >
@@ -129,7 +140,11 @@ function ArticleContent({ boardId }: ArticleContentProps) {
                 </p>
               </div>
               <div className="flex items-center gap-1">
-                <button type="button" onClick={handleLikeClick}>
+                <button
+                  type="button"
+                  onClick={handleLikeClick}
+                  className={cn('cursor-pointer', user || 'cursor-default')}
+                >
                   <Image
                     src={
                       article?.isLiked
@@ -147,10 +162,10 @@ function ArticleContent({ boardId }: ArticleContentProps) {
               </div>
             </div>
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between gap-3">
             <div
-              className="font-weight-400  py-[10px] text-base 
-            text-secondary"
+              className="font-weight-400  break-all py-[10px] 
+            text-base leading-relaxed text-secondary"
             >
               {article.content}
             </div>

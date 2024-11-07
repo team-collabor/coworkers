@@ -136,7 +136,7 @@ function EditArticleForm({
         onChange={handleArticleContentChange}
         label="내용"
       />
-      <div className="flex justify-between">
+      <div className="flex justify-between gap-3 mob:flex-col">
         <div className="relative h-60 w-60">
           <label
             htmlFor="edit-article-image"
@@ -172,8 +172,7 @@ function EditArticleForm({
                   alt="이미지 미리보기"
                   width={240}
                   height={240}
-                  objectFit="cover"
-                  className="rounded-xl"
+                  className="w-15rem h-15rem rounded-xl"
                 />
                 <button
                   type="button"
@@ -187,6 +186,7 @@ function EditArticleForm({
                     alt="x-icon"
                     width={40}
                     height={40}
+                    className="h-10 w-10"
                   />
                 </button>
               </div>

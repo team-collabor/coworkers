@@ -17,24 +17,22 @@ function ArticleCard({ article }: AllArticleCardProps) {
     >
       <div className="flex items-center justify-between">
         <div
-          className="line-clamp-2 w-[15rem] break-words text-xl-medium 
-          leading-relaxed text-secondary"
+          className="line-clamp-2 w-[15rem] self-start break-words 
+          text-xl-medium leading-relaxed text-secondary"
         >
           {article.title}
         </div>
         <div className="flex items-start gap-3">
-          <div>
-            {article.image ? (
-              <Image
-                src={article.image}
-                alt="articleImage"
-                width={72}
-                height={72}
-              />
-            ) : (
-              ''
-            )}
-          </div>
+          {article.image && (
+            <Image
+              src={article.image}
+              width={72}
+              height={72}
+              alt="articleImage"
+              className="h-[4.5rem] w-[4.5rem] object-contain"
+            />
+          )}
+
           <Image
             src="/icons/Kebab_small.svg"
             alt="kebabIcon"
@@ -45,12 +43,18 @@ function ArticleCard({ article }: AllArticleCardProps) {
       </div>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-8">
-          <Image
-            src="/icons/member.svg"
-            width={32}
-            height={32}
-            alt="memberIcon"
-          />
+          <div
+            className="flex  items-center 
+          justify-center"
+          >
+            <Image
+              src="/icons/Member.svg"
+              width={32}
+              height={32}
+              className="h-[2rem] w-[2rem]"
+              alt="memberIcon"
+            />
+          </div>
           <div className="text-md-medium text-primary">
             {article.writer.nickname}
           </div>

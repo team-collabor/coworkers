@@ -13,6 +13,7 @@ import Dropdown from '@/components/common/Dropdown';
 import { useDeleteComment, useGetComments } from '@/queries/comments.queries';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useCommentStore } from '@/store/useCommentStore';
+import { useTaskStore } from '@/store/useTaskStore';
 import { Comment } from '@/types/comment.types';
 import formatDistanceToNowKor from '@/utils/dateTimeUtils/FormatDistanceToNow';
 import { cn } from '@/utils/tailwind/cn';
@@ -31,6 +32,7 @@ export default function TaskCommentList({
   const { data: comments } = useGetComments({ taskId });
   const { user } = useAuthStore();
   const { mutate: deleteComment } = useDeleteComment();
+  const { selectedDate, selectedTaskList } = useTaskStore();
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [selectedCommentIdToDelete, setSelectedCommentIdToDelete] = useState<
@@ -52,7 +54,13 @@ export default function TaskCommentList({
   };
 
   const handleClickDeleteConfirm = (commentId: number) => {
-    deleteComment({ commentId, taskId });
+    deleteComment({
+      commentId,
+      taskId,
+      date: selectedDate.toISOString(),
+      groupId: selectedTaskList?.groupId ?? -1,
+      taskListId: selectedTaskList?.id ?? -1,
+    });
     setIsDeleteDialogOpen(false);
     setSelectedCommentIdToDelete(null);
   };

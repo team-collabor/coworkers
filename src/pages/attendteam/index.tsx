@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import Button, {
   ButtonBackgroundColor,
   ButtonBorderColor,
@@ -9,6 +8,7 @@ import Button, {
   TextSize,
 } from '@/components/common/Button/Button';
 import Input from '@/components/common/Input';
+import { useRedirect } from '@/hooks/useRedirect';
 import { useToast } from '@/hooks/useToast';
 import { useInviteGroupMutation } from '@/queries/groups.queries';
 import { useAuthStore } from '@/store/useAuthStore';
@@ -26,9 +26,9 @@ type TeamLinkValues = z.infer<typeof teamSchema>;
 export default function AttendTeam() {
   const router = useRouter();
   const teamMutation = useInviteGroupMutation();
-
   const user = useAuthStore();
   const { toast } = useToast();
+  useRedirect();
 
   const {
     register,
@@ -48,9 +48,7 @@ export default function AttendTeam() {
         description: '로그인 후 이용해주세요.',
         variant: 'destructive',
       });
-      router
-        .replace('/signin')
-        .catch((error) => console.error('라우팅 오류:', error));
+      router.replace('/signin');
     } else {
       teamMutation.mutate(
         {
@@ -65,9 +63,7 @@ export default function AttendTeam() {
             });
           },
           onSuccess: () => {
-            router
-              .replace('/')
-              .catch((error) => console.error('라우팅 오류:', error));
+            router.replace('/');
           },
         }
       );
