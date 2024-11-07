@@ -3,57 +3,41 @@ import Button, {
   ButtonBorderColor,
   ButtonPadding,
   ButtonStyle,
-  ButtonWidth,
   TextColor,
   TextSize,
 } from '@/components/common/Button/Button';
-import Image from 'next/image';
 import Link from 'next/link';
 
-export default function NotFound() {
+export default function NotFound404() {
   return (
-    <div className="mt-[14rem] flex flex-col items-center gap-20">
-      <Image
-        src="/images/WithoutTeam.svg"
-        alt="withoutTeam"
-        width={810}
-        height={255}
-        className="h-auto w-full max-w-[700px] 
-          tab:max-w-[520px] mob:max-w-[312px]"
-      />
-      <span className="text-center text-lg-medium text-default">
-        아직 소속된 팀이 없습니다.
-        <br />
-        팀을 생성하거나 팀에 참여해보세요.
-      </span>
-      <div className="flex w-[11.625rem] flex-col gap-4">
-        <Link href="/addteam">
-          <Button
-            buttonStyle={ButtonStyle.Box}
-            textColor={TextColor.White}
-            textSize={TextSize.Large}
-            buttonWidth={ButtonWidth.Full}
-            buttonBackgroundColor={ButtonBackgroundColor.Green}
-            buttonBorderColor={ButtonBorderColor.Green}
-            buttonPadding={ButtonPadding.Medium}
-          >
-            팀 생성하기
-          </Button>
-        </Link>
-        <Link href="attendteam">
-          <Button
-            buttonStyle={ButtonStyle.Box}
-            textColor={TextColor.Green}
-            textSize={TextSize.Large}
-            buttonWidth={ButtonWidth.Full}
-            buttonBackgroundColor={ButtonBackgroundColor.None}
-            buttonBorderColor={ButtonBorderColor.Green}
-            buttonPadding={ButtonPadding.Medium}
-          >
-            팀 참여하기
-          </Button>
-        </Link>
+    <div className="flex h-screen flex-col items-center justify-center">
+      <div className="flex flex-col items-center">
+        <h1
+          className="relative mt-[50px] text-[10rem] text-brand-primary 
+          mob:text-[6rem]"
+        >
+          <span className="relative inline-block animate-bounce404-1">4</span>
+          <span className="relative inline-block animate-bounce404-2">0</span>
+          <span className="relative inline-block animate-bounce404-3">4</span>
+        </h1>
+        <h2 className="text-[5rem] mob:text-[3rem] ">Not Found</h2>
       </div>
+      <p className="mb-10 text-2xl mob:text-xl-semibold">
+        페이지를 찾을 수 없습니다.
+      </p>
+      <Link href="/">
+        <Button
+          textSize={TextSize.Large}
+          buttonStyle={ButtonStyle.Box}
+          textColor={TextColor.White}
+          buttonBackgroundColor={ButtonBackgroundColor.None}
+          buttonBorderColor={ButtonBorderColor.LightGray}
+          buttonPadding={ButtonPadding.Large}
+          className="border-2"
+        >
+          메인 페이지로 돌아가기
+        </Button>
+      </Link>
     </div>
   );
 }
