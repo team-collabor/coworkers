@@ -1,6 +1,5 @@
 import { Button } from '@/components/common/Button/ShadcnButton';
 import { cn } from '@/utils/tailwind/cn';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { signIn, signOut } from 'next-auth/react';
 import Image from 'next/image';
 
@@ -48,7 +47,6 @@ function SocialSignInBox({ className }: SocialSignInBoxProps) {
           sns logout
         </Button>
       </div>
-      {/* <GoogleAuth /> */}
     </div>
   );
 }
