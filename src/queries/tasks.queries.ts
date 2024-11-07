@@ -18,7 +18,6 @@ import {
 import { FrequencyType, Task } from '@/types/tasks.types';
 import { formatDate } from '@/utils/dateTimeUtils/FormatData';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { subDays } from 'date-fns';
 import { groupsQueryKeys, groupTasksQueryKeys } from './keys/groups.key';
 import { tasksQueryKeys } from './keys/tasks.keys';
 
@@ -60,20 +59,7 @@ export const useAddTask = () => {
         title: '할 일을 추가했습니다.',
       });
       queryClient.invalidateQueries({
-        queryKey: tasksQueryKeys.tasks({
-          groupId: params.groupId,
-          taskListId: params.taskListId,
-          date: formatDate(params.startDate),
-        }),
-      });
-      queryClient.invalidateQueries({
-        queryKey: tasksQueryKeys.tasks({
-          groupId: params.groupId,
-          taskListId: params.taskListId,
-          date: formatDate(
-            subDays(new Date(params.startDate), 1).toISOString()
-          ),
-        }),
+        queryKey: tasksQueryKeys.tasks(),
       });
       queryClient.invalidateQueries({
         queryKey: tasksQueryKeys.taskDetail({

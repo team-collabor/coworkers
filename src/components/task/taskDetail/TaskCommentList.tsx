@@ -9,7 +9,6 @@ import {
   DialogTitle,
 } from '@/components/common/Dialog';
 import { Divider } from '@/components/common/Divider';
-import Dropdown from '@/components/common/Dropdown';
 import { useDeleteComment, useGetComments } from '@/queries/comments.queries';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useCommentStore } from '@/store/useCommentStore';
@@ -19,6 +18,7 @@ import formatDistanceToNowKor from '@/utils/dateTimeUtils/FormatDistanceToNow';
 import { cn } from '@/utils/tailwind/cn';
 import { MoreVerticalIcon } from 'lucide-react';
 import { Fragment, useState } from 'react';
+import TaskCommentDropDown from './TaskCommentDropDown';
 import TaskCommentUpdateForm from './TaskCommentUpdateForm';
 
 type TaskCommentListProps = {
@@ -73,7 +73,7 @@ export default function TaskCommentList({
       {sortedComments?.map((comment: Comment) => (
         <Fragment key={`${comment.id}-comment`}>
           <div
-            className={cn('flex flex-col gap-3', {
+            className={cn('flex flex-col gap-4', {
               hidden: selectedComment?.id === comment.id,
             })}
           >
@@ -95,7 +95,7 @@ export default function TaskCommentList({
               </div>
               <div className="flex">
                 {comment.user.id === user?.id && (
-                  <Dropdown
+                  <TaskCommentDropDown
                     trigger={
                       <Button
                         variant="ghost"
@@ -126,7 +126,7 @@ export default function TaskCommentList({
                     >
                       삭제하기
                     </button>
-                  </Dropdown>
+                  </TaskCommentDropDown>
                 )}
               </div>
             </div>

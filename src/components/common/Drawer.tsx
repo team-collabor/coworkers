@@ -11,6 +11,7 @@ function Drawer({
       shouldScaleBackground={shouldScaleBackground}
       open={props.open}
       onOpenChange={props.onOpenChange}
+      repositionInputs={false}
       {...props}
     />
   );
@@ -45,8 +46,8 @@ const DrawerContent = forwardRef<
     <DrawerPrimitive.Content
       ref={ref}
       className={cn(
-        'fixed inset-x-0 bottom-0 z-50 mt-24 flex flex-col',
-        'h-[70vh] overflow-y-scroll',
+        'fixed inset-x-0 bottom-0 z-50 mt-24',
+        'flex h-[32rem] flex-col',
         'rounded-t-xl border-none bg-secondary',
         className
       )}

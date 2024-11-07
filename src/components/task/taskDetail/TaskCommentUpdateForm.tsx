@@ -12,6 +12,7 @@ import { useCommentStore } from '@/store/useCommentStore';
 import { UpdateCommentRequest } from '@/types/dto/requests/comment.request.types';
 import { cn } from '@/utils/tailwind/cn';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 type TaskCommentUpdateFormProps = {
@@ -51,18 +52,16 @@ function TaskCommentUpdateForm({
     setSelectedComment(null);
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLFormElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSubmit(onSubmit);
-      reset();
-    }
-  };
-
   const handleClickCancel = () => {
     reset();
     setSelectedComment(null);
   };
+
+  useEffect(() => {
+    reset({
+      content: selectedComment?.content,
+    });
+  }, [selectedComment, reset]);
 
   return (
     <div
@@ -76,7 +75,6 @@ function TaskCommentUpdateForm({
         <form
           className="flex w-full flex-col gap-1"
           onSubmit={handleSubmit(onSubmit)}
-          onKeyPress={handleKeyPress}
         >
           <TextArea
             textAreaClassName={cn(
