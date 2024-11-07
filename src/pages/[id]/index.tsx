@@ -64,7 +64,7 @@ export default function TeamPage() {
   if (!isFetched) {
     return (
       <div className="flex h-[50rem] items-center justify-center">
-        <Loader className="size-20 animate-spin text-icon-brand" />
+        <Loader className="animate-spin size-20 text-icon-brand" />
       </div>
     );
   }
