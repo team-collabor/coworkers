@@ -17,7 +17,7 @@ export const authOptions = {
       authorization: {
         params: {
           redirect_uri:
-            `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/kakaoLogin` || '',
+            `${process.env.NEXT_PUBLIC_URL}/api/auth/kakaoLogin` || '',
         },
       },
     }),
