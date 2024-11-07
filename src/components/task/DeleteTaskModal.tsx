@@ -1,5 +1,6 @@
 import { useDeleteTask } from '@/queries/tasks.queries';
 import { useTaskStore } from '@/store/useTaskStore';
+import { addNineHours } from '@/utils/dateTimeUtils/addNineHours';
 import { Button } from '../common/Button/ShadcnButton';
 import {
   Dialog,
@@ -26,7 +27,7 @@ function DeleteTaskModal() {
       groupId: selectedTaskList?.groupId ?? -1,
       taskListId: selectedTaskList?.id ?? -1,
       taskId: selectedTask?.id ?? -1,
-      date: selectedDate.toLocaleDateString('ko-KR'),
+      date: addNineHours(selectedDate).toISOString(),
     });
     setIsTaskDeleteDialogOpen(false);
     setIsTaskUpdateFormShow(false);

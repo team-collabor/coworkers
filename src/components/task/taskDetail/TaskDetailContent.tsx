@@ -18,6 +18,7 @@ import {
 } from '@/queries/tasks.queries';
 import { useTaskStore } from '@/store/useTaskStore';
 import { FrequencyType, Task } from '@/types/tasks.types';
+import { addNineHours } from '@/utils/dateTimeUtils/addNineHours';
 import {
   formatFrequencyToKorean,
   formatKoreanDate,
@@ -75,7 +76,7 @@ function TaskDetailContent({ task }: { task: Task }) {
       groupId: selectedTaskList?.groupId ?? -1,
       taskListId: selectedTaskList?.id ?? -1,
       taskId,
-      date: selectedDate.toLocaleDateString('ko-KR'),
+      date: addNineHours(selectedDate).toISOString(),
     });
     setIsTaskDeleteDialogOpen(false);
     setIsTaskUpdateFormShow(false);
@@ -177,7 +178,7 @@ function TaskDetailContent({ task }: { task: Task }) {
                 taskListId: selectedTaskList?.id ?? -1,
                 taskId: task.id,
                 done: !taskDetail?.doneAt,
-                startDate: selectedDate.toLocaleDateString('ko-KR'),
+                startDate: addNineHours(selectedDate).toISOString(),
               });
             }}
           >

@@ -1,6 +1,9 @@
 import { FrequencyType, FrequencyTypeKorean } from '@/types/tasks.types';
 
 export function formatDate(isoString: string): string {
+  if (/^\d{4}\. \d{2}\. \d{2}$/.test(isoString)) {
+    return isoString;
+  }
   const date = new Date(isoString);
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
