@@ -41,6 +41,26 @@ function AllArticlesSection() {
   };
 
   useEffect(() => {
+    if (router.isReady) {
+      const savedScrollPosition = sessionStorage.getItem(
+        'boardsScrollPosition'
+      );
+      if (savedScrollPosition) {
+        window.scrollTo(0, parseInt(savedScrollPosition, 10));
+      }
+    }
+  }, [router.isReady]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      sessionStorage.setItem('boardsScrollPosition', window.scrollY.toString());
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
     setOrderBy((router.query.orderBy as OrderByType) || 'recent');
   }, [router.query.orderBy, setOrderBy]);
 
