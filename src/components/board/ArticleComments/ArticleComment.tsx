@@ -5,6 +5,7 @@ import {
   useUpdateArticleCommentMutation,
 } from '@/queries/article.queries';
 import { useAuthStore } from '@/store/useAuthStore';
+import { useBoardStore } from '@/store/useBoardStore';
 import { ListItem } from '@/types/dto/responses/article.response.types';
 import { formatDate } from '@/utils/dateTimeUtils/FormatData';
 import { cn } from '@/utils/tailwind/cn';
@@ -36,9 +37,12 @@ function ArticleComment({
 }: ArticleCommentProps) {
   const userId = useAuthStore((state) => state.user?.id);
   const { toast } = useToast();
+  const { searchQuery, orderBy } = useBoardStore();
   const [editedContent, setEditedContent] = useState<string>(comment.content);
   const { mutateAsync: deleteArticleComment } = useDeleteArticleCommentMutation(
-    { articleId }
+    articleId,
+    searchQuery,
+    orderBy
   );
   const { mutateAsync: updateArticleComment } = useUpdateArticleCommentMutation(
     { articleId }

@@ -63,13 +63,16 @@ export const useAllArticlesQuery = (
   });
 };
 
-export const usePostArticleMutation = () => {
+export const usePostArticleMutation = (
+  searchQuery: string,
+  orderBy: string
+) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (article: PostArticleParams) => postArticle(article),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: articleQueryKeys.allArticles('recent', ''),
+        queryKey: articleQueryKeys.allArticles(orderBy, searchQuery),
       });
       queryClient.invalidateQueries({
         queryKey: articleQueryKeys.bestArticles(),
@@ -86,7 +89,11 @@ export const useGetArticleDetailQuery = (articleId: number) => {
   });
 };
 
-export const useUpdateArticleMutation = (articleId: number) => {
+export const useUpdateArticleMutation = (
+  articleId: number,
+  searchQuery: string,
+  orderBy: string
+) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -96,7 +103,7 @@ export const useUpdateArticleMutation = (articleId: number) => {
         queryKey: articleQueryKeys.article(articleId),
       });
       queryClient.invalidateQueries({
-        queryKey: articleQueryKeys.allArticles('recent', ''),
+        queryKey: articleQueryKeys.allArticles(orderBy, searchQuery),
       });
       queryClient.invalidateQueries({
         queryKey: articleQueryKeys.bestArticles(),
@@ -114,13 +121,17 @@ export const useUpdateArticleMutation = (articleId: number) => {
   });
 };
 
-export const useDeleteArticleMutation = (articleId: number) => {
+export const useDeleteArticleMutation = (
+  articleId: number,
+  searchQuery: string,
+  orderBy: string
+) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: () => deleteArticle(articleId),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: articleQueryKeys.allArticles('recent', ''),
+        queryKey: articleQueryKeys.allArticles(orderBy, searchQuery),
       });
       queryClient.invalidateQueries({
         queryKey: articleQueryKeys.bestArticles(),
@@ -138,7 +149,10 @@ export const useDeleteArticleMutation = (articleId: number) => {
   });
 };
 
-export const useLikeArticleMutation = () => {
+export const useLikeArticleMutation = (
+  searchQuery: string,
+  orderBy: string
+) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (articleId: number) => likeArticle(articleId),
@@ -147,7 +161,7 @@ export const useLikeArticleMutation = () => {
         queryKey: articleQueryKeys.article(articleId),
       });
       queryClient.invalidateQueries({
-        queryKey: articleQueryKeys.allArticles('recent', ''),
+        queryKey: articleQueryKeys.allArticles(orderBy, searchQuery),
       });
       queryClient.invalidateQueries({
         queryKey: articleQueryKeys.bestArticles(),
@@ -156,7 +170,10 @@ export const useLikeArticleMutation = () => {
   });
 };
 
-export const useUnlikeArticleMutation = () => {
+export const useUnlikeArticleMutation = (
+  searchQuery: string,
+  orderBy: string
+) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (articleId: number) => unlikeArticle(articleId),
@@ -165,7 +182,7 @@ export const useUnlikeArticleMutation = () => {
         queryKey: articleQueryKeys.article(articleId),
       });
       queryClient.invalidateQueries({
-        queryKey: articleQueryKeys.allArticles('recent', ''),
+        queryKey: articleQueryKeys.allArticles(orderBy, searchQuery),
       });
       queryClient.invalidateQueries({
         queryKey: articleQueryKeys.bestArticles(),
@@ -176,7 +193,10 @@ export const useUnlikeArticleMutation = () => {
 
 // article comment
 
-export const usePostArticleCommentMutation = () => {
+export const usePostArticleCommentMutation = (
+  searchQuery: string,
+  orderBy: string
+) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: PostArticleCommentParams) => postArticleComment(data),
@@ -186,6 +206,12 @@ export const usePostArticleCommentMutation = () => {
       });
       queryClient.invalidateQueries({
         queryKey: articleQueryKeys.article(variables.articleId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: articleQueryKeys.allArticles(orderBy, searchQuery),
+      });
+      queryClient.invalidateQueries({
+        queryKey: articleQueryKeys.bestArticles(),
       });
     },
   });
@@ -205,11 +231,11 @@ export const useGetArticleCommentsQuery = (
   });
 };
 
-export const useDeleteArticleCommentMutation = ({
-  articleId,
-}: {
-  articleId: number;
-}) => {
+export const useDeleteArticleCommentMutation = (
+  articleId: number,
+  searchQuery: string,
+  orderBy: string
+) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (commentId: number) => deleteArticleComment(commentId),
@@ -219,6 +245,12 @@ export const useDeleteArticleCommentMutation = ({
       });
       queryClient.invalidateQueries({
         queryKey: articleQueryKeys.article(articleId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: articleQueryKeys.allArticles(orderBy, searchQuery),
+      });
+      queryClient.invalidateQueries({
+        queryKey: articleQueryKeys.bestArticles(),
       });
     },
   });

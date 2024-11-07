@@ -9,6 +9,7 @@ import Button, {
 import { useToast } from '@/hooks/useToast';
 import { usePostArticleCommentMutation } from '@/queries/article.queries';
 import { useAuthStore } from '@/store/useAuthStore';
+import { useBoardStore } from '@/store/useBoardStore';
 import React, { useState } from 'react';
 
 type ArticleCommentFormProps = {
@@ -17,7 +18,11 @@ type ArticleCommentFormProps = {
 
 function ArticleCommentForm({ boardId }: ArticleCommentFormProps) {
   const [comment, setComment] = useState<string>('');
-  const { mutateAsync: postArticleComment } = usePostArticleCommentMutation();
+  const { searchQuery, orderBy } = useBoardStore();
+  const { mutateAsync: postArticleComment } = usePostArticleCommentMutation(
+    searchQuery,
+    orderBy
+  );
   const { user } = useAuthStore();
   const { toast } = useToast();
 
