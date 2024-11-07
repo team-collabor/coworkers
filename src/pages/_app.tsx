@@ -1,4 +1,3 @@
-import GoogleAuth from '@/components/auth/signin/GoogleAuth';
 import RootLayout from '@/components/layouts/RootLayout';
 import { OAuthProvider } from '@/providers/OAuthProvider';
 import { QueryProvider } from '@/providers/QueryProvider';
@@ -19,7 +18,6 @@ export default function MyApp({
             <Component {...pageProps} />
           </RootLayout>
         </OAuthProvider>
-        <GoogleAuth />
       </QueryProvider>
     </SessionProvider>
   );

@@ -1,12 +1,13 @@
-import { addUser, signIn } from '@/apis/auth.api';
+import { addUser, oAuthSignIn, signIn } from '@/apis/auth.api';
 import { useToast } from '@/hooks/useToast';
 import { useAuthStore } from '@/store/useAuthStore';
 import {
+  OAuthSignInRequest,
   SignInRequest,
   SignUpRequest,
 } from '@/types/dto/requests/auth.request.types';
 import { useMutation } from '@tanstack/react-query';
-import { signIn as nextAuthSignIn } from 'next-auth/react';
+import { signIn as nextAuthSignIn, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { authQueryKeys } from './keys/auth.keys';
 
@@ -49,6 +50,36 @@ export const useSignIn = () => {
   };
 
   return { login, logout, ...returns };
+};
+
+export const useOAuthSignIn = () => {
+  const route = useRouter();
+  const { setUser, setAccessToken, setRefreshToken, clearAuth } =
+    useAuthStore();
+  const { mutate: oAuthLogin, ...returns } = useMutation({
+    mutationKey: authQueryKeys.oAuthSignIn(),
+    mutationFn: (params: OAuthSignInRequest) => {
+      return oAuthSignIn(params);
+    },
+    onSuccess: (res) => {
+      if (res) {
+        setUser({
+          ...res.data.user,
+          image: res.data.user.image || '/icons/Member.svg', // 기본 이미지 설정
+        });
+        setAccessToken(res.data.accessToken);
+        setRefreshToken(res.data.refreshToken);
+      }
+    },
+  });
+
+  const oAuthLogout = () => {
+    clearAuth();
+    signOut();
+    route.replace('/signin');
+  };
+
+  return { oAuthLogin, oAuthLogout, ...returns };
 };
 
 export const useGoogleSignIn = () => {
