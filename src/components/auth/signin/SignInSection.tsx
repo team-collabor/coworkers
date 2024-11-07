@@ -3,6 +3,7 @@ import { cn } from '@/utils/tailwind/cn';
 import Link from 'next/link';
 import SendResetPasswordForm from '../resetPassword/SendResetPasswordForm';
 import SignInForm from './SignInForm';
+import SocialSignInBox from './SocialSignInBox';
 
 function SignInSection() {
   return (
@@ -50,6 +51,7 @@ function SignInSection() {
           </Modal.Content>
         </Modal.Portal>
       </Modal>
+      <SocialSignInBox className="mt-8" />
     </section>
   );
 }

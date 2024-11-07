@@ -2,7 +2,7 @@
 
 import { USER_MENU } from '@/components/layouts/consts/_user.menu';
 import { UnoptimizedImage } from '@/components/next';
-import { useSignIn } from '@/queries/auth.queries';
+import { useOAuthSignIn, useSignIn } from '@/queries/auth.queries';
 import { User } from '@/types/users.types';
 import { useRouter } from 'next/router';
 import { Menu } from '../../menu';
@@ -12,6 +12,8 @@ const buttonSt = 'px-6 py-[14px] hover:bg-tertiary';
 export default function HeaderProfile({ user }: { user: User }) {
   const { push } = useRouter();
   const { logout } = useSignIn();
+  const { oAuthLogout } = useOAuthSignIn();
+
   return (
     <>
       <Menu.Trigger
@@ -63,6 +65,7 @@ export default function HeaderProfile({ user }: { user: User }) {
             className={buttonSt}
             onClick={() => {
               logout();
+              oAuthLogout();
               push('/').catch(() => {
                 // 로그아웃
               });
