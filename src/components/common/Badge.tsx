@@ -9,12 +9,14 @@ interface BadgeProps {
 function Badge(props: BadgeProps): JSX.Element {
   const { count, left, type } = props;
   const isOngoing = count !== left;
+  const no = count === 0 && left === 0;
   const badgeClass = `flex items-center gap-1 rounded-2xl 
   bg-primary pb-1 pl-2 pr-2 pt-1 shadow-md`;
   const ongoingSrc = 'icons/Progress_ongoing.svg';
   const checkSrc = 'icons/Progress_done.svg';
   const bestSrc = 'icons/Best.svg';
   const doneSrc = 'icons/Check_lightGreen.svg';
+  const xSrc = 'icons/X.svg';
 
   let imageSrc;
   let altText;
@@ -36,6 +38,11 @@ function Badge(props: BadgeProps): JSX.Element {
     altText = 'Ongoing';
     textColor = 'text-brand-primary';
     badgeText = `${count}/${left}`;
+  } else if (no) {
+    imageSrc = xSrc;
+    altText = 'no';
+    textColor = 'text-white';
+    badgeText = '없음';
   } else {
     imageSrc = checkSrc;
     altText = 'Check';
