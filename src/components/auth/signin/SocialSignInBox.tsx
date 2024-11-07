@@ -1,6 +1,6 @@
 import { Button } from '@/components/common/Button/ShadcnButton';
 import { cn } from '@/utils/tailwind/cn';
-import { signIn, signOut } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import Image from 'next/image';
 
 type SocialSignInBoxProps = {
@@ -16,7 +16,7 @@ function SocialSignInBox({ className }: SocialSignInBoxProps) {
         className
       )}
     >
-      <p className="text-lg-semibold text-secondary">간편 로그인하기</p>
+      <p className="ml-2 text-lg-semibold text-secondary">간편 로그인하기</p>
       <div className="flex gap-4">
         <Button
           variant="secondary"
@@ -30,21 +30,22 @@ function SocialSignInBox({ className }: SocialSignInBoxProps) {
         >
           <Image src="/images/Google.svg" alt="google" width={40} height={40} />
         </Button>
-        <Button variant="secondary" size="icon" className="p-0">
+        <Button
+          variant="secondary"
+          size="icon"
+          className="p-0"
+          onClick={() =>
+            signIn('kakao', {
+              redirectUri: process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI,
+            })
+          }
+        >
           <Image
             src="/images/Kakaotalk.svg"
             alt="kakao"
             width={40}
             height={40}
           />
-        </Button>
-        <Button
-          variant="secondary"
-          size="icon"
-          className="p-0"
-          onClick={() => signOut()}
-        >
-          sns logout
         </Button>
       </div>
     </div>

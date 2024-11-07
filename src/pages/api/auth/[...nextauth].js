@@ -5,7 +5,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import KakaoProvider from 'next-auth/providers/kakao';
 
 export const authOptions = {
-  // debug: true,
+  debug: true,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || '',
@@ -16,7 +16,8 @@ export const authOptions = {
       clientSecret: '',
       authorization: {
         params: {
-          redirect_uri: `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}/api/kakaoLogin`,
+          redirect_uri:
+            `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/kakaoLogin` || '',
         },
       },
     }),
