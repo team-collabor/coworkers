@@ -13,6 +13,7 @@ export const MembershipItem = memo(
   ({
     groupId,
     group,
+    role,
     deleteGroup,
   }: Membership & {
     deleteGroup: (id: number) => void;
@@ -24,8 +25,8 @@ export const MembershipItem = memo(
       >
         <Menu.Trigger menuId={ASIDE_MENU} className="flex items-center gap-x-2">
           {group.image ? (
-            <div className="relative size-8">
-              <Image src={group.image} alt="" fill />
+            <div className="relative size-7">
+              <Image src={group.image} alt="" fill className="rounded-full" />
             </div>
           ) : (
             <ImageIcon width={32} height={32} />
@@ -34,23 +35,25 @@ export const MembershipItem = memo(
             href={`/${groupId}`}
             type="button"
             className={cn([
-              'overflow-hidden text-ellipsis whitespace-nowrap',
+              'w-36 overflow-hidden text-ellipsis whitespace-nowrap',
               'hover:scale-105 hover:opacity-80',
             ])}
           >
             {group.name}
           </Link>
         </Menu.Trigger>
-        <Menu.Trigger menuId={`${ASIDE_MENU}:${groupId}`}>
-          <button type="button">
-            <UnoptimizedImage
-              src="/icons/Kebab_large.svg"
-              alt=""
-              width={24}
-              height={24}
-            />
-          </button>
-        </Menu.Trigger>
+        {role === 'ADMIN' && (
+          <Menu.Trigger menuId={`${ASIDE_MENU}:${groupId}`}>
+            <button type="button">
+              <UnoptimizedImage
+                src="/icons/Kebab_large.svg"
+                alt=""
+                width={24}
+                height={24}
+              />
+            </button>
+          </Menu.Trigger>
+        )}
         <Menu
           className="right-0 z-10 -translate-y-8"
           menuId={`${ASIDE_MENU}:${groupId}`}
