@@ -21,11 +21,6 @@ export default function WithOutTeam() {
         className="h-auto w-full max-w-[700px] 
         tab:max-w-[520px] mob:max-w-[312px]"
       />
-      <span className="text-center text-lg-medium text-default">
-        아직 소속된 팀이 없습니다.
-        <br />
-        팀을 생성하거나 팀에 참여해보세요.
-      </span>
       <div className="flex w-[11.625rem] flex-col gap-4">
         <Link href="/addteam">
           <Button

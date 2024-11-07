@@ -1,19 +1,16 @@
-import { getUser } from '@/apis/users.api';
-import axios from 'axios';
-import { useRouter } from 'next/dist/client/components/navigation';
+import { useGetUser } from '@/queries/users.queries';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 export default function Home() {
   const router = useRouter();
+  const { data } = useGetUser();
 
-  const handleCheckUser = async () => {
-    try {
-      await getUser();
-      router.push('/attendteam');
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response?.status === 401) {
-        router.push('/signin');
-      }
+  const handlePageChange = () => {
+    if (!data) {
+      router.push('/signin');
+    } else {
+      router.push('/withoutteam');
     }
   };
 
@@ -72,7 +69,7 @@ export default function Home() {
                 bg-gradient-to-r from-brand-primary to-brand-tertiary 
                 text-base font-bold mob:w-[21.4375rem]
                 `}
-              onClick={handleCheckUser}
+              onClick={handlePageChange}
             >
               지금 시작하기
             </button>
@@ -202,7 +199,7 @@ export default function Home() {
           `}
           >
             <Image
-              src="images/Landing_mockup_comment.svg"
+              src="/images/Landing_mockup_comment.svg"
               alt="Invite"
               width={291}
               height={338}
