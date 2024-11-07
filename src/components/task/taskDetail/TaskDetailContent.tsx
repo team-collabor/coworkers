@@ -93,6 +93,7 @@ function TaskDetailContent({ task }: { task: Task }) {
     <section
       className={cn(
         'flex h-full w-full max-w-[44.25rem] flex-col gap-7',
+        'overflow-y-scroll',
         'p-4'
       )}
     >
