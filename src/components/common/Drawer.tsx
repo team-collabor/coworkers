@@ -11,6 +11,7 @@ function Drawer({
       shouldScaleBackground={shouldScaleBackground}
       open={props.open}
       onOpenChange={props.onOpenChange}
+      repositionInputs={false}
       {...props}
     />
   );
