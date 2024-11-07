@@ -32,7 +32,7 @@ import { Loader } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import NotFound from '../404';
+import WithOutTeam from '../withoutteam';
 
 export default function TeamPage() {
   const router = useRouter();
@@ -70,7 +70,7 @@ export default function TeamPage() {
     );
   }
   if (isError || !group) {
-    return <NotFound />;
+    return <WithOutTeam />;
   }
 
   const handleInviteGroup = () => {
