@@ -6,6 +6,7 @@ import Tasks from '@/components/task/Tasks';
 import { useTeamQuery } from '@/queries/groups.queries';
 import { useTaskStore } from '@/store/useTaskStore';
 import { cn } from '@/utils/tailwind/cn';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 export default function TaskPage() {
@@ -25,6 +26,22 @@ export default function TaskPage() {
 
   return (
     <>
+      <Head>
+        <title>{team?.name} 할 일 관리 - Coworkers</title>
+        <meta
+          name="description"
+          content="팀과 함께 해야 할 일을 관리하고 팀원의 협업 상태를 파악해 보세요."
+        />
+        <meta property="og:title" content="할 일 관리 - Coworkers" />
+        <meta
+          property="og:description"
+          content="팀과 함께 해야 할 일 목록을 관리하세요."
+        />
+        <meta
+          property="og:url"
+          content={`https://coworkers-colla.netlify.app/${team?.id}/tasks`}
+        />
+      </Head>
       <section className="mt-10 flex w-full tab:mt-6">
         <h1 className="text-xl-bold text-primary">할 일</h1>
       </section>

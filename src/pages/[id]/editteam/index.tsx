@@ -20,6 +20,7 @@ import {
 } from '@/types/dto/requests/group.request.types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -99,45 +100,63 @@ export default function EditTeam() {
   }, [group, reset]);
 
   return (
-    <form
-      className="mt-[12.5rem] flex flex-col items-center gap-20 
-      tab:mt-[10rem] mob:mt-[8.25rem] mob:px-2"
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <p className="text-4xl tab:text-2xl">팀 수정하기</p>
-      <div className="flex  flex-col  items-center gap-8 ">
-        <div className="flex w-full flex-col">
-          <ProfileInput
-            image={watchImage}
-            onImageChange={handleImageChange}
-            error={!!errors.image}
-          />
-        </div>
-        <Input
-          id="name"
-          type="text"
-          label="팀 이름"
-          placeholder="팀 이름을 입력해주세요."
-          {...register('name')}
-          errorMessage={errors.name?.message}
+    <>
+      <Head>
+        <title>{group?.name}팀 수정 - Coworkers</title>
+        <meta
+          name="description"
+          content="팀 정보를 수정하고 팀원과 함께 더 나은 협업을 시작하세요."
         />
-        <Button
-          buttonStyle={ButtonStyle.Box}
-          textColor={TextColor.White}
-          textSize={TextSize.Medium}
-          buttonWidth={ButtonWidth.Full}
-          buttonBackgroundColor={ButtonBackgroundColor.Green}
-          buttonBorderColor={ButtonBorderColor.Gray}
-          buttonPadding={ButtonPadding.Medium}
-          type="submit"
-        >
-          수정하기
-        </Button>
-        <p className="text-lg-regular mob:text-md-regular">
-          팀 이름은 회사명이나 모임 이름 등으로 설정하면 좋아요.
-        </p>
-      </div>
-    </form>
+        <meta property="og:title" content="팀 수정 - Coworkers" />
+        <meta
+          property="og:description"
+          content="팀 이름, 프로필 이미지 등을 수정하여 팀을 더욱 효율적으로 관리하세요."
+        />
+        <meta
+          property="og:url"
+          content={`https://coworkers-colla.netlify.app/${group?.id}/editteam`}
+        />
+      </Head>
+      <form
+        className="mt-[12.5rem] flex flex-col items-center gap-20 
+      tab:mt-[10rem] mob:mt-[8.25rem] mob:px-2"
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <p className="text-4xl tab:text-2xl">팀 수정하기</p>
+        <div className="flex  flex-col  items-center gap-8 ">
+          <div className="flex w-full flex-col">
+            <ProfileInput
+              image={watchImage}
+              onImageChange={handleImageChange}
+              error={!!errors.image}
+            />
+          </div>
+          <Input
+            id="name"
+            type="text"
+            label="팀 이름"
+            placeholder="팀 이름을 입력해주세요."
+            {...register('name')}
+            errorMessage={errors.name?.message}
+          />
+          <Button
+            buttonStyle={ButtonStyle.Box}
+            textColor={TextColor.White}
+            textSize={TextSize.Medium}
+            buttonWidth={ButtonWidth.Full}
+            buttonBackgroundColor={ButtonBackgroundColor.Green}
+            buttonBorderColor={ButtonBorderColor.Gray}
+            buttonPadding={ButtonPadding.Medium}
+            type="submit"
+          >
+            수정하기
+          </Button>
+          <p className="text-lg-regular mob:text-md-regular">
+            팀 이름은 회사명이나 모임 이름 등으로 설정하면 좋아요.
+          </p>
+        </div>
+      </form>
+    </>
   );
 }

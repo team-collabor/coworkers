@@ -2,6 +2,7 @@ import { UnoptimizedImage } from '@/components/next';
 import { useGetHistory } from '@/queries/users.queries';
 import { TTaskDone } from '@/types/temp.types';
 import { cn } from '@/utils/tailwind/cn';
+import Head from 'next/head';
 import NoneHistory from './ui/NoneHistory';
 
 const parseDate = (date: string) => {
@@ -30,6 +31,23 @@ export default function History() {
   });
   return (
     <>
+      <Head>
+        <title>히스토리 - Coworkers</title>
+        <meta
+          name="description"
+          content="팀의 업무 히스토리를 확인하고, 진행된 일정을 관리하세요.
+           Coworkers에서 팀의 과거 업무 기록을 통해 더욱 효율적인 협업을 이어가세요."
+        />
+        <meta property="og:title" content="히스토리 - Coworkers" />
+        <meta
+          property="og:description"
+          content="팀의 업무 히스토리를 확인하고 일정 및 진행 상황을 관리하세요."
+        />
+        <meta
+          property="og:url"
+          content="https://coworkers-colla.netlify.app/history"
+        />
+      </Head>
       <h1 className="mb-6 mt-10 self-start text-xl font-bold">마이 히스토리</h1>
       <ul className="mb-16 flex w-full flex-col gap-y-10 self-start">
         {sortedTasksByDate.map(([key, taskList]: [string, TTaskDone[]]) => {
