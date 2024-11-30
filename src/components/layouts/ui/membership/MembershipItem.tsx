@@ -32,7 +32,7 @@ export const MembershipItem = memo(
             <ImageIcon width={32} height={32} />
           )}
           <Link
-            href={`/${groupId}`}
+            href={`teams/${groupId}`}
             type="button"
             className={cn([
               'w-36 overflow-hidden text-ellipsis whitespace-nowrap',
@@ -64,7 +64,7 @@ export const MembershipItem = memo(
               className="flex items-center justify-center"
             >
               <Link
-                href={`/${groupId}/editteam`}
+                href={`teams/${groupId}/editteam`}
                 className="p-4 hover:bg-tertiary"
               >
                 수정하기

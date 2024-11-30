@@ -1,4 +1,3 @@
-import Badge from '@/components/common/Badge';
 import Button, {
   ButtonBackgroundColor,
   ButtonBorderColor,
@@ -18,6 +17,7 @@ import { TaskList } from '@/types/tasklist.types';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import Badge from '../common/Badge';
 import Dropdown from '../common/Dropdown';
 import Input from '../common/Input';
 import VirtualScroll from './VirtualScroll';
@@ -41,7 +41,7 @@ function TaskItem({ taskList, taskListColor, isMember }: TaskItemProps) {
 
   const handleTaskClick = (e: React.MouseEvent) => {
     setSelectedTaskList(taskList);
-    router.push(`/${taskList.groupId}/tasks`);
+    router.push(`/teams/${taskList.groupId}/tasks`);
     e.stopPropagation();
   };
 

@@ -35,7 +35,7 @@ export function HeaderMenu({
             className="flex items-center justify-center"
           >
             <Link
-              href={`/${membership.groupId}/editteam`}
+              href={`${membership.groupId}/editteam`}
               className="p-4 hover:bg-tertiary"
             >
               수정하기
