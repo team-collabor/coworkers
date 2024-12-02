@@ -72,7 +72,7 @@ function MemberItem({ member, isAdmin }: MemberProps) {
               >
                 <Image
                   src={
-                    member.userImage ? member.userImage : '/icons/Member.svg'
+                    member.userImage ? member.userImage : '/icons/Member.webp'
                   }
                   alt="user"
                   width={24}
@@ -100,7 +100,7 @@ items-center justify-between rounded-xl bg-secondary px-6 "
              overflow-hidden rounded-full border-2 border-primary "
             >
               <Image
-                src={member.userImage ? member.userImage : '/icons/Member.svg'}
+                src={member.userImage ? member.userImage : '/icons/Member.webp'}
                 alt="user"
                 width={32}
                 height={32}
