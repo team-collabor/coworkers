@@ -13,6 +13,7 @@ import Button, {
 import Input from '@/components/common/Input';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useBoardStore } from '@/store/useBoardStore';
+import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -63,6 +64,22 @@ function Boards() {
 
   return (
     <>
+      <Head>
+        <title>자유게시판 - Coworkers</title>
+        <meta
+          name="description"
+          content="자유롭게 의견을 나누고 소통할 수 있는 Coworkers 자유게시판입니다."
+        />
+        <meta property="og:title" content="자유게시판 - Coworkers" />
+        <meta
+          property="og:description"
+          content="Coworkers 자유게시판에서 팀원들과 자유롭게 의견을 나누세요."
+        />
+        <meta
+          property="og:url"
+          content="https://coworkers-colla.netlify.app/boards"
+        />
+      </Head>
       <h1 className="my-10 self-start text-2xl-bold ">자유게시판</h1>
       <Input
         placeholder="검색어를 입력해주세요."

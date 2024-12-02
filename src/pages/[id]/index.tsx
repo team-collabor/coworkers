@@ -29,6 +29,7 @@ import {
 } from '@/queries/groups.queries';
 import { useGetUser } from '@/queries/users.queries';
 import { Loader } from 'lucide-react';
+import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -108,156 +109,180 @@ export default function TeamPage() {
   };
 
   return (
-    <div className="flex w-full flex-col gap-5 px-20 pt-10 tab:px-5">
-      <div
-        className="relative flex h-[4rem] items-center
-     justify-start rounded-xl border border-primary bg-secondary pl-5 pr-20"
-      >
+    <>
+      <Head>
+        <title>{group.name} 팀 페이지 - Coworkers</title>
+        <meta
+          name="description"
+          content="팀 구성원들과 함께 할 일을 관리하고 협업을 진행하세요. 
+          Coworkers 팀 페이지에서 효율적인 업무 관리를 시작할 수 있습니다."
+        />
+        <meta property="og:title" content="팀 페이지 - Coworkers" />
+        <meta
+          property="og:description"
+          content="팀 페이지에서 할 일 목록을 확인하고, 팀원들과 효율적으로 협업을 진행하세요."
+        />
+        <meta
+          property="og:url"
+          content={`https://coworkers-colla.netlify.app/${group?.id}`}
+        />
+      </Head>
+      <div className="flex w-full flex-col gap-5 px-20 pt-10 tab:px-5">
         <div
-          className="flex h-[47px] min-w-[47px]
-         items-center overflow-hidden rounded-full border-2 border-primary"
+          className="relative flex h-[4rem] items-center
+     justify-start rounded-xl border border-primary bg-secondary pl-5 pr-20"
         >
-          <Image
-            src={group?.image || '/icons/BaseTeam_Icon.svg'}
-            alt="team-profile"
-            width={43}
-            height={43}
-          />
-        </div>
-        <p className="truncate pl-3 text-xl-bold">{group?.name}</p>
-        <div className="absolute right-5 flex items-center gap-7">
-          <Image
-            src="/images/Thumbnail_team.svg"
-            alt="thumbnail"
-            width={181}
-            height={64}
-            priority
-          />
-          <div className="h-[24px] w-[24px]">
-            {isAdmin && (
-              <DropDown
-                dropdownStyle="transform translate-x-[-80%] z-20"
-                trigger={
-                  <button type="button">
-                    <Image
-                      src="/icons/Gear.svg"
-                      alt="setting"
-                      width={24}
-                      height={24}
-                    />
+          <div
+            className="flex h-[47px] min-w-[47px]
+         items-center overflow-hidden rounded-full border-2 border-primary"
+          >
+            <Image
+              src={group?.image || '/icons/BaseTeam_Icon.svg'}
+              alt="team-profile"
+              width={43}
+              height={43}
+            />
+          </div>
+          <p className="truncate pl-3 text-xl-bold">{group?.name}</p>
+          <div className="absolute right-5 flex items-center gap-7">
+            <Image
+              src="/images/Thumbnail_team.svg"
+              alt="thumbnail"
+              width={181}
+              height={64}
+              priority
+            />
+            <div className="h-[24px] w-[24px]">
+              {isAdmin && (
+                <DropDown
+                  dropdownStyle="transform translate-x-[-80%] z-20"
+                  trigger={
+                    <button type="button">
+                      <Image
+                        src="/icons/Gear.svg"
+                        alt="setting"
+                        width={24}
+                        height={24}
+                      />
+                    </button>
+                  }
+                >
+                  <button
+                    className="h-[35px] w-full "
+                    type="button"
+                    onClick={handleEditTeam}
+                  >
+                    수정하기
                   </button>
-                }
-              >
-                <button
-                  className="h-[35px] w-full "
-                  type="button"
-                  onClick={handleEditTeam}
-                >
-                  수정하기
-                </button>
-                <button
-                  className="h-[35px] w-full "
-                  type="button"
-                  onClick={handleDeleteModal}
-                >
-                  삭제하기
-                </button>
-              </DropDown>
-            )}
+                  <button
+                    className="h-[35px] w-full "
+                    type="button"
+                    onClick={handleDeleteModal}
+                  >
+                    삭제하기
+                  </button>
+                </DropDown>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-      <TaskLists
-        taskLists={group.taskLists}
-        groupId={id!.toString()}
-        isMember={isMember}
-      />
-      <Report id={Number(id)} />
-      <div className="flex justify-between">
-        <div className="flex gap-2">
-          <p className="text-lg-medium">멤버</p>
-          <p className="text-lg-medium text-default">
-            ({group.members.length}개)
-          </p>
-        </div>
-        {isMember && (
-          <Modal>
-            <Modal.Toggle className="text-brand-primary">
-              + 새로운 멤버 초대하기
-            </Modal.Toggle>
-            <Modal.Portal>
-              <Modal.Overlay />
-              <Modal.Content withToggle>
-                <div className="flex flex-col gap-5">
-                  <div>
-                    <Modal.Header>
-                      <Modal.Title>멤버 초대</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Summary>
-                      그룹에 참여할 수 있는 링크를 복사 합니다.
-                    </Modal.Summary>
+        <TaskLists
+          taskLists={group.taskLists}
+          groupId={id!.toString()}
+          isMember={isMember}
+        />
+        <Report id={Number(id)} />
+        <div className="flex justify-between">
+          <div className="flex gap-2">
+            <p className="text-lg-medium">멤버</p>
+            <p className="text-lg-medium text-default">
+              ({group.members.length}개)
+            </p>
+          </div>
+          {isMember && (
+            <Modal>
+              <Modal.Toggle className="text-brand-primary">
+                + 새로운 멤버 초대하기
+              </Modal.Toggle>
+              <Modal.Portal>
+                <Modal.Overlay />
+                <Modal.Content withToggle>
+                  <div className="flex flex-col gap-5">
+                    <div>
+                      <Modal.Header>
+                        <Modal.Title>멤버 초대</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Summary>
+                        그룹에 참여할 수 있는 링크를 복사 합니다.
+                      </Modal.Summary>
+                    </div>
+                    <Modal.Close>
+                      <Button
+                        buttonStyle={ButtonStyle.Box}
+                        textColor={TextColor.White}
+                        textSize={TextSize.Large}
+                        buttonWidth={ButtonWidth.Full}
+                        buttonBackgroundColor={ButtonBackgroundColor.Green}
+                        buttonBorderColor={ButtonBorderColor.Green}
+                        buttonPadding={ButtonPadding.Medium}
+                        onClick={handleInviteGroup}
+                      >
+                        링크 복사하기
+                      </Button>
+                    </Modal.Close>
                   </div>
-                  <Modal.Close>
-                    <Button
-                      buttonStyle={ButtonStyle.Box}
-                      textColor={TextColor.White}
-                      textSize={TextSize.Large}
-                      buttonWidth={ButtonWidth.Full}
-                      buttonBackgroundColor={ButtonBackgroundColor.Green}
-                      buttonBorderColor={ButtonBorderColor.Green}
-                      buttonPadding={ButtonPadding.Medium}
-                      onClick={handleInviteGroup}
-                    >
-                      링크 복사하기
-                    </Button>
-                  </Modal.Close>
-                </div>
-              </Modal.Content>
-            </Modal.Portal>
-          </Modal>
-        )}
+                </Modal.Content>
+              </Modal.Portal>
+            </Modal>
+          )}
+        </div>
+        <Members members={group.members} isAdmin={isAdmin} />
+        <Dialog open={isDeleteTeamModal} onOpenChange={setIsDeleteTeamModal}>
+          <DialogContent className="fixed w-80">
+            <DialogHeader className="items-center gap-1 ">
+              <Image
+                src="/icons/Alert.svg"
+                alt="alert"
+                width={25}
+                height={25}
+              />
+              <DialogTitle> {group.name} </DialogTitle>
+              팀을 삭제하시겠어요?
+              <DialogDescription>
+                삭제된 할 팀은 복구할 수 없습니다.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter className="mob:gap-1">
+              <Button
+                buttonStyle={ButtonStyle.Box}
+                textColor={TextColor.Gray}
+                textSize={TextSize.Large}
+                buttonWidth={ButtonWidth.Full}
+                buttonBackgroundColor={ButtonBackgroundColor.Green}
+                buttonBorderColor={ButtonBorderColor.Green}
+                buttonPadding={ButtonPadding.Medium}
+                onClick={() => {
+                  setIsDeleteTeamModal(false);
+                }}
+              >
+                닫기
+              </Button>
+              <Button
+                buttonStyle={ButtonStyle.Box}
+                textColor={TextColor.Gray}
+                textSize={TextSize.Large}
+                buttonWidth={ButtonWidth.Full}
+                buttonBackgroundColor={ButtonBackgroundColor.Red}
+                buttonBorderColor={ButtonBorderColor.None}
+                buttonPadding={ButtonPadding.Medium}
+                onClick={handleDeleteTeam}
+              >
+                팀 삭제
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
-      <Members members={group.members} isAdmin={isAdmin} />
-      <Dialog open={isDeleteTeamModal} onOpenChange={setIsDeleteTeamModal}>
-        <DialogContent className="fixed w-80">
-          <DialogHeader className="items-center gap-1 ">
-            <Image src="/icons/Alert.svg" alt="alert" width={25} height={25} />
-            <DialogTitle> {group.name} </DialogTitle>
-            팀을 삭제하시겠어요?
-            <DialogDescription>
-              삭제된 할 팀은 복구할 수 없습니다.
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter className="mob:gap-1">
-            <Button
-              buttonStyle={ButtonStyle.Box}
-              textColor={TextColor.Gray}
-              textSize={TextSize.Large}
-              buttonWidth={ButtonWidth.Full}
-              buttonBackgroundColor={ButtonBackgroundColor.Green}
-              buttonBorderColor={ButtonBorderColor.Green}
-              buttonPadding={ButtonPadding.Medium}
-              onClick={() => {
-                setIsDeleteTeamModal(false);
-              }}
-            >
-              닫기
-            </Button>
-            <Button
-              buttonStyle={ButtonStyle.Box}
-              textColor={TextColor.Gray}
-              textSize={TextSize.Large}
-              buttonWidth={ButtonWidth.Full}
-              buttonBackgroundColor={ButtonBackgroundColor.Red}
-              buttonBorderColor={ButtonBorderColor.None}
-              buttonPadding={ButtonPadding.Medium}
-              onClick={handleDeleteTeam}
-            >
-              팀 삭제
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </div>
+    </>
   );
 }
