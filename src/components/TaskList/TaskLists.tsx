@@ -23,7 +23,7 @@ import Input from '../common/Input';
 import VirtualScroll from './VirtualScroll';
 
 interface TaskListProps {
-  taskLists: TaskList[];
+  taskLists: TaskList[] | [];
   groupId: string;
   isMember: boolean;
 }

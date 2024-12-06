@@ -9,15 +9,11 @@ import { Task } from '@/types/tasks.types';
 import { axiosInstance } from './_axiosInstance';
 
 export const getGroup = async (id: number) => {
-  try {
-    const response = await axiosInstance<GetGroupResponse>({
-      method: 'GET',
-      url: `groups/${id}`,
-    });
-    return response.data;
-  } catch (error) {
-    throw new Error('팀 정보를 가져오는 데 실패했습니다.');
-  }
+  const response = await axiosInstance<GetGroupResponse>({
+    method: 'GET',
+    url: `groups/${id}/`,
+  });
+  return response.data;
 };
 
 export const postGroup = async ({ name, image }: PostGroupRequest) => {
@@ -106,19 +102,15 @@ export const postTaskList = async (groupId: number, name: string) => {
 };
 
 export async function getTasks(id: number, date: string) {
-  try {
-    const response = await axiosInstance<Task[]>({
-      method: 'GET',
-      url: `groups/${id}/tasks`,
-      data: { date },
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    return response.data;
-  } catch (error) {
-    throw new Error('할 일을 불러오는 데 실패했습니다.');
-  }
+  const response = await axiosInstance<Task[]>({
+    method: 'GET',
+    url: `groups/${id}/tasks`,
+    data: { date },
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return response.data;
 }
 
 export async function deleteMember(groupId: number, memberUserId: number) {

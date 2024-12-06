@@ -14,7 +14,12 @@ import {
   PostGroupRequest,
   UpdateGroupRequest,
 } from '@/types/dto/requests/group.request.types';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  useSuspenseQuery,
+} from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import {
   groupsInviteQueryKeys,
@@ -24,10 +29,9 @@ import {
 import { usersQueryKeys } from './keys/users.keys';
 
 export const useTeamQuery = (id: number) => {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: groupsQueryKeys.groups(id),
     queryFn: () => getGroup(id),
-    enabled: !!id,
   });
 };
 

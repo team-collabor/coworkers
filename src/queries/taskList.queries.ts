@@ -14,7 +14,7 @@ export const useTaskListMutation = () => {
           description: '할일 목록명을 작성해주세요.',
           variant: 'destructive',
         });
-        return Promise.reject(new Error('할일 목록명을 작성해주세요.'));
+        throw new Error('할일 목록명을 작성해주세요.');
       }
       return postTaskList(params.groupId, params.name);
     },
@@ -27,10 +27,10 @@ export const useTaskListMutation = () => {
         description: '새 목록이 생성되었습니다',
       });
     },
-    onError: (err) => {
+    onError: (error) => {
       toast({
         title: '목록생성 실패',
-        description: err.message,
+        description: error.message,
         variant: 'destructive',
       });
     },

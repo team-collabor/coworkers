@@ -28,7 +28,7 @@ export interface MemberProps {
   isAdmin?: boolean;
 }
 interface MembersProps {
-  members: Member[];
+  members: Member[] | [];
   isAdmin: boolean;
 }
 

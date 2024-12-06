@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useAuthStore } from '@/store/useAuthStore';
 import axios, { AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios';
 import { refreshAccessToken } from './auth.api';
@@ -12,11 +13,13 @@ export const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const { accessToken } = useAuthStore.getState();
+
     if (accessToken) {
       const modifiedConfig = { ...config };
       modifiedConfig.headers.Authorization = `Bearer ${accessToken}`;
       return modifiedConfig;
     }
+
     return config;
   },
   (error) => {
@@ -30,7 +33,12 @@ axiosInstance.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config as AxiosRequestConfig;
-    if (error.response.status === 401 && !(originalRequest as any)._retry) {
+
+    if (
+      axios.isAxiosError(error) &&
+      error.response?.status === 401 &&
+      !(originalRequest as any)._retry
+    ) {
       const { refreshToken } = useAuthStore.getState();
       if (refreshToken) {
         try {

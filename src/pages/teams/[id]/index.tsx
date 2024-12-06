@@ -28,17 +28,25 @@ import {
   useTeamQuery,
 } from '@/queries/groups.queries';
 import { useGetUser } from '@/queries/users.queries';
-import { Loader } from 'lucide-react';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import WithOutTeam from '../../withoutteam';
 
-export default function TeamPage() {
+export function getServerSideProps(context: { query: { id: number } }) {
+  const { id } = context.query;
+  return {
+    props: {
+      id,
+    },
+  };
+}
+
+export default function TeamPage({ id }: { id: number }) {
   const router = useRouter();
-  const { id } = router.query;
-  const { data: group, isError, isFetched } = useTeamQuery(Number(id));
+  // const { id } = router.query;
+  useRedirect();
+  const { data: group } = useTeamQuery(Number(id));
   const { data: inviteLink } = useInviteGroupQuery(Number(id));
   const { data: user } = useGetUser();
   const [isAdmin, setIsAdmin] = useState(false);
@@ -46,7 +54,6 @@ export default function TeamPage() {
   const [isDeleteTeamModal, setIsDeleteTeamModal] = useState(false);
   const deleteTeam = useDeleteTeamMutation();
   const { toast } = useToast();
-  useRedirect();
 
   useEffect(() => {
     if (user) {
@@ -64,16 +71,18 @@ export default function TeamPage() {
     }
   }, [user, group, isAdmin]);
 
-  if (!isFetched) {
-    return (
-      <div className="flex h-[50rem] items-center justify-center">
-        <Loader className="animate-spin size-20 text-icon-brand" />
-      </div>
-    );
-  }
-  if (isError || !group) {
-    return <WithOutTeam />;
-  }
+  // if (!isFetched) {
+  //   return (
+  //     <div className="flex h-[50rem] items-center justify-center">
+  //       <Loader className="animate-spin size-20 text-icon-brand" />
+  //     </div>
+  //   );
+  // }
+
+  // if (!group) {
+  //   // return
+  //   throw new Error('잘못된 팀 ID입니다!');
+  // }
 
   const handleInviteGroup = () => {
     if (id && inviteLink) {
@@ -97,7 +106,7 @@ export default function TeamPage() {
   };
 
   const handleEditTeam = () => {
-    router.push(`${group.id}/editteam/`);
+    router.push(`${group?.id}/editteam/`);
   };
 
   const handleDeleteModal = () => {
@@ -124,7 +133,7 @@ export default function TeamPage() {
         />
         <meta
           property="og:url"
-          content={`https://coworkers-colla.netlify.app/${group?.id}`}
+          content={`https://coworkers-colla.netlify.app/${group.id}`}
         />
       </Head>
       <div className="flex w-full flex-col gap-5 px-20 pt-10 tab:px-5">
@@ -137,13 +146,13 @@ export default function TeamPage() {
          items-center overflow-hidden rounded-full border-2 border-primary"
           >
             <Image
-              src={group?.image || '/icons/BaseTeam_Icon.svg'}
+              src={group.image || '/icons/BaseTeam_Icon.svg'}
               alt="team-profile"
               width={43}
               height={43}
             />
           </div>
-          <p className="truncate pl-3 text-xl-bold">{group?.name}</p>
+          <p className="truncate pl-3 text-xl-bold">{group.name}</p>
           <div className="absolute right-5 flex items-center gap-7">
             <Image
               src="/images/Thumbnail_team.svg"
@@ -187,8 +196,8 @@ export default function TeamPage() {
           </div>
         </div>
         <TaskLists
-          taskLists={group.taskLists}
-          groupId={id!.toString()}
+          taskLists={group.taskLists || []}
+          groupId={id.toString()}
           isMember={isMember}
         />
         <Report id={Number(id)} />
@@ -236,7 +245,7 @@ export default function TeamPage() {
             </Modal>
           )}
         </div>
-        <Members members={group.members} isAdmin={isAdmin} />
+        <Members members={group.members || []} isAdmin={isAdmin} />
         <Dialog open={isDeleteTeamModal} onOpenChange={setIsDeleteTeamModal}>
           <DialogContent className="fixed w-80">
             <DialogHeader className="items-center gap-1 ">

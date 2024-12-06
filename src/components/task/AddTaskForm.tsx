@@ -32,7 +32,7 @@ function AddTaskForm() {
   const { selectedDate, selectedTaskList } = useTaskStore();
   const { mutate: addTask, isSuccess, isPending } = useAddTask();
   const methods = useForm<AddTaskRequest>({
-    mode: 'onBlur',
+    mode: 'onBlur', // onBlur시 랜더링
     resolver: zodResolver(addTaskSchema),
     defaultValues: {
       name: '',

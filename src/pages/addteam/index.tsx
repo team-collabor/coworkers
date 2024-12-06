@@ -121,7 +121,7 @@ export default function AddTeam() {
             팀 이름은 회사명이나 모임 이름 등으로 설정하면 좋아요.
           </p>
         </div>
-      </form>{' '}
+      </form>
     </>
   );
 }

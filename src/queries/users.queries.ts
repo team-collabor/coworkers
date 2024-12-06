@@ -24,12 +24,10 @@ export const useGetUser = () => {
   return useQuery<GetUserResponse>({
     queryKey: usersQueryKeys.user(),
     queryFn: getUser,
-    refetchInterval: 1000 * 50,
     select: (data) => {
       setUser(data);
       return data;
     },
-    retry: 1,
   });
 };
 

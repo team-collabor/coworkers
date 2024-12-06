@@ -9,9 +9,17 @@ function makeQueryClient() {
   return new QueryClient({
     defaultOptions: {
       queries: {
-        // 클라이언트의 즉시 다시 요청에 대응하도록, 기본 캐싱 시간(min)을 설정.
-        staleTime: 60 * 1000,
+        staleTime: 60 * 1000, // 1분 동안 데이터가 신선하다고 간주
+        retry: 0, // 재시도 비활성화
+        throwOnError: true,
       },
+      // mutations: {
+      //   throwOnError: false,
+      //   onError: (error: any) => {
+      //     const errorData = getErrorDataByCode(error);
+      //     toast.error(`[${errorData.code}] ${errorData.message}`);
+      //   },
+      // },
     },
   });
 }

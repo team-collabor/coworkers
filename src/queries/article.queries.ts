@@ -29,13 +29,14 @@ import {
   useMutation,
   useQuery,
   useQueryClient,
+  useSuspenseQuery,
 } from '@tanstack/react-query';
 import { articleQueryKeys } from './keys/article.keys';
 
 // article
 
 export const useBestArticlesQuery = (params: GetArticlesParams) => {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: ['BestArticles'],
     queryFn: () => getArticles(params),
   });

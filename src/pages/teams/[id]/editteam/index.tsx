@@ -78,7 +78,7 @@ export default function EditTeam() {
 
       await patchTeam.mutateAsync(updateData);
       await queryClient.invalidateQueries({
-        queryKey: groupsQueryKeys.groups(group!.id),
+        queryKey: groupsQueryKeys.groups(group.id),
       });
       await router.replace(`/${group?.id}`);
     } catch {

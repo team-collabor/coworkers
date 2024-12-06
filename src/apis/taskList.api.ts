@@ -1,4 +1,5 @@
 import { TaskList } from '@/types/tasklist.types';
+import axios from 'axios';
 import { axiosInstance } from './_axiosInstance';
 
 export const postTaskList = async (groupId: number, name: string) => {
@@ -13,7 +14,9 @@ export const postTaskList = async (groupId: number, name: string) => {
     });
     return response.data;
   } catch (error) {
-    throw new Error('할 일 목록를 생성하는 데 실패했습니다.');
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data.message as string);
+    }
   }
 };
 
