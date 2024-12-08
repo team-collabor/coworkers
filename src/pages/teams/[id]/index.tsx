@@ -33,7 +33,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import WithOutTeam from '../withoutteam';
+import WithOutTeam from '../../withoutteam';
 
 export default function TeamPage() {
   const router = useRouter();
