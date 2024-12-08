@@ -97,7 +97,7 @@ export default function TeamPage() {
   };
 
   const handleEditTeam = () => {
-    router.push(`${group.id}/editteam/`);
+    router.push(`/teams/${group.id}/editteam/`);
   };
 
   const handleDeleteModal = () => {
