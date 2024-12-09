@@ -3,7 +3,6 @@ import Button, {
   ButtonBorderColor,
   ButtonPadding,
   ButtonStyle,
-  ButtonWidth,
   TextColor,
   TextSize,
 } from '@/components/common/Button/Button';
@@ -26,22 +25,37 @@ export default function ErrorFallback({
   ) {
     router.push('/signin'); // 로그인 페이지로 리다이렉트
     setRedirected(true);
-    return; // 더 이상 처리를 하지 않음
+    return;
   }
   return (
-    <div>
-      <h2>{error.message}</h2>
+    <div className="flex h-screen flex-col items-center justify-center">
+      <div className="flex flex-col items-center">
+        <h1
+          className="relative mt-[50px] text-[10rem] text-brand-primary 
+         mob:text-[6rem]"
+        >
+          <span className="relative inline-block animate-bounce404-1">E</span>
+          <span className="relative inline-block animate-bounce404-2">R</span>
+          <span className="relative inline-block animate-bounce404-1">R</span>
+          <span className="relative inline-block animate-bounce404-2">O</span>
+          <span className="relative inline-block animate-bounce404-3">R</span>
+        </h1>
+      </div>
+      <p className="mb-10 text-2xl mob:text-xl-semibold">
+        {redirected ? '로그인 후 시도해주세요!' : error.response?.data.message}
+      </p>
+
       <Button
-        buttonStyle={ButtonStyle.Box}
-        textColor={TextColor.Gray}
         textSize={TextSize.Large}
-        buttonWidth={ButtonWidth.Full}
-        buttonBackgroundColor={ButtonBackgroundColor.Green}
-        buttonBorderColor={ButtonBorderColor.Green}
-        buttonPadding={ButtonPadding.Medium}
+        buttonStyle={ButtonStyle.Box}
+        textColor={TextColor.White}
+        buttonBackgroundColor={ButtonBackgroundColor.None}
+        buttonBorderColor={ButtonBorderColor.LightGray}
+        buttonPadding={ButtonPadding.Large}
+        className="border-2"
         onClick={() => resetErrorBoundary()}
       >
-        재시도하기
+        {redirected ? '로그인하기' : '재시도하기'}
       </Button>
     </div>
   );

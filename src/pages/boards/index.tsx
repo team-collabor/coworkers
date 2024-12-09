@@ -31,6 +31,7 @@ function Boards() {
   const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       setSearchQuery(searchValue);
+
       router.replace(
         {
           query: {
