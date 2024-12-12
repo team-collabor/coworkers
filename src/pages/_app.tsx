@@ -1,3 +1,4 @@
+import GlobalBoundary from '@/components/common/error/ErrorBoundary';
 import RootLayout from '@/components/layouts/RootLayout';
 import { OAuthProvider } from '@/providers/OAuthProvider';
 import { QueryProvider } from '@/providers/QueryProvider';
@@ -11,14 +12,16 @@ export default function MyApp({
   pageProps: { session, ...pageProps },
 }: AppProps) {
   return (
-    <SessionProvider session={session as Session}>
-      <QueryProvider>
-        <OAuthProvider>
-          <RootLayout>
-            <Component {...pageProps} />
-          </RootLayout>
-        </OAuthProvider>
-      </QueryProvider>
-    </SessionProvider>
+    <GlobalBoundary>
+      <SessionProvider session={session as Session}>
+        <QueryProvider>
+          <OAuthProvider>
+            <RootLayout>
+              <Component {...pageProps} />
+            </RootLayout>
+          </OAuthProvider>
+        </QueryProvider>
+      </SessionProvider>
+    </GlobalBoundary>
   );
 }

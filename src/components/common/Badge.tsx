@@ -12,11 +12,11 @@ function Badge(props: BadgeProps): JSX.Element {
   const no = count === 0 && left === 0;
   const badgeClass = `flex items-center gap-1 rounded-2xl 
   bg-primary pb-1 pl-2 pr-2 pt-1 shadow-md`;
-  const ongoingSrc = 'icons/Progress_ongoing.svg';
-  const checkSrc = 'icons/Progress_done.svg';
-  const bestSrc = 'icons/Best.svg';
-  const doneSrc = 'icons/Check_lightGreen.svg';
-  const xSrc = 'icons/X.svg';
+  const ongoingSrc = '../icons/Progress_ongoing.svg';
+  const checkSrc = '../icons/Progress_done.svg';
+  const bestSrc = '../icons/Best.svg';
+  const doneSrc = '../icons/Check_lightGreen.svg';
+  const xSrc = '../icons/X.svg';
 
   let imageSrc;
   let altText;
