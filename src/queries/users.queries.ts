@@ -5,6 +5,7 @@ import {
   resetPassword,
   sendResetPasswordEmail,
 } from '@/apis/users.api';
+import { useGlobalErrorHandler } from '@/hooks/useGlobalErrorHandler';
 import { useToast } from '@/hooks/useToast';
 import { useAuthStore } from '@/store/useAuthStore';
 import {
@@ -44,6 +45,7 @@ export const useGetMemberships = () => {
 
 export const useSendResetPasswordEmail = () => {
   const { toast } = useToast();
+  const handleError = useGlobalErrorHandler();
   return useMutation({
     mutationFn: async (params: SendResetPasswordEmailRequest) =>
       sendResetPasswordEmail(params),
@@ -52,18 +54,14 @@ export const useSendResetPasswordEmail = () => {
         title: response.message,
       });
     },
-    onError: (error) => {
-      toast({
-        title: '비밀번호 재설정 메일 전송을 실패했습니다.',
-        description: error.message,
-        variant: 'destructive',
-      });
-    },
+    onError: (error) =>
+      handleError(error, '비밀번호 재설정 메일 전송을 실패했습니다.'),
   });
 };
 
 export const useResetPassword = () => {
   const { toast } = useToast();
+  const handleError = useGlobalErrorHandler();
   return useMutation({
     mutationFn: async (params: ResetPasswordRequest) => resetPassword(params),
     onSuccess: (response) => {
@@ -72,13 +70,7 @@ export const useResetPassword = () => {
         description: response.message,
       });
     },
-    onError: (error) => {
-      toast({
-        title: '비밀번호 재설정을 실패했습니다.',
-        description: error.message,
-        variant: 'destructive',
-      });
-    },
+    onError: (error) => handleError(error, '비밀번호 재설정을 실패했습니다.'),
   });
 };
 

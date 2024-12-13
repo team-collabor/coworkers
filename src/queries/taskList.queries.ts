@@ -1,4 +1,5 @@
 import { deleteTaskList, postTaskList } from '@/apis/taskList.api';
+import { useGlobalErrorHandler } from '@/hooks/useGlobalErrorHandler';
 import { useToast } from '@/hooks/useToast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { groupsQueryKeys } from './keys/groups.key';
@@ -6,6 +7,7 @@ import { groupsQueryKeys } from './keys/groups.key';
 export const useTaskListMutation = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const handleError = useGlobalErrorHandler();
   return useMutation({
     mutationFn: (params: { groupId: number; name: string }) => {
       if (!params.name.trim()) {
@@ -27,19 +29,14 @@ export const useTaskListMutation = () => {
         description: '새 목록이 생성되었습니다',
       });
     },
-    onError: (err) => {
-      toast({
-        title: '목록생성 실패',
-        description: err.message,
-        variant: 'destructive',
-      });
-    },
+    onError: (error) => handleError(error, '목록생성 실패'),
   });
 };
 
 export const useDeleteTaskList = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const handleError = useGlobalErrorHandler();
   return useMutation({
     mutationFn: (params: { groupId: number; taskListId: number }) =>
       deleteTaskList(params.groupId, params.taskListId),
@@ -52,12 +49,6 @@ export const useDeleteTaskList = () => {
         queryKey: groupsQueryKeys.groups(params.groupId),
       });
     },
-    onError: (err) => {
-      toast({
-        title: '목록삭제 실패',
-        description: err.message,
-        variant: 'destructive',
-      });
-    },
+    onError: (error) => handleError(error, '목록생성 실패.'),
   });
 };

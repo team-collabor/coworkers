@@ -8,6 +8,7 @@ import {
   postGroup,
   postInviteGroup,
 } from '@/apis/groups.api';
+import { useGlobalErrorHandler } from '@/hooks/useGlobalErrorHandler';
 import { useToast } from '@/hooks/useToast';
 import {
   InviteGroupRequest,
@@ -34,6 +35,7 @@ export const useTeamQuery = (id: number) => {
 export const usePatchTeamMutation = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const handleError = useGlobalErrorHandler();
   return useMutation({
     mutationFn: ({ id, name, image }: UpdateGroupRequest) =>
       patchGroup({ id, name, ...(image && { image }) }),
@@ -45,13 +47,7 @@ export const usePatchTeamMutation = () => {
         title: '해당 팀을 수정했습니다.',
       });
     },
-    onError: (error) => {
-      toast({
-        title: '팀 수정을 실패했습니다.',
-        description: error.message,
-        variant: 'destructive',
-      });
-    },
+    onError: (error) => handleError(error, '팀 수정을 실패했습니다.'),
   });
 };
 
@@ -59,6 +55,7 @@ export const useDeleteTeamMutation = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
   const { toast } = useToast();
+  const handleError = useGlobalErrorHandler();
   return useMutation({
     mutationFn: (id: number) => deleteGroup(id),
     onSuccess: () => {
@@ -70,19 +67,14 @@ export const useDeleteTeamMutation = () => {
       });
       router.push('/');
     },
-    onError: (error) => {
-      toast({
-        title: '팀 삭제에 실패했습니다.',
-        description: error.message,
-        variant: 'destructive',
-      });
-    },
+    onError: (error) => handleError(error, '팀 삭제를 실패했습니다.'),
   });
 };
 
 export const useTeamMutation = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const handleError = useGlobalErrorHandler();
   return useMutation({
     mutationFn: (params: PostGroupRequest) => postGroup(params),
     onSuccess: () => {
@@ -96,19 +88,14 @@ export const useTeamMutation = () => {
         title: '해당 팀을 생성했습니다.',
       });
     },
-    onError: (error) => {
-      toast({
-        title: '팀 생성을 실패했습니다.',
-        description: error.message,
-        variant: 'destructive',
-      });
-    },
+    onError: (error) => handleError(error, '팀 생성을 실패했습니다.'),
   });
 };
 
 export const useInviteGroupMutation = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const handleError = useGlobalErrorHandler();
   return useMutation({
     mutationFn: ({ userEmail, token }: InviteGroupRequest) =>
       postInviteGroup({ userEmail, token }),
@@ -120,13 +107,7 @@ export const useInviteGroupMutation = () => {
         title: '팀 참여 완료.',
       });
     },
-    onError: (error) => {
-      toast({
-        title: '팀 참여에 실패했습니다.',
-        description: error.message,
-        variant: 'destructive',
-      });
-    },
+    onError: (error) => handleError(error, '팀 참여에 실패했습니다.'),
   });
 };
 
@@ -149,6 +130,7 @@ export const useTasksQuery = (params: { id: number; date: string }) => {
 export const useDeleteMember = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const handleError = useGlobalErrorHandler();
   return useMutation({
     mutationFn: (params: { groupId: number; memberUserId: number }) =>
       deleteMember(params.groupId, params.memberUserId),
@@ -160,12 +142,6 @@ export const useDeleteMember = () => {
         title: '해당 멤버를 삭제했습니다.',
       });
     },
-    onError: (error) => {
-      toast({
-        title: '멤버 삭제할 수 없습니다.',
-        description: error.message,
-        variant: 'destructive',
-      });
-    },
+    onError: (error) => handleError(error, '해당 멤버를 삭제할 수 없습니다.'),
   });
 };

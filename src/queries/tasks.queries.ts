@@ -6,6 +6,7 @@ import {
   updateTask,
   updateTaskStatus,
 } from '@/apis/tasks.api';
+import { useGlobalErrorHandler } from '@/hooks/useGlobalErrorHandler';
 import { useToast } from '@/hooks/useToast';
 import {
   AddTaskRequest,
@@ -39,7 +40,7 @@ export const useTaskDetail = (params: GetTaskDetailRequest) => {
 export const useAddTask = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
-
+  const handleError = useGlobalErrorHandler();
   return useMutation({
     onMutate: (params) => {
       if (params.frequencyType === FrequencyType.Weekly) {
@@ -72,19 +73,14 @@ export const useAddTask = () => {
         queryKey: groupsQueryKeys.groups(params.groupId),
       });
     },
-    onError: (error) => {
-      toast({
-        title: '할 일 추가를 실패했습니다.',
-        description: error.message,
-        variant: 'destructive',
-      });
-    },
+    onError: (error) => handleError(error, '할 일 추가를 실패했습니다.'),
   });
 };
 
 export const useUpdateTask = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const handleError = useGlobalErrorHandler();
   return useMutation({
     mutationFn: async (params: UpdateTaskRequest) => updateTask(params),
     onSuccess: (_, params) => {
@@ -109,19 +105,13 @@ export const useUpdateTask = () => {
         queryKey: groupsQueryKeys.groups(params.groupId),
       });
     },
-    onError: (error) => {
-      toast({
-        title: '할 일 수정을 실패했습니다.',
-        description: error.message,
-        variant: 'destructive',
-      });
-    },
+    onError: (error) => handleError(error, '할 일 수정을 실패했습니다.'),
   });
 };
 
 export const useUpdateTaskStatus = () => {
   const queryClient = useQueryClient();
-  const { toast } = useToast();
+  const handleError = useGlobalErrorHandler();
   return useMutation({
     mutationFn: async (params: UpdateTaskStatusRequest) =>
       updateTaskStatus(params),
@@ -168,11 +158,7 @@ export const useUpdateTaskStatus = () => {
           context.previousTasks
         );
       }
-      toast({
-        title: '할 일 상태 수정을 실패했습니다.',
-        description: error.message,
-        variant: 'destructive',
-      });
+      handleError(error, '할 일 상태 수정을 실패했습니다.');
     },
     onSettled: (_, error, params) => {
       queryClient.invalidateQueries({
@@ -202,6 +188,7 @@ export const useUpdateTaskStatus = () => {
 export const useDeleteTask = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const handleError = useGlobalErrorHandler();
   return useMutation({
     mutationFn: async (params: DeleteTaskRequest) => deleteTask(params),
     onSuccess: (_, params) => {
@@ -219,12 +206,6 @@ export const useDeleteTask = () => {
         queryKey: groupsQueryKeys.groups(params.groupId),
       });
     },
-    onError: (error) => {
-      toast({
-        title: '할 일 삭제를 실패했습니다.',
-        description: error.message,
-        variant: 'destructive',
-      });
-    },
+    onError: (error) => handleError(error, '할 일 삭제를 실패했습니다.'),
   });
 };
