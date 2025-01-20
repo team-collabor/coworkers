@@ -20,7 +20,6 @@ import { Modal } from '@/components/modal';
 import TaskLists from '@/components/TaskList/TaskLists';
 import Members from '@/components/Team/Members';
 import Report from '@/components/Team/Report';
-import { useRedirect } from '@/hooks/useRedirect';
 import { useToast } from '@/hooks/useToast';
 import {
   useDeleteTeamMutation,
@@ -33,12 +32,11 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import WithOutTeam from '../withoutteam';
 
 export default function TeamPage() {
   const router = useRouter();
   const { id } = router.query;
-  const { data: group, isError, isFetched } = useTeamQuery(Number(id));
+  const { data: group, isFetched } = useTeamQuery(Number(id));
   const { data: inviteLink } = useInviteGroupQuery(Number(id));
   const { data: user } = useGetUser();
   const [isAdmin, setIsAdmin] = useState(false);
@@ -46,7 +44,6 @@ export default function TeamPage() {
   const [isDeleteTeamModal, setIsDeleteTeamModal] = useState(false);
   const deleteTeam = useDeleteTeamMutation();
   const { toast } = useToast();
-  useRedirect();
 
   useEffect(() => {
     if (user) {
@@ -71,9 +68,6 @@ export default function TeamPage() {
       </div>
     );
   }
-  if (isError || !group) {
-    return <WithOutTeam />;
-  }
 
   const handleInviteGroup = () => {
     if (id && inviteLink) {
@@ -97,7 +91,7 @@ export default function TeamPage() {
   };
 
   const handleEditTeam = () => {
-    router.push(`${group.id}/editteam/`);
+    router.push(`/teams/${group?.id}/editteam/`);
   };
 
   const handleDeleteModal = () => {
@@ -111,7 +105,7 @@ export default function TeamPage() {
   return (
     <>
       <Head>
-        <title>{group.name} 팀 페이지 - Coworkers</title>
+        <title>{group?.name} 팀 페이지 - Coworkers</title>
         <meta
           name="description"
           content="팀 구성원들과 함께 할 일을 관리하고 협업을 진행하세요. 
@@ -187,7 +181,7 @@ export default function TeamPage() {
           </div>
         </div>
         <TaskLists
-          taskLists={group.taskLists}
+          taskLists={group?.taskLists || []}
           groupId={id!.toString()}
           isMember={isMember}
         />
@@ -196,7 +190,7 @@ export default function TeamPage() {
           <div className="flex gap-2">
             <p className="text-lg-medium">멤버</p>
             <p className="text-lg-medium text-default">
-              ({group.members.length}개)
+              ({group?.members.length}개)
             </p>
           </div>
           {isMember && (
@@ -236,7 +230,7 @@ export default function TeamPage() {
             </Modal>
           )}
         </div>
-        <Members members={group.members} isAdmin={isAdmin} />
+        <Members members={group?.members || []} isAdmin={isAdmin} />
         <Dialog open={isDeleteTeamModal} onOpenChange={setIsDeleteTeamModal}>
           <DialogContent className="fixed w-80">
             <DialogHeader className="items-center gap-1 ">
@@ -246,7 +240,7 @@ export default function TeamPage() {
                 width={25}
                 height={25}
               />
-              <DialogTitle> {group.name} </DialogTitle>
+              <DialogTitle> {group?.name} </DialogTitle>
               팀을 삭제하시겠어요?
               <DialogDescription>
                 삭제된 할 팀은 복구할 수 없습니다.

@@ -11,6 +11,8 @@ function makeQueryClient() {
       queries: {
         // 클라이언트의 즉시 다시 요청에 대응하도록, 기본 캐싱 시간(min)을 설정.
         staleTime: 60 * 1000,
+        retry: 0,
+        throwOnError: true,
       },
     },
   });
