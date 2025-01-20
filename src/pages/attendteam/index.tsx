@@ -8,6 +8,7 @@ import Button, {
   TextSize,
 } from '@/components/common/Button/Button';
 import Input from '@/components/common/Input';
+import { attendTeamSchema } from '@/constants/formSchemas/teamSchema';
 import { useRedirect } from '@/hooks/useRedirect';
 import { useToast } from '@/hooks/useToast';
 import { useInviteGroupMutation } from '@/queries/groups.queries';
@@ -18,11 +19,7 @@ import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-const teamSchema = z.object({
-  link: z.string().min(1, { message: '팀 링크를 입력해주세요.' }),
-});
-
-type TeamLinkValues = z.infer<typeof teamSchema>;
+type TeamLinkValues = z.infer<typeof attendTeamSchema>;
 
 export default function AttendTeam() {
   const router = useRouter();
@@ -36,7 +33,7 @@ export default function AttendTeam() {
     handleSubmit,
     formState: { errors },
   } = useForm<TeamLinkValues>({
-    resolver: zodResolver(teamSchema),
+    resolver: zodResolver(attendTeamSchema),
     defaultValues: {
       link: '',
     },

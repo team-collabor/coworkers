@@ -9,6 +9,7 @@ import Button, {
 } from '@/components/common/Button/Button';
 import Input from '@/components/common/Input';
 import ProfileInput from '@/components/Team/ProfileInput';
+import { teamSchema } from '@/constants/formSchemas/teamSchema';
 import { useRedirect } from '@/hooks/useRedirect';
 import { useTeamMutation } from '@/queries/groups.queries';
 import { useUploadImageMutation } from '@/queries/uploadImage.query';
@@ -18,15 +19,6 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-
-const teamSchema: z.ZodSchema<PostGroupRequest> = z.object({
-  name: z.string().min(1, { message: '팀 이름은 필수 입력입니다.' }),
-  image: z
-    .string()
-    .min(1)
-    .refine((val) => val !== '/icons/BaseTeam_Icon.svg'),
-});
 
 export default function AddTeam() {
   const [selectImage, setSelectImage] = useState<File | null>(null);
