@@ -19,6 +19,7 @@ import {
   UpdateArticleParams,
 } from '@/types/dto/requests/article.request.types';
 // eslint-disable-next-line max-len
+import { useGlobalErrorHandler } from '@/hooks/useGlobalErrorHandler';
 import { toast } from '@/hooks/useToast';
 import {
   ArticleCommentListResponse,
@@ -95,7 +96,7 @@ export const useUpdateArticleMutation = (
   orderBy: string
 ) => {
   const queryClient = useQueryClient();
-
+  const handleError = useGlobalErrorHandler();
   return useMutation({
     mutationFn: (data: UpdateArticleParams) => updateArticle(articleId, data),
     onSuccess: () => {
@@ -112,12 +113,7 @@ export const useUpdateArticleMutation = (
         title: '게시글 수정에 성공하였습니다.',
       });
     },
-    onError: () => {
-      toast({
-        title: '게시글 수정에 실패하였습니다.',
-        variant: 'destructive',
-      });
-    },
+    onError: (error) => handleError(error, '게시글 수정에 실패하였습니다.'),
   });
 };
 
@@ -127,6 +123,7 @@ export const useDeleteArticleMutation = (
   orderBy: string
 ) => {
   const queryClient = useQueryClient();
+  const handleError = useGlobalErrorHandler();
   return useMutation({
     mutationFn: () => deleteArticle(articleId),
     onSuccess: () => {
@@ -140,12 +137,7 @@ export const useDeleteArticleMutation = (
         title: '게시글 삭제에 성공하였습니다.',
       });
     },
-    onError: () => {
-      toast({
-        title: '게시글 삭제에 실패하였습니다.',
-        variant: 'destructive',
-      });
-    },
+    onError: (error) => handleError(error, '게시글 삭제에 실패하였습니다.'),
   });
 };
 
