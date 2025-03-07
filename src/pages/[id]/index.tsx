@@ -141,6 +141,7 @@ export default function TeamPage() {
               alt="team-profile"
               width={43}
               height={43}
+              priority
             />
           </div>
           <p className="truncate pl-3 text-xl-bold">{group?.name}</p>
