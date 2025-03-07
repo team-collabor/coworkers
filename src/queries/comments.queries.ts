@@ -4,6 +4,7 @@ import {
   getComments,
   updateComment,
 } from '@/apis/comments.api';
+import { useGlobalErrorHandler } from '@/hooks/useGlobalErrorHandler';
 import { useToast } from '@/hooks/useToast';
 import { commentsQueryKeys } from '@/queries/keys/comments.keys';
 import {
@@ -30,7 +31,7 @@ export const useGetComments = (params: GetCommentsRequest) => {
 
 export const useAddComment = () => {
   const queryClient = useQueryClient();
-  const { toast } = useToast();
+  const handleError = useGlobalErrorHandler();
   return useMutation<AddCommentResponse, Error, AddCommentRequest>({
     mutationFn: (params: AddCommentRequest) => addComment(params),
     onSuccess: (_, params) => {
@@ -45,19 +46,14 @@ export const useAddComment = () => {
         }),
       });
     },
-    onError: (error) => {
-      toast({
-        title: '댓글 추가를 실패했습니다.',
-        description: error.message,
-        variant: 'destructive',
-      });
-    },
+    onError: (error) => handleError(error, '댓글 추가를 실패했습니다.'),
   });
 };
 
 export const useUpdateComment = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const handleError = useGlobalErrorHandler();
   return useMutation<UpdateCommentResponse, Error, UpdateCommentRequest>({
     mutationFn: (params: UpdateCommentRequest) => updateComment(params),
     onSuccess: (_, params) => {
@@ -68,19 +64,14 @@ export const useUpdateComment = () => {
         title: '댓글을 수정했습니다.',
       });
     },
-    onError: (error) => {
-      toast({
-        title: '댓글 수정을 실패했습니다.',
-        description: error.message,
-        variant: 'destructive',
-      });
-    },
+    onError: (error) => handleError(error, '댓글 수정을 실패했습니다.'),
   });
 };
 
 export const useDeleteComment = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const handleError = useGlobalErrorHandler();
   return useMutation<DeleteCommentResponse, Error, DeleteCommentRequest>({
     mutationFn: (params: DeleteCommentRequest) => deleteComment(params),
     onSuccess: (_, params) => {
@@ -98,12 +89,6 @@ export const useDeleteComment = () => {
         title: '댓글을 삭제했습니다.',
       });
     },
-    onError: (error) => {
-      toast({
-        title: '댓글 삭제를 실패했습니다.',
-        description: error.message,
-        variant: 'destructive',
-      });
-    },
+    onError: (error) => handleError(error, '댓글 수정을 실패했습니다.'),
   });
 };

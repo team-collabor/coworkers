@@ -1,4 +1,4 @@
-![header](https://capsule-render.vercel.app/api?type=waving&color=047857&height=250&section=header&text=COWERKERS&fontSize=80&fontAlignY=40&fontColor=ffffff)
+![header](https://capsule-render.vercel.app/api?type=waving&color=047857&height=250&section=header&text=COWORKERS&fontSize=80&fontAlignY=40&fontColor=ffffff)
 
 ## **📑 목차**
 

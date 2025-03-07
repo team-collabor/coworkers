@@ -108,7 +108,7 @@ export default function HeaderNav() {
             {memberships &&
               memberships.map((m) => (
                 <li key={m.groupId} className="relative flex items-center">
-                  <Link href={`/${m.groupId}`}>
+                  <Link href={`/teams/${m.groupId}`}>
                     <Menu.Trigger
                       className="flex"
                       menuId={GROUP_MENU}

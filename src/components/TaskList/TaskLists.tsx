@@ -41,7 +41,7 @@ function TaskItem({ taskList, taskListColor, isMember }: TaskItemProps) {
 
   const handleTaskClick = (e: React.MouseEvent) => {
     setSelectedTaskList(taskList);
-    router.push(`/${taskList.groupId}/tasks`);
+    router.push(`/teams/${taskList.groupId}/tasks`);
     e.stopPropagation();
   };
 
