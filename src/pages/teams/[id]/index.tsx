@@ -131,16 +131,17 @@ export default function TeamPage() {
          items-center overflow-hidden rounded-full border-2 border-primary"
           >
             <Image
-              src={group?.image || '/icons/BaseTeam_Icon.svg'}
+              src={group?.image || '/icons/BaseTeam_Icon.webp'}
               alt="team-profile"
               width={43}
               height={43}
+              priority
             />
           </div>
           <p className="truncate pl-3 text-xl-bold">{group?.name}</p>
           <div className="absolute right-5 flex items-center gap-7">
             <Image
-              src="/images/Thumbnail_team.svg"
+              src="/images/Thumbnail_team.webp"
               alt="thumbnail"
               width={181}
               height={64}
@@ -153,7 +154,7 @@ export default function TeamPage() {
                   trigger={
                     <button type="button">
                       <Image
-                        src="/icons/Gear.svg"
+                        src="/icons/Gear.webp"
                         alt="setting"
                         width={24}
                         height={24}
